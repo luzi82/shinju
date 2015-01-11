@@ -32,7 +32,7 @@ public class PlayScreen extends ScreenAdapter {
 	@Override
 	public void resize(int width, int height) {
 		super.resize(width, height);
-		uiStage.getViewport().update(width, height, true);
+		uiStage.resize(width, height);
 	}
 
 	@Override

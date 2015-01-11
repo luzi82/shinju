@@ -18,8 +18,12 @@ public class PlayScreenUiStage extends Stage {
 
 		LabelStyle ls = new LabelStyle(common.font, Color.BLACK);
 		label = new Label("HelloWorld", ls);
-		label.setPosition(0, 0, Align.bottomLeft);
 		addActor(label);
+	}
+
+	public void resize(int width, int height) {
+		getViewport().update(width, height, true);
+		label.setPosition(0, height, Align.topLeft);
 	}
 
 }
