@@ -13,6 +13,10 @@ public class PlayScreenWorldGroup extends Group {
 		Image background = new Image(new Texture(Gdx.files.internal("img/sand.png")));
 		background.setBounds(-8 * CELL_SIZE, -8 * CELL_SIZE, 16 * CELL_SIZE, 16 * CELL_SIZE);
 		addActor(background);
+
+		Image icon = new Image(new Texture(Gdx.files.internal("img/icon_madoka.png")));
+		icon.setBounds(0, 0, CELL_SIZE, CELL_SIZE);
+		addActor(icon);
 	}
 
 }

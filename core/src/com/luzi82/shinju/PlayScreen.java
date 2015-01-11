@@ -3,6 +3,7 @@ package com.luzi82.shinju;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
@@ -12,6 +13,7 @@ public class PlayScreen extends ScreenAdapter {
 	Stage stage;
 	PlayScreenUiGroup uiGroup;
 	PlayScreenWorldGroup worldGroup;
+	Group worldZoomGroup;
 
 	// PlayScreenWorldStage worldStage;
 
@@ -21,13 +23,14 @@ public class PlayScreen extends ScreenAdapter {
 		stage = new Stage(new ScreenViewport());
 		Gdx.input.setInputProcessor(stage);
 
-		uiGroup = new PlayScreenUiGroup(common);
-		uiGroup.setZIndex(200);
-		stage.addActor(uiGroup);
+		worldZoomGroup = new Group();
+		stage.addActor(worldZoomGroup);
 
 		worldGroup = new PlayScreenWorldGroup(common);
-		worldGroup.setZIndex(100);
-		stage.addActor(worldGroup);
+		worldZoomGroup.addActor(worldGroup);
+
+		uiGroup = new PlayScreenUiGroup(common);
+		stage.addActor(uiGroup);
 
 		// uiStage = new PlayScreenUiGroup(common);
 		// inputMultiplexer.addProcessor(uiStage);
@@ -41,7 +44,7 @@ public class PlayScreen extends ScreenAdapter {
 		super.render(delta);
 
 		Gdx.graphics.getGL20().glClearColor(0.5f, 0.5f, 0.5f, 1);
-		Gdx.graphics.getGL20().glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
+		Gdx.graphics.getGL20().glClear(GL20.GL_COLOR_BUFFER_BIT);
 
 		stage.act();
 		stage.draw();
@@ -58,6 +61,8 @@ public class PlayScreen extends ScreenAdapter {
 		super.resize(width, height);
 		stage.getViewport().update(width, height, true);
 		uiGroup.setSize(width, height);
+		worldZoomGroup.setPosition(((float) width) / 2, ((float) height) / 2);
+		worldZoomGroup.setScale(Math.min(width, height));
 		// uiStage.resize(width, height);
 		// worldStage.resize(width, height);
 	}
