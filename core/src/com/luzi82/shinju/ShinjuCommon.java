@@ -16,4 +16,11 @@ public class ShinjuCommon {
 		fontGenerator.dispose();
 	}
 
+	public static final float PHI = (1f + (float) Math.sqrt(5)) / 2f;
+	public static final float PHI2 = 1f + PHI;
+	public static final float PHI3 = 1f + 2 * PHI;
+	public static final float PHI_1 = -1 + PHI;
+	public static final float PHI_2 = 2 - PHI;
+	public static final float PHI_3 = -3 + 2 * PHI;
+
 }
