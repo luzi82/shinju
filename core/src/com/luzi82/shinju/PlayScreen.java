@@ -3,7 +3,6 @@ package com.luzi82.shinju;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
@@ -31,9 +30,9 @@ public class PlayScreen extends ScreenAdapter {
 		screenZoomGroup = new ZoomMove();
 		stage.addActor(screenZoomGroup);
 
-		worldGroup = new PlayScreenWorldGroup(common);
-//		worldGroup.setScale(ShinjuCommon.PHI_3);
-		worldGroup.setParent(screenZoomGroup);
+		worldGroup = new PlayScreenWorldGroup(common, screenZoomGroup);
+		// worldGroup.setScale(ShinjuCommon.PHI_3);
+		// worldGroup.setParent(screenZoomGroup);
 		screenZoomGroup.setActor(worldGroup);
 
 		uiGroup = new PlayScreenUiGroup(common);
@@ -78,8 +77,9 @@ public class PlayScreen extends ScreenAdapter {
 		// worldZoomGroup.setPosition(0, 0);
 		// worldZoomGroup.setSize(width, height);
 		// worldZoomGroup.setBounds(0, 0, width, height);
-//		screenZoomGroup.setPosition(((float) width) / 2, ((float) height) / 2);
-//		screenZoomGroup.setScale(Math.min(width, height));
+		// screenZoomGroup.setPosition(((float) width) / 2, ((float) height) /
+		// 2);
+		// screenZoomGroup.setScale(Math.min(width, height));
 		// uiStage.resize(width, height);
 		// worldStage.resize(width, height);
 	}

@@ -4,6 +4,8 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator.FreeTypeFontParameter;
+import com.luzi82.shinju.logic.ShinjuData;
+import com.luzi82.shinju.logic.ShinjuLogic;
 
 public class ShinjuCommon {
 
@@ -15,6 +17,9 @@ public class ShinjuCommon {
 		font = fontGenerator.generateFont(fontParameter);
 		fontGenerator.dispose();
 	}
+
+	public ShinjuData mShinjuData;
+	public ShinjuLogic mShinjuLogic;
 
 	public static final float PHI = (1f + (float) Math.sqrt(5)) / 2f;
 	public static final float PHI2 = 1f + PHI;

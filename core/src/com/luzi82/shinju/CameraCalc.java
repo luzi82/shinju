@@ -185,29 +185,29 @@ public class CameraCalc {
 		return (float) Math.sqrt(dx * dx + dy * dy);
 	}
 
-	private static class CalcLockRet {
-		float mValue;
-		float mDiff;
-
-		CalcLockRet(float aTar, float aDiff) {
-			mValue = aTar;
-			mDiff = aDiff;
-		}
-	}
-
-	private static CalcLockRet calcLock(float aOri, float aTar, float aDiff, float aReduce) {
-		if (aDiff == 0)
-			return new CalcLockRet(aTar, 0);
-		if (aOri == aTar)
-			return new CalcLockRet(aTar, 0);
-		float diff = aOri - aTar;
-		aDiff *= aReduce;
-		if (diff * aDiff <= 0)
-			return new CalcLockRet(aTar, 0);
-		if (Math.abs(diff) <= Math.abs(aDiff))
-			return new CalcLockRet(aOri, diff);
-		return new CalcLockRet(aTar + aDiff, aDiff);
-	}
+//	private static class CalcLockRet {
+//		float mValue;
+//		float mDiff;
+//
+//		CalcLockRet(float aTar, float aDiff) {
+//			mValue = aTar;
+//			mDiff = aDiff;
+//		}
+//	}
+//
+//	private static CalcLockRet calcLock(float aOri, float aTar, float aDiff, float aReduce) {
+//		if (aDiff == 0)
+//			return new CalcLockRet(aTar, 0);
+//		if (aOri == aTar)
+//			return new CalcLockRet(aTar, 0);
+//		float diff = aOri - aTar;
+//		aDiff *= aReduce;
+//		if (diff * aDiff <= 0)
+//			return new CalcLockRet(aTar, 0);
+//		if (Math.abs(diff) <= Math.abs(aDiff))
+//			return new CalcLockRet(aOri, diff);
+//		return new CalcLockRet(aTar + aDiff, aDiff);
+//	}
 
 	public static class Board {
 		public static final int WIDTH = 8;
