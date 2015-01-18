@@ -10,7 +10,7 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.utils.ActorGestureListener;
-import com.luzi82.common.ObservableValue;
+import com.luzi82.common.ValueObservable;
 import com.luzi82.shinju.logic.ShinjuDataHero;
 
 public class PlayScreenWorldGroupHeroManager {
@@ -47,7 +47,7 @@ public class PlayScreenWorldGroupHeroManager {
 
 		mMoveLockSession = new Lock.Session(iPlayScreenWorldGroup.iParentZoomMove.mStopLock);
 
-		mMoveActive = new ObservableValue<Boolean>(false);
+		mMoveActive = new ValueObservable<Boolean>(false);
 		mMoveActive.addObserver(new MoveObserver());
 	}
 
@@ -56,7 +56,7 @@ public class PlayScreenWorldGroupHeroManager {
 	}
 
 	// boolean mMoveActive = false;
-	ObservableValue<Boolean> mMoveActive;
+	ValueObservable<Boolean> mMoveActive;
 	Lock.Session mMoveLockSession;
 
 	public class AGL extends ActorGestureListener {

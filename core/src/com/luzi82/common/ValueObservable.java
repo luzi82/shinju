@@ -2,11 +2,11 @@ package com.luzi82.common;
 
 import java.util.Observable;
 
-public class ObservableValue<T> extends Observable {
+public class ValueObservable<T> extends Observable {
 
 	T mValue;
 	
-	public ObservableValue(T v){
+	public ValueObservable(T v){
 		mValue=v;
 	}
 
