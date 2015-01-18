@@ -9,7 +9,7 @@ public class ShinjuLogic {
 
 	public final ShinjuData iData;
 
-	private Observable mHeroCountObservable = new Observable();
+	private FakeObservable mHeroCountObservable = new FakeObservable();
 	private HashMap<Long, FakeObservable> mHeroObservableMap = new HashMap<Long, FakeObservable>();
 
 	public ShinjuLogic(ShinjuData aData) {
@@ -19,6 +19,7 @@ public class ShinjuLogic {
 	public void addHero(ShinjuDataHero aHero) {
 		iData.mHeroMap.put(aHero.mHeroId, aHero);
 		mHeroObservableMap.put(aHero.mHeroId, new FakeObservable());
+		mHeroCountObservable.setChanged();
 		mHeroCountObservable.notifyObservers(aHero.mHeroId);
 	}
 
