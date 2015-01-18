@@ -3,12 +3,14 @@ package com.luzi82.shinju.logic;
 import java.util.HashMap;
 import java.util.Observable;
 
+import com.luzi82.common.FakeObservable;
+
 public class ShinjuLogic {
 
 	public final ShinjuData iData;
 
 	private Observable mHeroCountObservable = new Observable();
-	private HashMap<Long, O> mHeroObservableMap = new HashMap<Long, O>();
+	private HashMap<Long, FakeObservable> mHeroObservableMap = new HashMap<Long, FakeObservable>();
 
 	public ShinjuLogic(ShinjuData aData) {
 		iData = aData;
@@ -16,7 +18,7 @@ public class ShinjuLogic {
 
 	public void addHero(ShinjuDataHero aHero) {
 		iData.mHeroMap.put(aHero.mHeroId, aHero);
-		mHeroObservableMap.put(aHero.mHeroId, new O());
+		mHeroObservableMap.put(aHero.mHeroId, new FakeObservable());
 		mHeroCountObservable.notifyObservers(aHero.mHeroId);
 	}
 
@@ -33,7 +35,7 @@ public class ShinjuLogic {
 		}
 		hero.mX = aX;
 		hero.mY = aY;
-		O obs = mHeroObservableMap.get(aHeroId);
+		FakeObservable obs = mHeroObservableMap.get(aHeroId);
 		obs.setChanged();
 		obs.notifyObservers(aHeroId);
 	}
@@ -44,15 +46,6 @@ public class ShinjuLogic {
 
 	public Observable getHeroObservable(long aHeroId) {
 		return mHeroObservableMap.get(aHeroId);
-	}
-
-	private static class O extends Observable {
-
-		@Override
-		public synchronized void setChanged() {
-			super.setChanged();
-		}
-
 	}
 
 }
