@@ -1,7 +1,9 @@
 package com.luzi82.shinju;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.ActorGestureListener;
@@ -20,6 +22,8 @@ public class GroupZoomGestureListener2 extends ActorGestureListener {
 	Vector2 oriChildPos0;
 	Vector2 oriTouchPos0;
 	Vector2 velocity;
+	Float oriZoom;
+	Float oriTouchDistance;
 
 	// Float oriZoom;
 
@@ -67,7 +71,7 @@ public class GroupZoomGestureListener2 extends ActorGestureListener {
 	@Override
 	public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
 		Gdx.app.debug("GroupZoomGestureListener2", String.format("touchUp x:%f, y:%f, pointer:%d, button:%d", x, y, pointer, button));
-		if (Gdx.input.isTouched()) {
+		if (!Gdx.input.isTouched()) {
 			reset();
 			return;
 		}
@@ -105,20 +109,20 @@ public class GroupZoomGestureListener2 extends ActorGestureListener {
 		super.fling(event, velocityX, velocityY, button);
 	}
 
-	@Override
-	public void pan(InputEvent event, float x, float y, float deltaX, float deltaY) {
-		Gdx.app.debug("GroupZoomGestureListener2", String.format("pan x:%f, y:%f, deltaX:%f, deltaY:%f", x, y, deltaX, deltaY));
-		if (disableLock.isLock())
-			return;
-		velocity = null;
-		// oriZoom = null;
-
-		Group parent = groupChild.getParent();
-		Vector2 touchPos = parent.stageToLocalCoordinates(new Vector2(event.getStageX(), event.getStageY()));
-		groupChild.setPosition(oriChildPos0.x + touchPos.x - oriTouchPos0.x, oriChildPos0.y + touchPos.y - oriTouchPos0.y);
-
-		super.pan(event, x, y, deltaX, deltaY);
-	}
+//	@Override
+//	public void pan(InputEvent event, float x, float y, float deltaX, float deltaY) {
+//		Gdx.app.debug("GroupZoomGestureListener2", String.format("pan x:%f, y:%f, deltaX:%f, deltaY:%f", x, y, deltaX, deltaY));
+//		if (disableLock.isLock())
+//			return;
+//		velocity = null;
+//		// oriZoom = null;
+//
+//		Group parent = groupChild.getParent();
+//		Vector2 touchPos = parent.stageToLocalCoordinates(new Vector2(event.getStageX(), event.getStageY()));
+//		groupChild.setPosition(oriChildPos0.x + touchPos.x - oriTouchPos0.x, oriChildPos0.y + touchPos.y - oriTouchPos0.y);
+//
+//		super.pan(event, x, y, deltaX, deltaY);
+//	}
 
 	// @Override
 	// public void zoom(InputEvent event, float initialDistance, float distance)
@@ -139,6 +143,41 @@ public class GroupZoomGestureListener2 extends ActorGestureListener {
 		Gdx.app.debug("GroupZoomGestureListener2", String.format("pinch initialPointer1:%s, initialPointer2:%s, pointer1:%s, pointer2:%s", initialPointer1.toString(), initialPointer2.toString(), pointer1.toString(), pointer2.toString()));
 		if (disableLock.isLock())
 			return;
+
+		Actor target = getTouchDownTarget();
+		Actor parent = groupChild.getParent();
+		// Gdx.app.debug("GroupZoomGestureListener2",String.format("target.class %s",target.getClass().getSimpleName()));
+		pointer1 = target.localToAscendantCoordinates(parent, pointer1);
+		pointer2 = target.localToAscendantCoordinates(parent, pointer2);
+
+		Gdx.app.debug("GroupZoomGestureListener2", String.format("pointer1 %s, pointer2 %s", pointer1.toString(), pointer2.toString()));
+
+		if (oriZoom == null) {
+			initialPointer1 = target.localToAscendantCoordinates(parent, initialPointer1);
+			initialPointer2 = target.localToAscendantCoordinates(parent, initialPointer2);
+			Gdx.app.debug("GroupZoomGestureListener2", String.format("initialPointer1 %s, initialPointer2 %s", initialPointer1.toString(), initialPointer2.toString()));
+
+			oriZoom = groupChild.getScaleX();
+			oriTouchDistance = initialPointer1.cpy().sub(initialPointer2).len();
+			oriTouchPos0 = initialPointer1.cpy().add(initialPointer2).scl(0.5f);
+			Gdx.app.debug("GroupZoomGestureListener2", String.format("oriTouchPos0 %s", oriTouchPos0.toString()));
+			oriChildPos0 = new Vector2(groupChild.getX(), groupChild.getY());
+			Gdx.app.debug("GroupZoomGestureListener2", String.format("oriTouchPos0 %s, oriChildPos0 %s", oriTouchPos0.toString(), oriChildPos0.toString()));
+		}
+
+		float newTouchDistance = pointer1.cpy().sub(pointer2).len();
+//		 float newTouchDistance = oriTouchDistance;
+		Vector2 newMid = pointer1.cpy().add(pointer2).scl(0.5f);
+		Vector2 newChildPos = oriChildPos0.cpy().sub(oriTouchPos0).scl(newTouchDistance).scl(1f / oriTouchDistance);
+		// Vector2 newChildPos =
+		// oriChildPos0.sub(oriTouchPos0).scl(newTouchDistance).scl(1f /
+		// oriTouchDistance);
+		newChildPos = newChildPos.cpy().add(newMid);
+
+		groupChild.setX(newChildPos.x);
+		groupChild.setY(newChildPos.y);
+		groupChild.setScale(oriZoom * newTouchDistance / oriTouchDistance);
+
 		super.pinch(event, initialPointer1, initialPointer2, pointer1, pointer2);
 	}
 
@@ -173,6 +212,7 @@ public class GroupZoomGestureListener2 extends ActorGestureListener {
 		oriTouchPos0 = null;
 		velocity = null;
 		state = State.NONE;
+		oriZoom = null;
 		// oriZoom = null;
 	}
 

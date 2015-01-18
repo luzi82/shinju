@@ -12,20 +12,25 @@ public class UnitMoveGestureListener extends ActorGestureListener {
 	Vector2 oriChildPos;
 	Vector2 oriTouchPos;
 
-	Actor parent;
+//	Actor parent;
 
-	GroupZoomGestureListener2 gl;
-	Integer glLock;
+	// GroupZoomGestureListener2 gl;
+	Lock.Session lockSession;
 
-	public UnitMoveGestureListener(GroupZoomGestureListener2 gl) {
+	public UnitMoveGestureListener() {
 		super(20, 0.1f, 0.15f, 0.15f);
-		this.gl = gl;
+		lockSession = new Lock.Session(null);
+	}
+
+	public void setMoveZoomLock(Lock aLock) {
+		lockSession.unlock();
+		lockSession = new Lock.Session(aLock);
 	}
 
 	@Override
 	public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
 		active = false;
-		unlockMoveZoom();
+		lockSession.unlock();
 		oriChildPos = null;
 		oriTouchPos = null;
 		super.touchUp(event, x, y, pointer, button);
@@ -35,13 +40,13 @@ public class UnitMoveGestureListener extends ActorGestureListener {
 	public boolean longPress(Actor actor, float x, float y) {
 		Gdx.app.debug(getClass().getSimpleName(), String.format("longPress x:%f,  y:%f", x, y));
 
-		if (parent == null) {
-			Gdx.app.debug(getClass().getSimpleName(), "ignore (parent)");
-			return false;
-		}
+//		if (parent == null) {
+//			Gdx.app.debug(getClass().getSimpleName(), "ignore (parent)");
+//			return false;
+//		}
 
 		active = true;
-		lockMoveZoom();
+		lockSession.lock();
 		oriTouchPos = actor.localToParentCoordinates(new Vector2(x, y));
 		oriChildPos = new Vector2(actor.getX(), actor.getY());
 
@@ -52,10 +57,10 @@ public class UnitMoveGestureListener extends ActorGestureListener {
 	public void pan(InputEvent event, float x, float y, float deltaX, float deltaY) {
 		Gdx.app.debug(getClass().getSimpleName(), String.format("pan x:%f,  y:%f", x, y));
 
-		if (parent == null) {
-			Gdx.app.debug(getClass().getSimpleName(), "ignore (parent)");
-			return;
-		}
+//		if (parent == null) {
+//			Gdx.app.debug(getClass().getSimpleName(), "ignore (parent)");
+//			return;
+//		}
 		if (!active) {
 			Gdx.app.debug(getClass().getSimpleName(), "ignore (!active)");
 			return;
@@ -68,19 +73,6 @@ public class UnitMoveGestureListener extends ActorGestureListener {
 		actor.setPosition(v.x, v.y);
 
 		super.pan(event, x, y, deltaX, deltaY);
-	}
-
-	private void lockMoveZoom() {
-		if (glLock != null)
-			return;
-		glLock = gl.lock();
-	}
-
-	private void unlockMoveZoom() {
-		if (glLock == null)
-			return;
-		gl.unlock(glLock);
-		glLock = null;
 	}
 
 }

@@ -14,7 +14,7 @@ public class PlayScreen extends ScreenAdapter {
 	Stage stage;
 	PlayScreenUiGroup uiGroup;
 	PlayScreenWorldGroup worldGroup;
-	Group screenZoomGroup;
+	ZoomMove screenZoomGroup;
 
 	// PlayScreenWorldStage worldStage;
 
@@ -28,12 +28,13 @@ public class PlayScreen extends ScreenAdapter {
 		// inputMultiplexer.addProcessor(stage);
 		Gdx.input.setInputProcessor(stage);
 
-		screenZoomGroup = new Group();
+		screenZoomGroup = new ZoomMove();
 		stage.addActor(screenZoomGroup);
 
 		worldGroup = new PlayScreenWorldGroup(common);
-		worldGroup.setScale(ShinjuCommon.PHI_3);
-		screenZoomGroup.addActor(worldGroup);
+//		worldGroup.setScale(ShinjuCommon.PHI_3);
+		worldGroup.setParent(screenZoomGroup);
+		screenZoomGroup.setActor(worldGroup);
 
 		uiGroup = new PlayScreenUiGroup(common);
 		uiGroup.setTouchable(Touchable.childrenOnly);
@@ -73,11 +74,12 @@ public class PlayScreen extends ScreenAdapter {
 		super.resize(width, height);
 		stage.getViewport().update(width, height, true);
 		uiGroup.setSize(width, height);
+		screenZoomGroup.setSize(width, height);
 		// worldZoomGroup.setPosition(0, 0);
 		// worldZoomGroup.setSize(width, height);
 		// worldZoomGroup.setBounds(0, 0, width, height);
-		screenZoomGroup.setPosition(((float) width) / 2, ((float) height) / 2);
-		screenZoomGroup.setScale(Math.min(width, height));
+//		screenZoomGroup.setPosition(((float) width) / 2, ((float) height) / 2);
+//		screenZoomGroup.setScale(Math.min(width, height));
 		// uiStage.resize(width, height);
 		// worldStage.resize(width, height);
 	}

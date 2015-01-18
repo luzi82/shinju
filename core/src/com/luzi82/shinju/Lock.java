@@ -62,4 +62,30 @@ public class Lock {
 
 	}
 
+	public static class Session {
+		Integer mLockValue;
+		Lock lock;
+
+		public Session(Lock lock) {
+			this.lock = lock;
+		}
+
+		public void lock() {
+//			if (lock == null)
+//				return;
+			if (mLockValue != null)
+				return;
+			mLockValue = lock.lock();
+		}
+
+		public void unlock() {
+//			if (lock == null)
+//				return;
+			if (mLockValue == null)
+				return;
+			lock.unlock(mLockValue);
+			mLockValue = null;
+		}
+	}
+
 }
