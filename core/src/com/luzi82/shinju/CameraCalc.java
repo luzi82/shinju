@@ -16,16 +16,16 @@ public class CameraCalc {
 	public float mLogZoomMin;
 	public float mLogZoomMax;
 
-//	// lock
-//	public long mLockTime;
-//	public float mLockBXDiff;
-//	public float mLockBYDiff;
-//	public float mLockZoomDiff;
-//
-//	// camera (lock protected)
-//	public float iCameraRealZoom;
-//	public float iCameraRealBX;
-//	public float iCameraRealBY;
+	// // lock
+	// public long mLockTime;
+	// public float mLockBXDiff;
+	// public float mLockBYDiff;
+	// public float mLockZoomDiff;
+	//
+	// // camera (lock protected)
+	// public float iCameraRealZoom;
+	// public float iCameraRealBX;
+	// public float iCameraRealBY;
 
 	// camera (calc use)
 	public float iCameraZoom;
@@ -38,10 +38,10 @@ public class CameraCalc {
 	public float mCameraBYD;
 
 	public CameraCalc() {
-//		mLockTime = -1;
-//		mLockBXDiff = 0;
-//		mLockBYDiff = 0;
-//		mLockZoomDiff = 0;
+		// mLockTime = -1;
+		// mLockBXDiff = 0;
+		// mLockBYDiff = 0;
+		// mLockZoomDiff = 0;
 
 		iCameraZoom = Math.min(Board.WIDTH, Board.HEIGHT);
 		iCameraBX = Board.WIDTH / 2;
@@ -51,31 +51,33 @@ public class CameraCalc {
 		mCameraBYD = 0;
 	}
 
-//	public void updateLock(float aReduce) {
-//		if (mLockTime < System.currentTimeMillis()) {
-//			mLockTime = -1;
-//		}
-//
-//		if (mLockTime < 0) {
-//			CalcLockRet clr;
-//
-//			clr = calcLock(iCameraRealBX, iCameraBX, mLockBXDiff, aReduce);
-//			iCameraRealBX = clr.mValue;
-//			mLockBXDiff = clr.mDiff;
-//
-//			clr = calcLock(iCameraRealBY, iCameraBY, mLockBYDiff, aReduce);
-//			iCameraRealBY = clr.mValue;
-//			mLockBYDiff = clr.mDiff;
-//
-//			clr = calcLock((float) Math.log(iCameraRealZoom), (float) Math.log(iCameraZoom), mLockZoomDiff, aReduce);
-//			iCameraRealZoom = (float) Math.pow(Math.E, clr.mValue);
-//			mLockZoomDiff = clr.mDiff;
-//		} else {
-//			mLockBXDiff = iCameraRealBX - iCameraBX;
-//			mLockBYDiff = iCameraRealBY - iCameraBY;
-//			mLockZoomDiff = Math.abs((float) Math.log(iCameraRealZoom / iCameraZoom));
-//		}
-//	}
+	// public void updateLock(float aReduce) {
+	// if (mLockTime < System.currentTimeMillis()) {
+	// mLockTime = -1;
+	// }
+	//
+	// if (mLockTime < 0) {
+	// CalcLockRet clr;
+	//
+	// clr = calcLock(iCameraRealBX, iCameraBX, mLockBXDiff, aReduce);
+	// iCameraRealBX = clr.mValue;
+	// mLockBXDiff = clr.mDiff;
+	//
+	// clr = calcLock(iCameraRealBY, iCameraBY, mLockBYDiff, aReduce);
+	// iCameraRealBY = clr.mValue;
+	// mLockBYDiff = clr.mDiff;
+	//
+	// clr = calcLock((float) Math.log(iCameraRealZoom), (float)
+	// Math.log(iCameraZoom), mLockZoomDiff, aReduce);
+	// iCameraRealZoom = (float) Math.pow(Math.E, clr.mValue);
+	// mLockZoomDiff = clr.mDiff;
+	// } else {
+	// mLockBXDiff = iCameraRealBX - iCameraBX;
+	// mLockBYDiff = iCameraRealBY - iCameraBY;
+	// mLockZoomDiff = Math.abs((float) Math.log(iCameraRealZoom /
+	// iCameraZoom));
+	// }
+	// }
 
 	public void zoomMove(float aNewZoom, float aDelta) {
 		mCameraZoomD = ((float) Math.log(aNewZoom / iCameraZoom)) / aDelta;
@@ -118,13 +120,15 @@ public class CameraCalc {
 		return iCameraBY + (iCameraZoom * mViewPortH * (aY / mScreenH - 0.5f));
 	}
 
-//	public float screenToBoardRealX(float aX) {
-//		return iCameraRealBX + (iCameraRealZoom * mViewPortW * (aX / mScreenW - 0.5f));
-//	}
-//
-//	public float screenToBoardRealY(float aY) {
-//		return iCameraRealBY + (iCameraRealZoom * mViewPortH * (aY / mScreenH - 0.5f));
-//	}
+	// public float screenToBoardRealX(float aX) {
+	// return iCameraRealBX + (iCameraRealZoom * mViewPortW * (aX / mScreenW -
+	// 0.5f));
+	// }
+	//
+	// public float screenToBoardRealY(float aY) {
+	// return iCameraRealBY + (iCameraRealZoom * mViewPortH * (aY / mScreenH -
+	// 0.5f));
+	// }
 
 	public float screenBoardToCameraX(float aScreenX, float aBoardX) {
 		return (iCameraZoom * mViewPortW) * (0.5f - aScreenX / mScreenW) + aBoardX;
@@ -140,7 +144,7 @@ public class CameraCalc {
 		mViewPortW = (mScreenW > mScreenH) ? (((float) mScreenW) / mScreenH) : 1;
 		mViewPortH = (mScreenW > mScreenH) ? 1 : (((float) mScreenH) / mScreenW);
 
-		mZoomMin = 4 * Const.PHI;
+		mZoomMin = 4 * ShinjuCommon.CELL_SIZE * Const.PHI;
 		mZoomMax = Math.max(Board.HEIGHT / mViewPortH, Board.WIDTH / mViewPortW) * Const.PHI;
 		mLogZoomMin = (float) Math.log(mZoomMin);
 		mLogZoomMax = (float) Math.log(mZoomMax);
@@ -185,33 +189,34 @@ public class CameraCalc {
 		return (float) Math.sqrt(dx * dx + dy * dy);
 	}
 
-//	private static class CalcLockRet {
-//		float mValue;
-//		float mDiff;
-//
-//		CalcLockRet(float aTar, float aDiff) {
-//			mValue = aTar;
-//			mDiff = aDiff;
-//		}
-//	}
-//
-//	private static CalcLockRet calcLock(float aOri, float aTar, float aDiff, float aReduce) {
-//		if (aDiff == 0)
-//			return new CalcLockRet(aTar, 0);
-//		if (aOri == aTar)
-//			return new CalcLockRet(aTar, 0);
-//		float diff = aOri - aTar;
-//		aDiff *= aReduce;
-//		if (diff * aDiff <= 0)
-//			return new CalcLockRet(aTar, 0);
-//		if (Math.abs(diff) <= Math.abs(aDiff))
-//			return new CalcLockRet(aOri, diff);
-//		return new CalcLockRet(aTar + aDiff, aDiff);
-//	}
+	// private static class CalcLockRet {
+	// float mValue;
+	// float mDiff;
+	//
+	// CalcLockRet(float aTar, float aDiff) {
+	// mValue = aTar;
+	// mDiff = aDiff;
+	// }
+	// }
+	//
+	// private static CalcLockRet calcLock(float aOri, float aTar, float aDiff,
+	// float aReduce) {
+	// if (aDiff == 0)
+	// return new CalcLockRet(aTar, 0);
+	// if (aOri == aTar)
+	// return new CalcLockRet(aTar, 0);
+	// float diff = aOri - aTar;
+	// aDiff *= aReduce;
+	// if (diff * aDiff <= 0)
+	// return new CalcLockRet(aTar, 0);
+	// if (Math.abs(diff) <= Math.abs(aDiff))
+	// return new CalcLockRet(aOri, diff);
+	// return new CalcLockRet(aTar + aDiff, aDiff);
+	// }
 
 	public static class Board {
-		public static final int WIDTH = 8;
-		public static final int HEIGHT = 8;
+		public static final int WIDTH = 8 * ShinjuCommon.CELL_SIZE;
+		public static final int HEIGHT = 8 * ShinjuCommon.CELL_SIZE;
 	}
 
 }

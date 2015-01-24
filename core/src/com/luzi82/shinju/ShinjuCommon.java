@@ -4,8 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator.FreeTypeFontParameter;
-import com.luzi82.shinju.logic.ShinjuData;
-import com.luzi82.shinju.logic.ShinjuLogic;
+import com.luzi82.shinju.logic.World;
 
 public class ShinjuCommon {
 
@@ -18,8 +17,14 @@ public class ShinjuCommon {
 		fontGenerator.dispose();
 	}
 
-	public ShinjuData mShinjuData;
-	public ShinjuLogic mShinjuLogic;
+	public World.Data mShinjuData;
+	public World.Var mShinjuVar;
+
+	public static final int CELL_SIZE = 256;
+
+	public static final int HERO_SIZE = 1 * CELL_SIZE;
+	public static final int WITCH_SIZE = 2 * CELL_SIZE;
+	public static final int WITCHSEED_SIZE = 1 * CELL_SIZE;
 
 	public static final float PHI = (1f + (float) Math.sqrt(5)) / 2f;
 	public static final float PHI2 = 1f + PHI;

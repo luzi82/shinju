@@ -11,39 +11,53 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.utils.ActorGestureListener;
 import com.luzi82.common.ValueObservable;
-import com.luzi82.shinju.logic.ShinjuDataHero;
+import com.luzi82.homuvalue.Value;
+import com.luzi82.homuvalue.Value.Listener;
+import com.luzi82.shinju.logic.Unit;
 
-public class PlayScreenWorldGroupHeroManager {
+public class PlayScreenWorldGroupUnitManager {
 
 	ShinjuCommon iCommon;
-	long mHeroId;
+	// long mHeroId;
+	Unit.Var iUnit;
 	PlayScreenWorldGroup iPlayScreenWorldGroup;
 
 	Image mImage;
-//	HeroMoveGestureListener mHeroMoveGestureListener;
+	// HeroMoveGestureListener mHeroMoveGestureListener;
+	// Listener<Hero.>
+	Listener<Unit.Data> mUnitDataListener;
 
 	Image mToImage;
 
-	public PlayScreenWorldGroupHeroManager(ShinjuCommon aCommon, long aHeroId, PlayScreenWorldGroup aPlayScreenWorldGroup) {
+	boolean mUnitDirty;
+
+	public PlayScreenWorldGroupUnitManager(ShinjuCommon aCommon, Unit.Var aUnit, PlayScreenWorldGroup aPlayScreenWorldGroup) {
 		iCommon = aCommon;
-		mHeroId = aHeroId;
+		iUnit = aUnit;
 		iPlayScreenWorldGroup = aPlayScreenWorldGroup;
 
-		ShinjuDataHero hero = getHero();
-
 		mImage = new Image(new Texture(Gdx.files.internal("img/icon_madoka.png")));
-		mImage.setSize(PlayScreenWorldGroup.CELL_SIZE, PlayScreenWorldGroup.CELL_SIZE);
-		mImage.setPosition(hero.mX * PlayScreenWorldGroup.CELL_SIZE, hero.mY * PlayScreenWorldGroup.CELL_SIZE);
+		mImage.setSize(ShinjuCommon.CELL_SIZE, ShinjuCommon.CELL_SIZE);
 		mImage.addListener(new AGL());
 		iPlayScreenWorldGroup.addActor(mImage);
 
 		mToImage = new Image(new Texture(Gdx.files.internal("img/icon_madoka.png")));
-		mToImage.setSize(PlayScreenWorldGroup.CELL_SIZE, PlayScreenWorldGroup.CELL_SIZE);
+		mToImage.setSize(ShinjuCommon.CELL_SIZE, ShinjuCommon.CELL_SIZE);
 		mToImage.setColor(1.0f, 1.0f, 1.0f, ShinjuCommon.PHI_1);
 		mToImage.setVisible(false);
 		iPlayScreenWorldGroup.addActor(mToImage);
 
-		iCommon.mShinjuLogic.getHeroObservable(mHeroId).addObserver(new HeroObserver());
+		// iCommon.mShinjuLogic.getHeroObservable(mHeroId).addObserver(new
+		// HeroObserver());
+		mUnitDataListener = new Listener<Unit.Data>() {
+			@Override
+			public void onValueDirty(Value<Unit.Data> v) {
+				Gdx.app.debug(getClass().getSimpleName(), "DoCIZWYX value dirty");
+				mUnitDirty = true;
+			}
+		};
+		iUnit.addListener(mUnitDataListener);
+		mUnitDirty = true;
 
 		mMoveLockSession = new Lock.Session(iPlayScreenWorldGroup.iParentZoomMove.mStopLock);
 
@@ -51,8 +65,12 @@ public class PlayScreenWorldGroupHeroManager {
 		mMoveActive.addObserver(new MoveObserver());
 	}
 
-	protected ShinjuDataHero getHero() {
-		return iCommon.mShinjuData.mHeroMap.get(mHeroId);
+	public void act() {
+		if (mUnitDirty) {
+			mImage.setPosition(iUnit.iHero.iPosition.iX.get(), iUnit.iHero.iPosition.iY.get());
+			mUnitDirty = false;
+			iUnit.get();
+		}
 	}
 
 	// boolean mMoveActive = false;
@@ -76,9 +94,11 @@ public class PlayScreenWorldGroupHeroManager {
 		public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
 			if (mMoveActive.get()) {
 				Vector2 v = iPlayScreenWorldGroup.stageToLocalCoordinates(new Vector2(event.getStageX(), event.getStageY()));
-				int newX = (int) Math.floor(v.x / PlayScreenWorldGroup.CELL_SIZE);
-				int newY = (int) Math.floor(v.y / PlayScreenWorldGroup.CELL_SIZE);
-				iCommon.mShinjuLogic.moveHero(mHeroId, newX, newY);
+				long newX = (long) Math.floor(v.x / ShinjuCommon.CELL_SIZE) * ShinjuCommon.CELL_SIZE;
+				long newY = (long) Math.floor(v.y / ShinjuCommon.CELL_SIZE) * ShinjuCommon.CELL_SIZE;
+				// iCommon.mShinjuLogic.moveUnit(mHeroId, newX, newY);
+				iUnit.iHero.iPosition.iX.set(newX);
+				iUnit.iHero.iPosition.iY.set(newY);
 			}
 			// mMoveActive = false;
 			mMoveActive.set(false);
@@ -123,10 +143,10 @@ public class PlayScreenWorldGroupHeroManager {
 
 			// Vector2 v = actor.localToParentCoordinates(new Vector2(x, y));
 			Vector2 v = iPlayScreenWorldGroup.stageToLocalCoordinates(new Vector2(event.getStageX(), event.getStageY()));
-			int newX = (int) Math.floor(v.x / PlayScreenWorldGroup.CELL_SIZE);
-			int newY = (int) Math.floor(v.y / PlayScreenWorldGroup.CELL_SIZE);
+			int newX = (int) Math.floor(v.x / ShinjuCommon.CELL_SIZE) * ShinjuCommon.CELL_SIZE;
+			int newY = (int) Math.floor(v.y / ShinjuCommon.CELL_SIZE) * ShinjuCommon.CELL_SIZE;
 			// iCommon.mShinjuLogic.moveHero(mHeroId, newX, newY);
-			mToImage.setPosition(newX * PlayScreenWorldGroup.CELL_SIZE, newY * PlayScreenWorldGroup.CELL_SIZE);
+			mToImage.setPosition(newX, newY);
 			// v = v.sub(oriTouchPos).add(oriChildPos);
 			// actor.setPosition(v.x, v.y);
 
@@ -135,17 +155,17 @@ public class PlayScreenWorldGroupHeroManager {
 
 	}
 
-	public class HeroObserver implements Observer {
-
-		@Override
-		public void update(Observable o, Object arg) {
-			Gdx.app.debug(getClass().getSimpleName(), "update");
-			ShinjuDataHero hero = getHero();
-			mImage.setX(hero.mX * PlayScreenWorldGroup.CELL_SIZE);
-			mImage.setY(hero.mY * PlayScreenWorldGroup.CELL_SIZE);
-		}
-
-	}
+	// public class HeroObserver implements Observer {
+	//
+	// @Override
+	// public void update(Observable o, Object arg) {
+	// Gdx.app.debug(getClass().getSimpleName(), "update");
+	// Hero hero = getHero();
+	// mImage.setX(hero.position.x);
+	// mImage.setY(hero.position.y);
+	// }
+	//
+	// }
 
 	public class MoveObserver implements Observer {
 		@Override

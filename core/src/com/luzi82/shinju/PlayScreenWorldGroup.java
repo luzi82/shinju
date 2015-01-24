@@ -6,10 +6,9 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.luzi82.shinju.logic.Unit;
 
 public class PlayScreenWorldGroup extends Group {
-
-	public static float CELL_SIZE = 1f;
 
 	ZoomMove iParentZoomMove;
 
@@ -17,7 +16,7 @@ public class PlayScreenWorldGroup extends Group {
 
 	// GroupZoomGestureListener2 transformHandle;
 
-	HashMap<Long, PlayScreenWorldGroupHeroManager> mPlayScreenWorldGroupHeroManagerMap = new HashMap<Long, PlayScreenWorldGroupHeroManager>();
+	HashMap<Long, PlayScreenWorldGroupUnitManager> mPlayScreenWorldGroupHeroManagerMap = new HashMap<Long, PlayScreenWorldGroupUnitManager>();
 
 	ShinjuCommon iCommon;
 
@@ -35,7 +34,7 @@ public class PlayScreenWorldGroup extends Group {
 		// this.addListener(transformHandle);
 
 		Image background = new Image(new Texture(Gdx.files.internal("img/sand.png")));
-		background.setBounds(0 * CELL_SIZE, 0 * CELL_SIZE, 8 * CELL_SIZE, 8 * CELL_SIZE);
+		background.setBounds(0 * ShinjuCommon.CELL_SIZE, 0 * ShinjuCommon.CELL_SIZE, 8 * ShinjuCommon.CELL_SIZE, 8 * ShinjuCommon.CELL_SIZE);
 		// background.setTouchable(Touchable.disabled);
 		addActor(background);
 
@@ -47,29 +46,38 @@ public class PlayScreenWorldGroup extends Group {
 		// icon.addListener(mIconUnitMoveGestureListener);
 		// addActor(icon);
 
-		for (Long heroId : common.mShinjuData.mHeroMap.keySet()) {
-			// Image icon = new Image(new
-			// Texture(Gdx.files.internal("img/icon_madoka.png")));
-			// icon.setSize(CELL_SIZE, CELL_SIZE);
-			// icon.setPosition(hero.mX * CELL_SIZE, hero.mY * CELL_SIZE);
-			// addActor(icon);
-			//
-			// HeroMoveGestureListener unitMoveGestureListener = new
-			// HeroMoveGestureListener(common, hero.mHeroId);
-			// icon.addListener(unitMoveGestureListener);
-			// mUnitMoveGestureListenerMap.put(hero.mHeroId,
-			// unitMoveGestureListener);
-			PlayScreenWorldGroupHeroManager mgr = new PlayScreenWorldGroupHeroManager(iCommon, heroId, this);
-			mPlayScreenWorldGroupHeroManagerMap.put(heroId, mgr);
+		// for (Long heroId : common.mShinjuData.hero_map.keySet()) {
+		// // Image icon = new Image(new
+		// // Texture(Gdx.files.internal("img/icon_madoka.png")));
+		// // icon.setSize(CELL_SIZE, CELL_SIZE);
+		// // icon.setPosition(hero.mX * CELL_SIZE, hero.mY * CELL_SIZE);
+		// // addActor(icon);
+		// //
+		// // HeroMoveGestureListener unitMoveGestureListener = new
+		// // HeroMoveGestureListener(common, hero.mHeroId);
+		// // icon.addListener(unitMoveGestureListener);
+		// // mUnitMoveGestureListenerMap.put(hero.mHeroId,
+		// // unitMoveGestureListener);
+		// PlayScreenWorldGroupHeroManager mgr = new
+		// PlayScreenWorldGroupHeroManager(iCommon, heroId, this);
+		// mPlayScreenWorldGroupHeroManagerMap.put(heroId, mgr);
+		//
+		// }
 
+		for (Unit.Var unitVar : common.mShinjuVar.iUnitMap.values()) {
+			PlayScreenWorldGroupUnitManager mgr = new PlayScreenWorldGroupUnitManager(common, unitVar, this);
+			mPlayScreenWorldGroupHeroManagerMap.put(unitVar.id(), mgr);
 		}
+
 	}
 
-//	@Override
-//	public void act(float delta) {
-//		// transformHandle.act(delta);
-//		super.act(delta);
-//	}
+	@Override
+	public void act(float delta) {
+		super.act(delta);
+		for (PlayScreenWorldGroupUnitManager mgr : mPlayScreenWorldGroupHeroManagerMap.values()) {
+			mgr.act();
+		}
+	}
 
 	// @Override
 	// protected void setParent(Group parent) {

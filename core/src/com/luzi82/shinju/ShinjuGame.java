@@ -4,9 +4,9 @@ import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
-import com.luzi82.shinju.logic.ShinjuData;
-import com.luzi82.shinju.logic.ShinjuDataHero;
-import com.luzi82.shinju.logic.ShinjuLogic;
+import com.luzi82.shinju.logic.Hero;
+import com.luzi82.shinju.logic.Unit;
+import com.luzi82.shinju.logic.World;
 
 public class ShinjuGame extends Game {
 
@@ -18,22 +18,23 @@ public class ShinjuGame extends Game {
 		Gdx.app.setLogLevel(Application.LOG_DEBUG);
 		common = new ShinjuCommon();
 
-		common.mShinjuData = new ShinjuData();
-		common.mShinjuLogic = new ShinjuLogic(common.mShinjuData);
+		common.mShinjuData = new World.Data();
+		common.mShinjuVar = new World.Var(common.mShinjuData);
 
-		ShinjuDataHero hero;
-		hero = new ShinjuDataHero();
-		hero.mHeroId = 0;
-		hero.mX = 2;
-		hero.mY = 2;
-		common.mShinjuLogic.addHero(hero);
-		hero = new ShinjuDataHero();
-		hero.mHeroId = 1;
-		hero.mX = 5;
-		hero.mY = 5;
-		common.mShinjuLogic.addHero(hero);
+		Unit.Data unit;
+		
+		unit = new Unit.Data();
+		unit.hero = new Hero.Data();
+		unit.hero.position.x.value = 5L * ShinjuCommon.CELL_SIZE;
+		unit.hero.position.y.value = 5L * ShinjuCommon.CELL_SIZE;
+		common.mShinjuVar.addUnit(unit);
+
+		unit = new Unit.Data();
+		unit.hero = new Hero.Data();
+		unit.hero.position.x.value = 2L * ShinjuCommon.CELL_SIZE;
+		unit.hero.position.y.value = 2L * ShinjuCommon.CELL_SIZE;
+		common.mShinjuVar.addUnit(unit);
 
 		setScreen(new PlayScreen(common));
 	}
-
 }
