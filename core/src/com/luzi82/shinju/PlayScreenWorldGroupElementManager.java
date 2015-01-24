@@ -5,38 +5,43 @@ import java.util.Observer;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.utils.ActorGestureListener;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.luzi82.common.ValueObservable;
 import com.luzi82.homuvalue.Value;
 import com.luzi82.homuvalue.Value.Listener;
-import com.luzi82.shinju.logic.Unit;
+import com.luzi82.shinju.logic.Hero;
+import com.luzi82.shinju.logic.Position;
+import com.luzi82.shinju.logic.Element;
+import com.luzi82.shinju.logic.Element.ElementModel;
+import com.luzi82.shinju.logic.Witch;
 
-public class PlayScreenWorldGroupUnitManager {
+public class PlayScreenWorldGroupElementManager {
 
 	ShinjuCommon iCommon;
-	// long mHeroId;
-	Unit.Var iUnit;
+	Element.Model iElement;
 	PlayScreenWorldGroup iPlayScreenWorldGroup;
 
 	Image mImage;
-	// HeroMoveGestureListener mHeroMoveGestureListener;
-	// Listener<Hero.>
-	Listener<Unit.Data> mUnitDataListener;
+	Listener<Element.Data> mElementDataListener;
 
 	Image mToImage;
 
-	boolean mUnitDirty;
+	boolean mElementDirty;
 
-	public PlayScreenWorldGroupUnitManager(ShinjuCommon aCommon, Unit.Var aUnit, PlayScreenWorldGroup aPlayScreenWorldGroup) {
+	public PlayScreenWorldGroupElementManager(ShinjuCommon aCommon, Element.Model aElement, PlayScreenWorldGroup aPlayScreenWorldGroup) {
 		iCommon = aCommon;
-		iUnit = aUnit;
+		iElement = aElement;
 		iPlayScreenWorldGroup = aPlayScreenWorldGroup;
 
-		mImage = new Image(new Texture(Gdx.files.internal("img/icon_madoka.png")));
+		// mImage = new Image(new
+		// Texture(Gdx.files.internal("img/icon_madoka.png")));
+		mImage = new Image();
 		mImage.setSize(ShinjuCommon.CELL_SIZE, ShinjuCommon.CELL_SIZE);
 		mImage.addListener(new AGL());
 		iPlayScreenWorldGroup.addActor(mImage);
@@ -49,15 +54,14 @@ public class PlayScreenWorldGroupUnitManager {
 
 		// iCommon.mShinjuLogic.getHeroObservable(mHeroId).addObserver(new
 		// HeroObserver());
-		mUnitDataListener = new Listener<Unit.Data>() {
+		mElementDataListener = new Listener<Element.Data>() {
 			@Override
-			public void onValueDirty(Value<Unit.Data> v) {
-				Gdx.app.debug(getClass().getSimpleName(), "DoCIZWYX value dirty");
-				mUnitDirty = true;
+			public void onValueDirty(Value<Element.Data> v) {
+				mElementDirty = true;
 			}
 		};
-		iUnit.addListener(mUnitDataListener);
-		mUnitDirty = true;
+		iElement.iVar.addListener(mElementDataListener);
+		mElementDirty = true;
 
 		mMoveLockSession = new Lock.Session(iPlayScreenWorldGroup.iParentZoomMove.mStopLock);
 
@@ -66,11 +70,34 @@ public class PlayScreenWorldGroupUnitManager {
 	}
 
 	public void act() {
-		if (mUnitDirty) {
-			mImage.setPosition(iUnit.iHero.iPosition.iX.get(), iUnit.iHero.iPosition.iY.get());
-			mUnitDirty = false;
-			iUnit.get();
+		if (mElementDirty) {
+			Position.Var positionVar = getPositionVar();
+			if (positionVar != null) {
+				String imgName = null;
+				String type = iElement.iVar.iType.get();
+				if (type.equals(Hero.TYPE)) {
+					imgName = "img/icon_madoka.png";
+				} else if (type.equals(Witch.TYPE)) {
+					imgName = "img/icon_madoka_inv.png";
+				}
+				Texture texture = new Texture(Gdx.files.internal(imgName));
+				TextureRegion textureRegion = new TextureRegion(texture);
+				TextureRegionDrawable textureRegionDrawable = new TextureRegionDrawable(textureRegion);
+				mImage.setDrawable(textureRegionDrawable);
+				mImage.setPosition(positionVar.iX.get(), positionVar.iY.get());
+			}
+			mElementDirty = false;
+			iElement.iVar.get();
 		}
+	}
+
+	protected Position.Var getPositionVar() {
+		ElementModel elementModel = iElement.mElementModel;
+		if (elementModel instanceof Position.Container) {
+			Position.Container pc = (Position.Container) elementModel;
+			return pc.getPosition();
+		}
+		return null;
 	}
 
 	// boolean mMoveActive = false;
@@ -93,12 +120,14 @@ public class PlayScreenWorldGroupUnitManager {
 		@Override
 		public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
 			if (mMoveActive.get()) {
-				Vector2 v = iPlayScreenWorldGroup.stageToLocalCoordinates(new Vector2(event.getStageX(), event.getStageY()));
-				long newX = (long) Math.floor(v.x / ShinjuCommon.CELL_SIZE) * ShinjuCommon.CELL_SIZE;
-				long newY = (long) Math.floor(v.y / ShinjuCommon.CELL_SIZE) * ShinjuCommon.CELL_SIZE;
-				// iCommon.mShinjuLogic.moveUnit(mHeroId, newX, newY);
-				iUnit.iHero.iPosition.iX.set(newX);
-				iUnit.iHero.iPosition.iY.set(newY);
+				Position.Var positionVar = getPositionVar();
+				if (positionVar != null) {
+					Vector2 v = iPlayScreenWorldGroup.stageToLocalCoordinates(new Vector2(event.getStageX(), event.getStageY()));
+					long newX = (long) Math.floor(v.x / ShinjuCommon.CELL_SIZE) * ShinjuCommon.CELL_SIZE;
+					long newY = (long) Math.floor(v.y / ShinjuCommon.CELL_SIZE) * ShinjuCommon.CELL_SIZE;
+					positionVar.iX.set(newX);
+					positionVar.iY.set(newY);
+				}
 			}
 			// mMoveActive = false;
 			mMoveActive.set(false);

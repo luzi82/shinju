@@ -17,7 +17,6 @@ public class Position {
 
 		public final Variable<Long> iY;
 
-		@SuppressWarnings("unchecked")
 		public Var(Data aData) {
 			super(aData);
 			iX = new Val.Var<Long>(iV.x);
@@ -26,6 +25,10 @@ public class Position {
 			addChild(iY);
 		}
 
+	}
+
+	public static interface Container {
+		public Var getPosition();
 	}
 
 }

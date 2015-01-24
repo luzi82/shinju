@@ -18,7 +18,7 @@ public class ShinjuCommon {
 	}
 
 	public World.Data mShinjuData;
-	public World.Var mShinjuVar;
+	public World.Model mShinjuModel;
 
 	public static final int CELL_SIZE = 256;
 

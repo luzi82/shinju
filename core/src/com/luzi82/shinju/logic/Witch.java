@@ -5,9 +5,9 @@ import com.luzi82.homuvalue.Value;
 import com.luzi82.shinju.logic.Element.ElementModel;
 import com.luzi82.shinju.logic.Element.ElementModelFactory;
 
-public class Hero {
+public class Witch {
 
-	public static final String TYPE = "hero";
+	public static final String TYPE = "witch";
 
 	public static class Data {
 
@@ -42,7 +42,7 @@ public class Hero {
 
 		@Override
 		public Var getElementData() {
-			return iVar.iHero;
+			return iVar.iWitch;
 		}
 
 		@Override
