@@ -109,6 +109,10 @@ public class Element {
 			mTypeModel = mElementModelFactoryMap.get(type).createElementModel(iVar, iWorldModel);
 		}
 
+		public String getType() {
+			return iVar.iType.get();
+		}
+
 	}
 
 	public static abstract class TypeModel {

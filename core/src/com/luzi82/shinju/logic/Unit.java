@@ -19,10 +19,10 @@ public class Unit {
 
 		public abstract long getSize(M aModel);
 
-		public float[] getCenterXY(M aModel) {
-			float halfsize = getSize(aModel) / 2f;
+		public long[] getCenterXY(M aModel) {
+			long halfsize = getSize(aModel)/2;
 			long[] xy = getXY(aModel);
-			return new float[] { xy[0] + halfsize, xy[1] + halfsize };
+			return new long[] { xy[0] + halfsize, xy[1] + halfsize };
 		}
 
 		// block
