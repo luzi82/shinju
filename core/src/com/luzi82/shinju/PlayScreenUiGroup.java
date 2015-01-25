@@ -18,7 +18,7 @@ public class PlayScreenUiGroup extends Group {
 		// setViewport(viewport);
 
 		LabelStyle ls = new LabelStyle(common.font, Color.BLACK);
-		label = new Label("HelloWorld", ls);
+		label = new Label("Prototype", ls);
 		label.setTouchable(Touchable.disabled);
 		addActor(label);
 	}
