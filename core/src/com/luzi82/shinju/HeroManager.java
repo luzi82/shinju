@@ -29,7 +29,7 @@ public class HeroManager extends ElementManager {
 
 	boolean mElementDirty;
 
-	Hero.Model iHeroModel;
+	Hero.Model iModel;
 
 	Listener<Element.Data> mElementDataListener = new Listener<Element.Data>() {
 		@Override
@@ -43,11 +43,15 @@ public class HeroManager extends ElementManager {
 	public HeroManager(WorldElementManager aElementManager) {
 		this.iElementManager = aElementManager;
 
+		iModel = (Model) iElementManager.iElementModel.mElementModel;
+
 		mImage = new Image(new Texture(Gdx.files.internal("img/icon_madoka.png")));
+		mImage.setSize(iModel.size(), iModel.size());
 		mImage.addListener(new AGL());
 		iElementManager.iPlayScreenWorldGroup.addActor(mImage);
 
 		mToImage = new Image(new Texture(Gdx.files.internal("img/icon_madoka.png")));
+		mToImage.setSize(iModel.size(), iModel.size());
 		mToImage.setColor(1.0f, 1.0f, 1.0f, ShinjuCommon.PHI_1);
 		mToImage.setVisible(false);
 		iElementManager.iPlayScreenWorldGroup.addActor(mToImage);
@@ -59,13 +63,11 @@ public class HeroManager extends ElementManager {
 
 		mMoveActive = new ValueObservable<Boolean>(false);
 		mMoveActive.addObserver(new MoveObserver());
-
-		iHeroModel = (Model) iElementManager.iElementModel.mElementModel;
 	}
 
 	public void act() {
 		if (mElementDirty) {
-			Position.Var positionVar = iHeroModel.position();
+			Position.Var positionVar = iModel.position();
 			mImage.setPosition(positionVar.iX.get(), positionVar.iY.get());
 			iElementManager.iElementModel.iVar.get();
 			mElementDirty = false;
@@ -84,7 +86,7 @@ public class HeroManager extends ElementManager {
 		@Override
 		public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
 			if (mMoveActive.get()) {
-				Position.Var positionVar = iHeroModel.position();
+				Position.Var positionVar = iModel.position();
 				Vector2 v = iElementManager.iPlayScreenWorldGroup.stageToLocalCoordinates(new Vector2(event.getStageX(), event.getStageY()));
 				long newX = (long) Math.floor(v.x / ShinjuCommon.CELL_SIZE) * ShinjuCommon.CELL_SIZE;
 				long newY = (long) Math.floor(v.y / ShinjuCommon.CELL_SIZE) * ShinjuCommon.CELL_SIZE;

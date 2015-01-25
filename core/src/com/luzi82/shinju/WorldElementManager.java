@@ -76,6 +76,7 @@ public class WorldElementManager {
 	static {
 		mElementManagerFactoryMap = new HashMap<String, ElementManagerFactory>();
 		addElementManagerFactory(new HeroManager.Factory());
+		addElementManagerFactory(new WitchManager.Factory());
 	}
 
 }
