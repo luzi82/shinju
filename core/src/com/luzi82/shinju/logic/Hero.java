@@ -3,7 +3,7 @@ package com.luzi82.shinju.logic;
 import com.luzi82.homuvalue.RemoteGroup;
 import com.luzi82.shinju.ShinjuCommon;
 import com.luzi82.shinju.logic.Element.TypeModel;
-import com.luzi82.shinju.logic.Element.ElementModelFactory;
+import com.luzi82.shinju.logic.Element.TypeModelFactory;
 
 public class Hero {
 
@@ -105,7 +105,7 @@ public class Hero {
 
 	}
 
-	public static class ModelFactory implements ElementModelFactory {
+	public static class ModelFactory implements TypeModelFactory {
 
 		@Override
 		public String type() {

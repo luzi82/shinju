@@ -123,15 +123,15 @@ public class Element {
 
 	// ElementModelFactory
 
-	public static interface ElementModelFactory {
+	public static interface TypeModelFactory {
 		public String type();
 
 		public TypeModel createElementModel(Var aVar, World.Model aWorldModel);
 	}
 
-	protected static final HashMap<String, ElementModelFactory> mElementModelFactoryMap = new HashMap<String, Element.ElementModelFactory>();
+	protected static final HashMap<String, TypeModelFactory> mElementModelFactoryMap = new HashMap<String, Element.TypeModelFactory>();
 
-	protected static void addElementModelFactory(ElementModelFactory factory) {
+	protected static void addElementModelFactory(TypeModelFactory factory) {
 		mElementModelFactoryMap.put(factory.type(), factory);
 	}
 
