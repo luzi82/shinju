@@ -91,16 +91,10 @@ public class Element {
 		public ElementModel createElementModel(Var aVar, World.Model aWorldModel);
 	}
 
-	protected static HashMap<String, ElementModelFactory> mElementModelFactoryMap;
+	protected static final HashMap<String, ElementModelFactory> mElementModelFactoryMap = new HashMap<String, Element.ElementModelFactory>();
 
 	protected static void addElementModelFactory(ElementModelFactory factory) {
 		mElementModelFactoryMap.put(factory.type(), factory);
-	}
-
-	static {
-		mElementModelFactoryMap = new HashMap<String, Element.ElementModelFactory>();
-		addElementModelFactory(new Hero.ModelFactory());
-		addElementModelFactory(new Witch.ModelFactory());
 	}
 
 }

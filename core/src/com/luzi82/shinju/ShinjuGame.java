@@ -6,6 +6,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.luzi82.shinju.logic.Hero;
 import com.luzi82.shinju.logic.Element;
+import com.luzi82.shinju.logic.Registry;
 import com.luzi82.shinju.logic.Witch;
 import com.luzi82.shinju.logic.World;
 
@@ -17,6 +18,7 @@ public class ShinjuGame extends Game {
 	@Override
 	public void create() {
 		Gdx.app.setLogLevel(Application.LOG_DEBUG);
+		Registry.init();
 		common = new ShinjuCommon();
 
 		common.mShinjuData = new World.Data();
@@ -31,7 +33,7 @@ public class ShinjuGame extends Game {
 		element.hero.position.x.value = 4L * ShinjuCommon.CELL_SIZE;
 		element.hero.position.y.value = 4L * ShinjuCommon.CELL_SIZE;
 		common.mShinjuModel.addElement(element);
-		
+
 		element = new Element.Data();
 		element.type.value = Hero.TYPE;
 		element.hero = new Hero.Data();

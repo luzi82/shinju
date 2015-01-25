@@ -34,17 +34,28 @@ public class Hero {
 			if (aY % ShinjuCommon.HERO_SIZE != 0)
 				return false;
 
+			long mySize = getSize(aModel);
+
 			for (Element.Model m : aModel.iWorldModel.mElementModelMap.values()) {
-				Element.ElementModel em = m.mElementModel;
-				if (!(em instanceof Unit.Model))
+				String type = m.iVar.iType.get();
+				if (!isBlock(TYPE, type))
 					continue;
-				Unit.Model um = (Unit.Model) em;
-				Unit.Logic l = Unit.Logic.sLogicMap.get(m.iVar.iType.get());
+				Unit.Model um = (Unit.Model) m.mElementModel;
+				Unit.Logic l = Unit.Logic.sLogicMap.get(type);
 				if (l == null)
 					continue;
 				long x = l.getX(um);
-				long y = l.getX(um);
+				long y = l.getY(um);
 				long size = l.getSize(um);
+				if (aX + mySize <= x)
+					continue;
+				if (aY + mySize <= y)
+					continue;
+				if (aX >= x + size)
+					continue;
+				if (aY >= y + size)
+					continue;
+				return false;
 			}
 
 			aModel.getElementData().iPosition.iX.set(aX);

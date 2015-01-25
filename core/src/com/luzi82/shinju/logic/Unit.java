@@ -2,6 +2,10 @@ package com.luzi82.shinju.logic;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
+import java.util.TreeSet;
+
+import org.apache.commons.lang3.tuple.Pair;
 
 import com.luzi82.shinju.logic.Element.ElementModel;
 
@@ -20,21 +24,31 @@ public class Unit {
 		public abstract long getY(M aModel);
 
 		public abstract long getSize(M aModel);
-		
+
 		// map
 
-		public static final Map<String, Logic> sLogicMap = new HashMap<String, Logic>();
+		public static Map<String, Logic> sLogicMap = new HashMap<String, Logic>();
 
 		protected static void addLogic(Logic aLogic) {
 			sLogicMap.put(aLogic.mType, aLogic);
 		}
 
-		static {
-			addLogic(Hero.sLogic);
-			addLogic(Witch.sLogic);
-		}
-		
 		// block
+
+		public static final Set<Pair<String, String>> sBlockSet = new TreeSet<Pair<String, String>>();
+
+		protected static void addBlock(String aA, String aB) {
+			if (aA.equals(aB)) {
+				sBlockSet.add(Pair.of(aA, aB));
+			} else {
+				sBlockSet.add(Pair.of(aA, aB));
+				sBlockSet.add(Pair.of(aB, aA));
+			}
+		}
+
+		public static boolean isBlock(String aA, String aB) {
+			return sBlockSet.contains(Pair.of(aA, aB));
+		}
 
 	}
 
