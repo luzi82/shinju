@@ -51,6 +51,8 @@ public class Element {
 
 	public static class Model {
 
+		protected final World.Model iWorldModel;
+
 		public final Var iVar;
 
 		public ElementModel mElementModel;
@@ -62,7 +64,8 @@ public class Element {
 			}
 		};
 
-		public Model(Var var) {
+		public Model(Var var, World.Model aWorldModel) {
+			iWorldModel = aWorldModel;
 			this.iVar = var;
 			iVar.iType.addListener(mTypeListener);
 			updateElementModel();
@@ -71,7 +74,7 @@ public class Element {
 		protected void updateElementModel() {
 			Gdx.app.debug(getClass().getSimpleName(), "6YZA16yq updateElementModel");
 			String type = iVar.iType.get();
-			mElementModel = mElementModelFactoryMap.get(type).createElementModel(iVar);
+			mElementModel = mElementModelFactoryMap.get(type).createElementModel(iVar, iWorldModel);
 		}
 
 	}
@@ -85,7 +88,7 @@ public class Element {
 	public static interface ElementModelFactory {
 		public String type();
 
-		public ElementModel createElementModel(Var aVar);
+		public ElementModel createElementModel(Var aVar, World.Model aWorldModel);
 	}
 
 	protected static HashMap<String, ElementModelFactory> mElementModelFactoryMap;

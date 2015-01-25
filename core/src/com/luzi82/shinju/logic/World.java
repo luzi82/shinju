@@ -63,7 +63,7 @@ public class World {
 
 			mElementModelMap = new HashMap<Long, Element.Model>();
 			for (Element.Var elementVar : iVar.iElementMap.values()) {
-				mElementModelMap.put(elementVar.id(), new Element.Model(elementVar));
+				mElementModelMap.put(elementVar.id(), new Element.Model(elementVar, this));
 			}
 			iVar.iElementMap.addMapListener(mMapListener);
 		}
@@ -79,7 +79,7 @@ public class World {
 			@Override
 			public void onMapAdd(RemoteMap<Long, Element.Var, Element.Data> map, Long key, Element.Var value, Element.Data e) {
 				Gdx.app.debug(getClass().getSimpleName(), "onMapAdd");
-				mElementModelMap.put(key, new Element.Model(value));
+				mElementModelMap.put(key, new Element.Model(value, Model.this));
 			}
 
 			@Override

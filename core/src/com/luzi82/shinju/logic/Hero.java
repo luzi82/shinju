@@ -70,7 +70,8 @@ public class Hero {
 	public static class Model extends Unit.Model {
 		public Element.Var iVar;
 
-		public Model(Element.Var aVar) {
+		public Model(Element.Var aVar,World.Model aWorldModel) {
+			super(aWorldModel);
 			this.iVar = aVar;
 		}
 
@@ -89,8 +90,8 @@ public class Hero {
 		}
 
 		@Override
-		public ElementModel createElementModel(Element.Var aVar) {
-			return new Model(aVar);
+		public ElementModel createElementModel(Element.Var aVar,World.Model aWorldModel) {
+			return new Model(aVar,aWorldModel);
 		}
 
 	}
