@@ -47,7 +47,7 @@ public class Element {
 
 		public Witch.Data witch;
 
-		public BulletSimple.Data bullet_simple;
+		public BulletSimple.Eff.Data bullet_simple;
 
 	}
 
@@ -59,7 +59,7 @@ public class Element {
 
 		public Witch.Var iWitch;
 
-		public BulletSimple.Var iBulletSimple;
+		public BulletSimple.Eff.Var iBulletSimple;
 
 		public Var(Data aData) {
 			super(aData);
