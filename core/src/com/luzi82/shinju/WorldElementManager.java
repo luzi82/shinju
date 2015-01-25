@@ -37,6 +37,9 @@ public class WorldElementManager {
 	public void act() {
 		if (mElementTypeDirty) {
 			Gdx.app.debug(getClass().getSimpleName(), "EuWORn4l mElementTypeDirty");
+			if (mElementManager != null) {
+				mElementManager.dispose();
+			}
 			mElementManager = null;
 			String type = iElementModel.iVar.iType.get();
 			ElementManagerFactory elementManagerFactory = mElementManagerFactoryMap.get(type);
@@ -53,6 +56,8 @@ public class WorldElementManager {
 
 	public abstract static class ElementManager {
 		public abstract void act();
+
+		public abstract void dispose();
 	}
 
 	// ElementManagerFactory

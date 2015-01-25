@@ -74,6 +74,12 @@ public class HeroManager extends ElementManager {
 		}
 	}
 
+	@Override
+	public void dispose() {
+		mImage.remove();
+		mToImage.remove();
+	}
+
 	ValueObservable<Boolean> mMoveActive;
 	Lock.Session mMoveLockSession;
 

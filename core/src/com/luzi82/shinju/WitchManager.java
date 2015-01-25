@@ -51,6 +51,11 @@ public class WitchManager extends ElementManager {
 		}
 	}
 
+	@Override
+	public void dispose() {
+		mImage.remove();
+	}
+
 	public static class Factory extends ElementManagerFactory {
 
 		public Factory() {
