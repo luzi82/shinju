@@ -2,6 +2,7 @@ package com.luzi82.shinju.logic;
 
 import java.util.HashMap;
 
+import com.badlogic.gdx.Gdx;
 import com.luzi82.homuvalue.RemoteGroup;
 import com.luzi82.homuvalue.Value;
 import com.luzi82.homuvalue.Value.Listener;
@@ -48,18 +49,6 @@ public class Element {
 
 	}
 
-	protected static HashMap<String, ElementModelFactory> mElementModelFactoryMap;
-
-	protected static void addElementModelFactory(ElementModelFactory factory) {
-		mElementModelFactoryMap.put(factory.type(), factory);
-	}
-
-	static {
-		mElementModelFactoryMap = new HashMap<String, Element.ElementModelFactory>();
-		addElementModelFactory(new Hero.ModelFactory());
-		addElementModelFactory(new Witch.ModelFactory());
-	}
-
 	public static class Model {
 
 		public final Var iVar;
@@ -80,6 +69,7 @@ public class Element {
 		}
 
 		protected void updateElementModel() {
+			Gdx.app.debug(getClass().getSimpleName(), "6YZA16yq updateElementModel");
 			String type = iVar.iType.get();
 			mElementModel = mElementModelFactoryMap.get(type).createElementModel(iVar);
 		}
@@ -90,10 +80,24 @@ public class Element {
 		public abstract Value getElementData();
 	}
 
+	// ElementModelFactory
+
 	public static interface ElementModelFactory {
 		public String type();
 
 		public ElementModel createElementModel(Var aVar);
+	}
+
+	protected static HashMap<String, ElementModelFactory> mElementModelFactoryMap;
+
+	protected static void addElementModelFactory(ElementModelFactory factory) {
+		mElementModelFactoryMap.put(factory.type(), factory);
+	}
+
+	static {
+		mElementModelFactoryMap = new HashMap<String, Element.ElementModelFactory>();
+		addElementModelFactory(new Hero.ModelFactory());
+		addElementModelFactory(new Witch.ModelFactory());
 	}
 
 }

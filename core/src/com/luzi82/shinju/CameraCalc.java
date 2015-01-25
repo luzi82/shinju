@@ -215,8 +215,8 @@ public class CameraCalc {
 	// }
 
 	public static class Board {
-		public static final int WIDTH = 8 * ShinjuCommon.CELL_SIZE;
-		public static final int HEIGHT = 8 * ShinjuCommon.CELL_SIZE;
+		public static final long WIDTH = 8 * ShinjuCommon.CELL_SIZE;
+		public static final long HEIGHT = 8 * ShinjuCommon.CELL_SIZE;
 	}
 
 }

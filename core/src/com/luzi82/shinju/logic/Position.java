@@ -27,8 +27,4 @@ public class Position {
 
 	}
 
-	public static interface Container {
-		public Var getPosition();
-	}
-
 }

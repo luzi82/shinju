@@ -2,6 +2,7 @@ package com.luzi82.shinju.logic;
 
 import com.luzi82.homuvalue.RemoteGroup;
 import com.luzi82.homuvalue.Value;
+import com.luzi82.shinju.ShinjuCommon;
 import com.luzi82.shinju.logic.Element.ElementModel;
 import com.luzi82.shinju.logic.Element.ElementModelFactory;
 
@@ -33,7 +34,7 @@ public class Hero {
 
 	}
 
-	public static class Model extends ElementModel implements Position.Container {
+	public static class Model extends Unit.Model {
 		public Element.Var iVar;
 
 		public Model(Element.Var aVar) {
@@ -46,8 +47,13 @@ public class Hero {
 		}
 
 		@Override
-		public Position.Var getPosition() {
+		public Position.Var position() {
 			return getElementData().iPosition;
+		}
+
+		@Override
+		public long size() {
+			return ShinjuCommon.HERO_SIZE;
 		}
 
 	}
