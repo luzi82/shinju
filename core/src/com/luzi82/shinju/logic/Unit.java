@@ -1,36 +1,28 @@
 package com.luzi82.shinju.logic;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 
 import org.apache.commons.lang3.tuple.Pair;
 
-import com.luzi82.shinju.logic.Element.ElementModel;
+import com.luzi82.shinju.logic.Element.TypeModel;
 
 public class Unit {
 
-	public static abstract class Logic<M extends Model> {
-
-		public final String mType;
+	public static abstract class Logic<M extends Model> extends Element.TypeLogic<M> {
 
 		protected Logic(String aType) {
-			this.mType = aType;
+			super(aType);
 		}
 
-		public abstract long getX(M aModel);
-
-		public abstract long getY(M aModel);
+		public abstract long[] getXY(M aModel);
 
 		public abstract long getSize(M aModel);
 
-		// map
-
-		public static Map<String, Logic> sLogicMap = new HashMap<String, Logic>();
-
-		protected static void addLogic(Logic aLogic) {
-			sLogicMap.put(aLogic.mType, aLogic);
+		public float[] getCenterXY(M aModel) {
+			float halfsize = getSize(aModel) / 2f;
+			long[] xy = getXY(aModel);
+			return new float[] { xy[0] + halfsize, xy[1] + halfsize };
 		}
 
 		// block
@@ -52,12 +44,10 @@ public class Unit {
 
 	}
 
-	public static abstract class Model extends ElementModel {
-
-		protected final World.Model iWorldModel;
+	public static abstract class Model extends TypeModel {
 
 		protected Model(World.Model aWorldModel) {
-			iWorldModel = aWorldModel;
+			super(aWorldModel);
 		}
 
 	}

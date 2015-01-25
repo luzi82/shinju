@@ -2,7 +2,7 @@ package com.luzi82.shinju.logic;
 
 import com.luzi82.homuvalue.RemoteGroup;
 import com.luzi82.shinju.ShinjuCommon;
-import com.luzi82.shinju.logic.Element.ElementModel;
+import com.luzi82.shinju.logic.Element.TypeModel;
 import com.luzi82.shinju.logic.Element.ElementModelFactory;
 
 public class Hero {
@@ -14,13 +14,9 @@ public class Hero {
 		}
 
 		@Override
-		public long getX(Model aModel) {
-			return aModel.getElementData().iPosition.iX.get();
-		}
-
-		@Override
-		public long getY(Model aModel) {
-			return aModel.getElementData().iPosition.iY.get();
+		public long[] getXY(Model aModel) {
+			Position.Var p = aModel.getTypeData().iPosition;
+			return new long[] { p.iX.get(), p.iY.get() };
 		}
 
 		@Override
@@ -40,26 +36,25 @@ public class Hero {
 				String type = m.iVar.iType.get();
 				if (!isBlock(TYPE, type))
 					continue;
-				Unit.Model um = (Unit.Model) m.mElementModel;
-				Unit.Logic l = Unit.Logic.sLogicMap.get(type);
+				Unit.Model um = (Unit.Model) m.mTypeModel;
+				Unit.Logic l = (Unit.Logic) Element.TypeLogic.sLogicMap.get(type);
 				if (l == null)
 					continue;
-				long x = l.getX(um);
-				long y = l.getY(um);
+				long[] xy = l.getXY(um);
 				long size = l.getSize(um);
-				if (aX + mySize <= x)
+				if (aX + mySize <= xy[0])
 					continue;
-				if (aY + mySize <= y)
+				if (aY + mySize <= xy[1])
 					continue;
-				if (aX >= x + size)
+				if (aX >= xy[0] + size)
 					continue;
-				if (aY >= y + size)
+				if (aY >= xy[1] + size)
 					continue;
 				return false;
 			}
 
-			aModel.getElementData().iPosition.iX.set(aX);
-			aModel.getElementData().iPosition.iY.set(aY);
+			aModel.getTypeData().iPosition.iX.set(aX);
+			aModel.getTypeData().iPosition.iY.set(aY);
 			return true;
 		}
 
@@ -104,7 +99,7 @@ public class Hero {
 		}
 
 		@Override
-		public Var getElementData() {
+		public Var getTypeData() {
 			return iVar.iHero;
 		}
 
@@ -118,7 +113,7 @@ public class Hero {
 		}
 
 		@Override
-		public ElementModel createElementModel(Element.Var aVar, World.Model aWorldModel) {
+		public TypeModel createElementModel(Element.Var aVar, World.Model aWorldModel) {
 			return new Model(aVar, aWorldModel);
 		}
 

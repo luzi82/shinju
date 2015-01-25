@@ -2,7 +2,7 @@ package com.luzi82.shinju.logic;
 
 import com.luzi82.homuvalue.RemoteGroup;
 import com.luzi82.shinju.ShinjuCommon;
-import com.luzi82.shinju.logic.Element.ElementModel;
+import com.luzi82.shinju.logic.Element.TypeModel;
 import com.luzi82.shinju.logic.Element.ElementModelFactory;
 
 public class Witch {
@@ -14,13 +14,9 @@ public class Witch {
 		}
 
 		@Override
-		public long getX(Model aModel) {
-			return aModel.getElementData().iPosition.iX.get();
-		}
-
-		@Override
-		public long getY(Model aModel) {
-			return aModel.getElementData().iPosition.iY.get();
+		public long[] getXY(Model aModel) {
+			Position.Var p = aModel.getTypeData().iPosition;
+			return new long[] { p.iX.get(), p.iY.get() };
 		}
 
 		@Override
@@ -69,7 +65,7 @@ public class Witch {
 		}
 
 		@Override
-		public Var getElementData() {
+		public Var getTypeData() {
 			return iVar.iWitch;
 		}
 
@@ -83,7 +79,7 @@ public class Witch {
 		}
 
 		@Override
-		public ElementModel createElementModel(Element.Var aVar, World.Model aWorldModel) {
+		public TypeModel createElementModel(Element.Var aVar, World.Model aWorldModel) {
 			return new Model(aVar, aWorldModel);
 		}
 

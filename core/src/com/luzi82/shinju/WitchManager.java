@@ -33,7 +33,7 @@ public class WitchManager extends ElementManager {
 	public WitchManager(WorldElementManager aElementManager) {
 		this.iElementManager = aElementManager;
 
-		iModel = (Model) iElementManager.iElementModel.mElementModel;
+		iModel = (Model) iElementManager.iElementModel.mTypeModel;
 
 		mImage = new Image(new Texture(Gdx.files.internal("img/icon_madoka_inv.png")));
 		mImage.setSize(sLogic.getSize(iModel), sLogic.getSize(iModel));
@@ -45,7 +45,8 @@ public class WitchManager extends ElementManager {
 
 	public void act() {
 		if (mElementDirty) {
-			mImage.setPosition(sLogic.getX(iModel), sLogic.getY(iModel));
+			long[] xy = sLogic.getXY(iModel);
+			mImage.setPosition(xy[0], xy[1]);
 			iElementManager.iElementModel.iVar.get();
 			mElementDirty = false;
 		}

@@ -1,6 +1,7 @@
 package com.luzi82.shinju.logic;
 
 import java.util.HashMap;
+import java.util.Map;
 
 import com.badlogic.gdx.Gdx;
 import com.luzi82.homuvalue.RemoteGroup;
@@ -8,6 +9,33 @@ import com.luzi82.homuvalue.Value;
 import com.luzi82.homuvalue.Value.Listener;
 
 public class Element {
+
+	public static abstract class TypeLogic<M extends TypeModel> {
+
+		public final String mType;
+
+		protected TypeLogic(String aType) {
+			this.mType = aType;
+		}
+
+		public static TypeLogic getLogic(TypeModel aModel, long id) {
+			return Element.TypeLogic.sLogicMap.get(getModel(aModel, id).iVar.iType.get());
+		}
+
+		public static Model getModel(TypeModel aModel, long id) {
+			World.Model worldModel = aModel.iWorldModel;
+			return worldModel.mElementModelMap.get(id);
+		}
+
+		// map
+
+		public static Map<String, TypeLogic> sLogicMap = new HashMap<String, TypeLogic>();
+
+		public static void addLogic(TypeLogic aLogic) {
+			sLogicMap.put(aLogic.mType, aLogic);
+		}
+
+	}
 
 	public static class Data {
 
@@ -19,6 +47,8 @@ public class Element {
 
 		public Witch.Data witch;
 
+		public BulletSimple.Data bullet_simple;
+
 	}
 
 	public static class Var extends RemoteGroup<Data> {
@@ -28,6 +58,8 @@ public class Element {
 		public Hero.Var iHero;
 
 		public Witch.Var iWitch;
+
+		public BulletSimple.Var iBulletSimple;
 
 		public Var(Data aData) {
 			super(aData);
@@ -55,7 +87,7 @@ public class Element {
 
 		public final Var iVar;
 
-		public ElementModel mElementModel;
+		public TypeModel mTypeModel;
 
 		protected final Listener<String> mTypeListener = new Listener<String>() {
 			@Override
@@ -74,13 +106,19 @@ public class Element {
 		protected void updateElementModel() {
 			Gdx.app.debug(getClass().getSimpleName(), "6YZA16yq updateElementModel");
 			String type = iVar.iType.get();
-			mElementModel = mElementModelFactoryMap.get(type).createElementModel(iVar, iWorldModel);
+			mTypeModel = mElementModelFactoryMap.get(type).createElementModel(iVar, iWorldModel);
 		}
 
 	}
 
-	public static abstract class ElementModel {
-		public abstract Value getElementData();
+	public static abstract class TypeModel {
+		protected final World.Model iWorldModel;
+
+		protected TypeModel(World.Model aWorldModel) {
+			iWorldModel = aWorldModel;
+		}
+
+		public abstract Value getTypeData();
 	}
 
 	// ElementModelFactory
@@ -88,7 +126,7 @@ public class Element {
 	public static interface ElementModelFactory {
 		public String type();
 
-		public ElementModel createElementModel(Var aVar, World.Model aWorldModel);
+		public TypeModel createElementModel(Var aVar, World.Model aWorldModel);
 	}
 
 	protected static final HashMap<String, ElementModelFactory> mElementModelFactoryMap = new HashMap<String, Element.ElementModelFactory>();
