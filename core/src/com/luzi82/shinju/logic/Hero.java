@@ -23,10 +23,16 @@ public class Hero {
 		public long getSize(Model aModel) {
 			return ShinjuCommon.HERO_SIZE;
 		}
-		
-		public void setXY(Model aModel, long aX, long aY){
+
+		public boolean setXY(Model aModel, long aX, long aY) {
+			if (aX % ShinjuCommon.HERO_SIZE != 0)
+				return false;
+			if (aY % ShinjuCommon.HERO_SIZE != 0)
+				return false;
+
 			aModel.getElementData().iPosition.iX.set(aX);
 			aModel.getElementData().iPosition.iY.set(aY);
+			return true;
 		}
 
 	}
@@ -72,16 +78,6 @@ public class Hero {
 		public Var getElementData() {
 			return iVar.iHero;
 		}
-
-		// @Override
-		// public Position.Var position() {
-		// return getElementData().iPosition;
-		// }
-		//
-		// @Override
-		// public long size() {
-		// return ShinjuCommon.HERO_SIZE;
-		// }
 
 	}
 

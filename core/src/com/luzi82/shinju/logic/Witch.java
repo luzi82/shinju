@@ -68,16 +68,6 @@ public class Witch {
 			return iVar.iWitch;
 		}
 
-		// @Override
-		// public Position.Var position() {
-		// return getElementData().iPosition;
-		// }
-		//
-		// @Override
-		// public long size() {
-		// return ShinjuCommon.WITCH_SIZE;
-		// }
-
 	}
 
 	public static class ModelFactory implements ElementModelFactory {
