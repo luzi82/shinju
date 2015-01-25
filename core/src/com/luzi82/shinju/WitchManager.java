@@ -37,7 +37,7 @@ public class WitchManager extends ElementManager {
 
 		mImage = new Image(new Texture(Gdx.files.internal("img/icon_madoka_inv.png")));
 		mImage.setSize(sLogic.getSize(iModel), sLogic.getSize(iModel));
-		iElementManager.iPlayScreenWorldGroup.addActor(mImage);
+		iElementManager.iPlayScreenWorldGroup.mWitchLayer.addActor(mImage);
 
 		iElementManager.iElementModel.iVar.addListener(mElementDataListener);
 		mElementDirty = true;

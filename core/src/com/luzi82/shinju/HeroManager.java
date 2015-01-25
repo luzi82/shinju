@@ -48,14 +48,16 @@ public class HeroManager extends ElementManager {
 
 		mImage = new Image(new Texture(Gdx.files.internal("img/icon_madoka.png")));
 		mImage.setSize(sLogic.getSize(iModel), sLogic.getSize(iModel));
+		// mImage.setZIndex(ShinjuCommon.HERO_Z);
 		mImage.addListener(new AGL());
-		iElementManager.iPlayScreenWorldGroup.addActor(mImage);
+		iElementManager.iPlayScreenWorldGroup.mHeroLayer.addActor(mImage);
 
 		mToImage = new Image(new Texture(Gdx.files.internal("img/icon_madoka.png")));
 		mToImage.setSize(sLogic.getSize(iModel), sLogic.getSize(iModel));
 		mToImage.setColor(1.0f, 1.0f, 1.0f, ShinjuCommon.PHI_1);
+		// mToImage.setZIndex(ShinjuCommon.HAND_Z);
 		mToImage.setVisible(false);
-		iElementManager.iPlayScreenWorldGroup.addActor(mToImage);
+		iElementManager.iPlayScreenWorldGroup.mUiLayer.addActor(mToImage);
 
 		iElementManager.iElementModel.iVar.addListener(mElementDataListener);
 		mElementDirty = true;

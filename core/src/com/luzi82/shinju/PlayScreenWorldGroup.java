@@ -16,6 +16,12 @@ public class PlayScreenWorldGroup extends Group {
 
 	ShinjuCommon iCommon;
 
+	public Group mWitchLayer;
+
+	public Group mHeroLayer;
+
+	public Group mUiLayer;
+
 	public PlayScreenWorldGroup(ShinjuCommon common, ZoomMove aParentZoomMove) {
 		iCommon = common;
 		iParentZoomMove = aParentZoomMove;
@@ -24,6 +30,15 @@ public class PlayScreenWorldGroup extends Group {
 		background.setBounds(0 * ShinjuCommon.CELL_SIZE, 0 * ShinjuCommon.CELL_SIZE, 16 * ShinjuCommon.CELL_SIZE, 16 * ShinjuCommon.CELL_SIZE);
 		// background.setTouchable(Touchable.disabled);
 		addActor(background);
+
+		mWitchLayer = new Group();
+		addActor(mWitchLayer);
+
+		mHeroLayer = new Group();
+		addActor(mHeroLayer);
+
+		mUiLayer = new Group();
+		addActor(mUiLayer);
 
 		for (Element.Model elementModel : common.mShinjuModel.mElementModelMap.values()) {
 			WorldElementManager mgr = new WorldElementManager(common, elementModel, this);
