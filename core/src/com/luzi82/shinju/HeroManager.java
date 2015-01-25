@@ -94,8 +94,8 @@ public class HeroManager extends ElementManager {
 			if (mMoveActive.get()) {
 				Position.Var positionVar = iModel.position();
 				Vector2 v = iElementManager.iPlayScreenWorldGroup.stageToLocalCoordinates(new Vector2(event.getStageX(), event.getStageY()));
-				long newX = (long) Math.floor(v.x / ShinjuCommon.CELL_SIZE) * ShinjuCommon.CELL_SIZE;
-				long newY = (long) Math.floor(v.y / ShinjuCommon.CELL_SIZE) * ShinjuCommon.CELL_SIZE;
+				long newX = (long) Math.floor(v.x / ShinjuCommon.HERO_SIZE) * ShinjuCommon.HERO_SIZE;
+				long newY = (long) Math.floor(v.y / ShinjuCommon.HERO_SIZE) * ShinjuCommon.HERO_SIZE;
 				positionVar.iX.set(newX);
 				positionVar.iY.set(newY);
 			}
@@ -122,8 +122,8 @@ public class HeroManager extends ElementManager {
 			}
 
 			Vector2 v = iElementManager.iPlayScreenWorldGroup.stageToLocalCoordinates(new Vector2(event.getStageX(), event.getStageY()));
-			long newX = (long) Math.floor(v.x / ShinjuCommon.CELL_SIZE) * ShinjuCommon.CELL_SIZE;
-			long newY = (long) Math.floor(v.y / ShinjuCommon.CELL_SIZE) * ShinjuCommon.CELL_SIZE;
+			long newX = (long) Math.floor(v.x / ShinjuCommon.HERO_SIZE) * ShinjuCommon.HERO_SIZE;
+			long newY = (long) Math.floor(v.y / ShinjuCommon.HERO_SIZE) * ShinjuCommon.HERO_SIZE;
 			mToImage.setPosition(newX, newY);
 
 			super.pan(event, x, y, deltaX, deltaY);

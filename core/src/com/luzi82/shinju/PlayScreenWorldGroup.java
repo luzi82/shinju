@@ -21,7 +21,7 @@ public class PlayScreenWorldGroup extends Group {
 		iParentZoomMove = aParentZoomMove;
 
 		Image background = new Image(new Texture(Gdx.files.internal("img/sand.png")));
-		background.setBounds(0 * ShinjuCommon.CELL_SIZE, 0 * ShinjuCommon.CELL_SIZE, 8 * ShinjuCommon.CELL_SIZE, 8 * ShinjuCommon.CELL_SIZE);
+		background.setBounds(0 * ShinjuCommon.CELL_SIZE, 0 * ShinjuCommon.CELL_SIZE, 16 * ShinjuCommon.CELL_SIZE, 16 * ShinjuCommon.CELL_SIZE);
 		// background.setTouchable(Touchable.disabled);
 		addActor(background);
 

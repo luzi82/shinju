@@ -28,22 +28,22 @@ public class ShinjuGame extends Game {
 		element = new Element.Data();
 		element.type.value = Hero.TYPE;
 		element.hero = new Hero.Data();
-		element.hero.position.x.value = 2L * ShinjuCommon.CELL_SIZE;
-		element.hero.position.y.value = 2L * ShinjuCommon.CELL_SIZE;
+		element.hero.position.x.value = 4L * ShinjuCommon.CELL_SIZE;
+		element.hero.position.y.value = 4L * ShinjuCommon.CELL_SIZE;
 		common.mShinjuModel.addElement(element);
 		
 		element = new Element.Data();
 		element.type.value = Hero.TYPE;
 		element.hero = new Hero.Data();
-		element.hero.position.x.value = 5L * ShinjuCommon.CELL_SIZE;
-		element.hero.position.y.value = 5L * ShinjuCommon.CELL_SIZE;
+		element.hero.position.x.value = 10L * ShinjuCommon.CELL_SIZE;
+		element.hero.position.y.value = 10L * ShinjuCommon.CELL_SIZE;
 		common.mShinjuModel.addElement(element);
 
 		element = new Element.Data();
 		element.type.value = Witch.TYPE;
 		element.witch = new Witch.Data();
-		element.witch.position.x.value = 3L * ShinjuCommon.CELL_SIZE;
-		element.witch.position.y.value = 3L * ShinjuCommon.CELL_SIZE;
+		element.witch.position.x.value = 6L * ShinjuCommon.CELL_SIZE;
+		element.witch.position.y.value = 6L * ShinjuCommon.CELL_SIZE;
 		common.mShinjuModel.addElement(element);
 
 		setScreen(new PlayScreen(common));

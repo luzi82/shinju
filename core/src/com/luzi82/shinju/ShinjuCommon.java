@@ -22,8 +22,8 @@ public class ShinjuCommon {
 
 	public static final long CELL_SIZE = 256;
 
-	public static final long HERO_SIZE = 1 * CELL_SIZE;
-	public static final long WITCH_SIZE = 2 * CELL_SIZE;
+	public static final long HERO_SIZE = 2 * CELL_SIZE;
+	public static final long WITCH_SIZE = 4 * CELL_SIZE;
 	public static final long WITCHSEED_SIZE = 1 * CELL_SIZE;
 
 	public static final float PHI = (1f + (float) Math.sqrt(5)) / 2f;
