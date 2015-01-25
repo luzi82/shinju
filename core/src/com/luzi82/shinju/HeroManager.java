@@ -18,7 +18,6 @@ import com.luzi82.shinju.WorldElementManager.ElementManagerFactory;
 import com.luzi82.shinju.logic.Element;
 import com.luzi82.shinju.logic.Hero;
 import com.luzi82.shinju.logic.Hero.Model;
-import com.luzi82.shinju.logic.Position;
 
 public class HeroManager extends ElementManager {
 
@@ -30,6 +29,8 @@ public class HeroManager extends ElementManager {
 	boolean mElementDirty;
 
 	Hero.Model iModel;
+
+	protected static final Hero.Logic sLogic = Hero.sLogic;
 
 	Listener<Element.Data> mElementDataListener = new Listener<Element.Data>() {
 		@Override
@@ -46,12 +47,12 @@ public class HeroManager extends ElementManager {
 		iModel = (Model) iElementManager.iElementModel.mElementModel;
 
 		mImage = new Image(new Texture(Gdx.files.internal("img/icon_madoka.png")));
-		mImage.setSize(iModel.size(), iModel.size());
+		mImage.setSize(sLogic.getSize(iModel), sLogic.getSize(iModel));
 		mImage.addListener(new AGL());
 		iElementManager.iPlayScreenWorldGroup.addActor(mImage);
 
 		mToImage = new Image(new Texture(Gdx.files.internal("img/icon_madoka.png")));
-		mToImage.setSize(iModel.size(), iModel.size());
+		mToImage.setSize(sLogic.getSize(iModel), sLogic.getSize(iModel));
 		mToImage.setColor(1.0f, 1.0f, 1.0f, ShinjuCommon.PHI_1);
 		mToImage.setVisible(false);
 		iElementManager.iPlayScreenWorldGroup.addActor(mToImage);
@@ -67,8 +68,7 @@ public class HeroManager extends ElementManager {
 
 	public void act() {
 		if (mElementDirty) {
-			Position.Var positionVar = iModel.position();
-			mImage.setPosition(positionVar.iX.get(), positionVar.iY.get());
+			mImage.setPosition(sLogic.getX(iModel), sLogic.getY(iModel));
 			iElementManager.iElementModel.iVar.get();
 			mElementDirty = false;
 		}
@@ -92,12 +92,13 @@ public class HeroManager extends ElementManager {
 		@Override
 		public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
 			if (mMoveActive.get()) {
-				Position.Var positionVar = iModel.position();
+				// Position.Var positionVar = iModel.position();
 				Vector2 v = iElementManager.iPlayScreenWorldGroup.stageToLocalCoordinates(new Vector2(event.getStageX(), event.getStageY()));
 				long newX = (long) Math.floor(v.x / ShinjuCommon.HERO_SIZE) * ShinjuCommon.HERO_SIZE;
 				long newY = (long) Math.floor(v.y / ShinjuCommon.HERO_SIZE) * ShinjuCommon.HERO_SIZE;
-				positionVar.iX.set(newX);
-				positionVar.iY.set(newY);
+				sLogic.setXY(iModel, newX, newY);
+				// positionVar.iX.set(newX);
+				// positionVar.iY.set(newY);
 			}
 			mMoveActive.set(false);
 			super.touchUp(event, x, y, pointer, button);

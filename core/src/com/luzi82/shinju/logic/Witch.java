@@ -1,12 +1,34 @@
 package com.luzi82.shinju.logic;
 
 import com.luzi82.homuvalue.RemoteGroup;
-import com.luzi82.homuvalue.Value;
 import com.luzi82.shinju.ShinjuCommon;
 import com.luzi82.shinju.logic.Element.ElementModel;
 import com.luzi82.shinju.logic.Element.ElementModelFactory;
 
 public class Witch {
+
+	public static class Logic extends Unit.Logic<Model> {
+
+		@Override
+		public long getX(Model aModel) {
+			return aModel.getElementData().iPosition.iX.get();
+		}
+
+		@Override
+		public long getY(Model aModel) {
+			return aModel.getElementData().iPosition.iY.get();
+		}
+
+		@Override
+		public long getSize(Model aModel) {
+			return ShinjuCommon.WITCH_SIZE;
+		}
+
+	}
+
+	public static final Logic sLogic = new Logic();
+
+	//
 
 	public static final String TYPE = "witch";
 
@@ -46,15 +68,15 @@ public class Witch {
 			return iVar.iWitch;
 		}
 
-		@Override
-		public Position.Var position() {
-			return getElementData().iPosition;
-		}
-
-		@Override
-		public long size() {
-			return ShinjuCommon.WITCH_SIZE;
-		}
+		// @Override
+		// public Position.Var position() {
+		// return getElementData().iPosition;
+		// }
+		//
+		// @Override
+		// public long size() {
+		// return ShinjuCommon.WITCH_SIZE;
+		// }
 
 	}
 

@@ -1,12 +1,39 @@
 package com.luzi82.shinju.logic;
 
 import com.luzi82.homuvalue.RemoteGroup;
-import com.luzi82.homuvalue.Value;
 import com.luzi82.shinju.ShinjuCommon;
 import com.luzi82.shinju.logic.Element.ElementModel;
 import com.luzi82.shinju.logic.Element.ElementModelFactory;
 
 public class Hero {
+
+	public static class Logic extends Unit.Logic<Model> {
+
+		@Override
+		public long getX(Model aModel) {
+			return aModel.getElementData().iPosition.iX.get();
+		}
+
+		@Override
+		public long getY(Model aModel) {
+			return aModel.getElementData().iPosition.iY.get();
+		}
+
+		@Override
+		public long getSize(Model aModel) {
+			return ShinjuCommon.HERO_SIZE;
+		}
+		
+		public void setXY(Model aModel, long aX, long aY){
+			aModel.getElementData().iPosition.iX.set(aX);
+			aModel.getElementData().iPosition.iY.set(aY);
+		}
+
+	}
+
+	public static final Logic sLogic = new Logic();
+
+	//
 
 	public static final String TYPE = "hero";
 
@@ -46,15 +73,15 @@ public class Hero {
 			return iVar.iHero;
 		}
 
-		@Override
-		public Position.Var position() {
-			return getElementData().iPosition;
-		}
-
-		@Override
-		public long size() {
-			return ShinjuCommon.HERO_SIZE;
-		}
+		// @Override
+		// public Position.Var position() {
+		// return getElementData().iPosition;
+		// }
+		//
+		// @Override
+		// public long size() {
+		// return ShinjuCommon.HERO_SIZE;
+		// }
 
 	}
 

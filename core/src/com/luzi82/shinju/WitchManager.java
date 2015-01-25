@@ -8,7 +8,6 @@ import com.luzi82.homuvalue.Value.Listener;
 import com.luzi82.shinju.WorldElementManager.ElementManager;
 import com.luzi82.shinju.WorldElementManager.ElementManagerFactory;
 import com.luzi82.shinju.logic.Element;
-import com.luzi82.shinju.logic.Position;
 import com.luzi82.shinju.logic.Witch;
 import com.luzi82.shinju.logic.Witch.Model;
 
@@ -21,6 +20,8 @@ public class WitchManager extends ElementManager {
 	boolean mElementDirty;
 
 	Witch.Model iModel;
+
+	protected static final Witch.Logic sLogic = Witch.sLogic;
 
 	Listener<Element.Data> mElementDataListener = new Listener<Element.Data>() {
 		@Override
@@ -35,7 +36,7 @@ public class WitchManager extends ElementManager {
 		iModel = (Model) iElementManager.iElementModel.mElementModel;
 
 		mImage = new Image(new Texture(Gdx.files.internal("img/icon_madoka_inv.png")));
-		mImage.setSize(iModel.size(), iModel.size());
+		mImage.setSize(sLogic.getSize(iModel), sLogic.getSize(iModel));
 		iElementManager.iPlayScreenWorldGroup.addActor(mImage);
 
 		iElementManager.iElementModel.iVar.addListener(mElementDataListener);
@@ -44,8 +45,7 @@ public class WitchManager extends ElementManager {
 
 	public void act() {
 		if (mElementDirty) {
-			Position.Var positionVar = iModel.position();
-			mImage.setPosition(positionVar.iX.get(), positionVar.iY.get());
+			mImage.setPosition(sLogic.getX(iModel), sLogic.getY(iModel));
 			iElementManager.iElementModel.iVar.get();
 			mElementDirty = false;
 		}
