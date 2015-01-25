@@ -9,6 +9,10 @@ public class Hero {
 
 	public static class Logic extends Unit.Logic<Model> {
 
+		protected Logic() {
+			super(TYPE);
+		}
+
 		@Override
 		public long getX(Model aModel) {
 			return aModel.getElementData().iPosition.iX.get();
@@ -29,6 +33,19 @@ public class Hero {
 				return false;
 			if (aY % ShinjuCommon.HERO_SIZE != 0)
 				return false;
+
+			for (Element.Model m : aModel.iWorldModel.mElementModelMap.values()) {
+				Element.ElementModel em = m.mElementModel;
+				if (!(em instanceof Unit.Model))
+					continue;
+				Unit.Model um = (Unit.Model) em;
+				Unit.Logic l = Unit.Logic.sLogicMap.get(m.iVar.iType.get());
+				if (l == null)
+					continue;
+				long x = l.getX(um);
+				long y = l.getX(um);
+				long size = l.getSize(um);
+			}
 
 			aModel.getElementData().iPosition.iX.set(aX);
 			aModel.getElementData().iPosition.iY.set(aY);
@@ -70,7 +87,7 @@ public class Hero {
 	public static class Model extends Unit.Model {
 		public Element.Var iVar;
 
-		public Model(Element.Var aVar,World.Model aWorldModel) {
+		public Model(Element.Var aVar, World.Model aWorldModel) {
 			super(aWorldModel);
 			this.iVar = aVar;
 		}
@@ -90,8 +107,8 @@ public class Hero {
 		}
 
 		@Override
-		public ElementModel createElementModel(Element.Var aVar,World.Model aWorldModel) {
-			return new Model(aVar,aWorldModel);
+		public ElementModel createElementModel(Element.Var aVar, World.Model aWorldModel) {
+			return new Model(aVar, aWorldModel);
 		}
 
 	}

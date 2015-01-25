@@ -9,6 +9,10 @@ public class Witch {
 
 	public static class Logic extends Unit.Logic<Model> {
 
+		protected Logic() {
+			super(TYPE);
+		}
+
 		@Override
 		public long getX(Model aModel) {
 			return aModel.getElementData().iPosition.iX.get();
