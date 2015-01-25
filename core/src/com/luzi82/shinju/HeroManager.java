@@ -13,8 +13,8 @@ import com.badlogic.gdx.scenes.scene2d.utils.ActorGestureListener;
 import com.luzi82.common.ValueObservable;
 import com.luzi82.homuvalue.Value;
 import com.luzi82.homuvalue.Value.Listener;
-import com.luzi82.shinju.PlayScreenWorldGroupElementManager.ElementManager;
-import com.luzi82.shinju.PlayScreenWorldGroupElementManager.ElementManagerFactory;
+import com.luzi82.shinju.WorldElementManager.ElementManager;
+import com.luzi82.shinju.WorldElementManager.ElementManagerFactory;
 import com.luzi82.shinju.logic.Element;
 import com.luzi82.shinju.logic.Hero;
 import com.luzi82.shinju.logic.Hero.Model;
@@ -22,7 +22,7 @@ import com.luzi82.shinju.logic.Position;
 
 public class HeroManager extends ElementManager {
 
-	PlayScreenWorldGroupElementManager iElementManager;
+	WorldElementManager iElementManager;
 
 	Image mImage;
 	Image mToImage;
@@ -40,7 +40,7 @@ public class HeroManager extends ElementManager {
 		}
 	};
 
-	public HeroManager(PlayScreenWorldGroupElementManager aElementManager) {
+	public HeroManager(WorldElementManager aElementManager) {
 		this.iElementManager = aElementManager;
 
 		mImage = new Image(new Texture(Gdx.files.internal("img/icon_madoka.png")));
@@ -146,7 +146,7 @@ public class HeroManager extends ElementManager {
 		}
 
 		@Override
-		public ElementManager create(PlayScreenWorldGroupElementManager aManager) {
+		public ElementManager create(WorldElementManager aManager) {
 			return new HeroManager(aManager);
 		}
 

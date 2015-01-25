@@ -12,7 +12,7 @@ public class PlayScreenWorldGroup extends Group {
 
 	ZoomMove iParentZoomMove;
 
-	HashMap<Long, PlayScreenWorldGroupElementManager> mPlayScreenWorldGroupHeroManagerMap = new HashMap<Long, PlayScreenWorldGroupElementManager>();
+	HashMap<Long, WorldElementManager> mPlayScreenWorldGroupHeroManagerMap = new HashMap<Long, WorldElementManager>();
 
 	ShinjuCommon iCommon;
 
@@ -26,7 +26,7 @@ public class PlayScreenWorldGroup extends Group {
 		addActor(background);
 
 		for (Element.Model elementModel : common.mShinjuModel.mElementModelMap.values()) {
-			PlayScreenWorldGroupElementManager mgr = new PlayScreenWorldGroupElementManager(common, elementModel, this);
+			WorldElementManager mgr = new WorldElementManager(common, elementModel, this);
 			mPlayScreenWorldGroupHeroManagerMap.put(elementModel.iVar.id(), mgr);
 		}
 
@@ -35,7 +35,7 @@ public class PlayScreenWorldGroup extends Group {
 	@Override
 	public void act(float delta) {
 		super.act(delta);
-		for (PlayScreenWorldGroupElementManager mgr : mPlayScreenWorldGroupHeroManagerMap.values()) {
+		for (WorldElementManager mgr : mPlayScreenWorldGroupHeroManagerMap.values()) {
 			mgr.act();
 		}
 	}

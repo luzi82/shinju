@@ -7,7 +7,7 @@ import com.luzi82.homuvalue.Value;
 import com.luzi82.homuvalue.Value.Listener;
 import com.luzi82.shinju.logic.Element;
 
-public class PlayScreenWorldGroupElementManager {
+public class WorldElementManager {
 
 	ShinjuCommon iCommon;
 	Element.Model iElementModel;
@@ -24,7 +24,7 @@ public class PlayScreenWorldGroupElementManager {
 
 	ElementManager mElementManager;
 
-	public PlayScreenWorldGroupElementManager(ShinjuCommon aCommon, Element.Model aElement, PlayScreenWorldGroup aPlayScreenWorldGroup) {
+	public WorldElementManager(ShinjuCommon aCommon, Element.Model aElement, PlayScreenWorldGroup aPlayScreenWorldGroup) {
 		iCommon = aCommon;
 		iElementModel = aElement;
 		iPlayScreenWorldGroup = aPlayScreenWorldGroup;
@@ -64,7 +64,7 @@ public class PlayScreenWorldGroupElementManager {
 			mType = aType;
 		}
 
-		public abstract ElementManager create(PlayScreenWorldGroupElementManager aManager);
+		public abstract ElementManager create(WorldElementManager aManager);
 	}
 
 	protected static HashMap<String, ElementManagerFactory> mElementManagerFactoryMap;
