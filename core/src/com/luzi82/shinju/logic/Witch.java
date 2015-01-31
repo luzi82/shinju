@@ -1,6 +1,9 @@
 package com.luzi82.shinju.logic;
 
-import com.luzi82.homuvalue.RemoteGroup;
+import java.util.Map;
+
+import com.luzi82.common.Factory;
+import com.luzi82.homuvalue.obj.ObjectVariable;
 import com.luzi82.shinju.ShinjuCommon;
 import com.luzi82.shinju.logic.Element.TypeModel;
 import com.luzi82.shinju.logic.Element.TypeModelFactory;
@@ -15,8 +18,8 @@ public class Witch {
 
 		@Override
 		public long[] getXY(Model aModel) {
-			Position.Var p = aModel.getTypeData().iPosition;
-			return new long[] { p.iX.get(), p.iY.get() };
+			Position.Var p = aModel.getTypeData().position.get();
+			return new long[] { p.x.get(), p.y.get() };
 		}
 
 		@Override
@@ -32,26 +35,20 @@ public class Witch {
 
 	public static final String TYPE = "witch";
 
-	public static class Data {
+	public static class Var extends ObjectVariable {
 
-		public Position.Data position = new Position.Data();
+		final public VarField<Position.Var, Map<String, Object>> position;
 
-		public Hp.Data hp = new Hp.Data();
+		final public VarField<Hp.Var, Map<String, Object>> hp;
 
-	}
+		public Var() {
+			position = new VarField<Position.Var, Map<String, Object>>("position", Factory.C.create(Position.Var.class));
+			addField(position);
+			hp = new VarField<Hp.Var, Map<String, Object>>("hp", Factory.C.create(Hp.Var.class));
+			addField(hp);
 
-	public static class Var extends RemoteGroup<Data> {
-
-		final public Position.Var iPosition;
-
-		final public Hp.Var iHp;
-
-		public Var(Data aData) {
-			super(aData);
-			iPosition = new Position.Var(iV.position);
-			addChild(iPosition);
-			iHp = new Hp.Var(iV.hp);
-			addChild(iHp);
+			position.set(new Position.Var());
+			hp.set(new Hp.Var());
 		}
 
 	}
@@ -66,7 +63,7 @@ public class Witch {
 
 		@Override
 		public Var getTypeData() {
-			return iVar.iWitch;
+			return iVar.witch.get();
 		}
 
 	}

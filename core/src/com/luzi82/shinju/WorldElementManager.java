@@ -3,8 +3,7 @@ package com.luzi82.shinju;
 import java.util.HashMap;
 
 import com.badlogic.gdx.Gdx;
-import com.luzi82.homuvalue.Value;
-import com.luzi82.homuvalue.Value.Listener;
+import com.luzi82.homuvalue.Slot;
 import com.luzi82.shinju.logic.Element;
 
 public class WorldElementManager {
@@ -13,14 +12,16 @@ public class WorldElementManager {
 	Element.Model iElementModel;
 	PlayScreenWorldGroup iPlayScreenWorldGroup;
 
-	boolean mElementTypeDirty;
+	// boolean mElementTypeDirty;
 
-	Listener<String> mElementTypeListener = new Listener<String>() {
-		@Override
-		public void onValueDirty(Value<String> v) {
-			mElementTypeDirty = true;
-		}
-	};
+	// Listener<String> mElementTypeListener = new Listener<String>() {
+	// @Override
+	// public void onValueDirty(AbstractValue<String> v) {
+	// mElementTypeDirty = true;
+	// }
+	// };
+
+	Slot<String> mElementTypeSlot;
 
 	ElementManager mElementManager;
 
@@ -29,25 +30,26 @@ public class WorldElementManager {
 		iElementModel = aElement;
 		iPlayScreenWorldGroup = aPlayScreenWorldGroup;
 
-		iElementModel.iVar.iType.addListener(mElementTypeListener);
+		mElementTypeSlot = new Slot<String>(null);
+		mElementTypeSlot.set(iElementModel.iVar.type);
 
-		mElementTypeDirty = true;
+		// iElementModel.iVar.iType.addListener(mElementTypeListener);
+		//
+		// mElementTypeDirty = true;
 	}
 
 	public void act() {
-		if (mElementTypeDirty) {
+		if (mElementTypeSlot.dirty()) {
 			Gdx.app.debug(getClass().getSimpleName(), "EuWORn4l mElementTypeDirty");
 			if (mElementManager != null) {
 				mElementManager.dispose();
 			}
 			mElementManager = null;
-			String type = iElementModel.iVar.iType.get();
+			String type = mElementTypeSlot.get();
 			ElementManagerFactory elementManagerFactory = mElementManagerFactoryMap.get(type);
 			if (elementManagerFactory != null) {
 				mElementManager = mElementManagerFactoryMap.get(type).create(this);
 			}
-			iElementModel.iVar.get();
-			mElementTypeDirty = false;
 		}
 		if (mElementManager != null) {
 			mElementManager.act();

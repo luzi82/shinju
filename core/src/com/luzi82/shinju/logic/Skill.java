@@ -3,27 +3,24 @@ package com.luzi82.shinju.logic;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.luzi82.homuvalue.RemoteGroup;
+import com.luzi82.common.Factory;
 import com.luzi82.homuvalue.Value;
+import com.luzi82.homuvalue.obj.ObjectVariable;
 
 public class Skill {
 
-	public static class Data {
+	public static class Var extends ObjectVariable {
 
-		BulletSimple.Ski.Data bullet_simple;
+		final ObjectField<String> type;
 
-		String[] order;
+		final VarField<BulletSimple.Ski.Var, Map<String, Object>> bullet_simple;
 
-	}
-
-	public static class Var extends RemoteGroup<Data> {
-
-		BulletSimple.Ski.Var mBulletSimpleVar;
-
-		public Var(Data aData) {
-			super(aData);
+		public Var() {
+			type = new ObjectField<String>("type");
+			addField(type);
+			bullet_simple = new VarField<BulletSimple.Ski.Var, Map<String, Object>>("bullet_simple", Factory.C.create(BulletSimple.Ski.Var.class));
+			addField(bullet_simple);
 		}
-
 	}
 
 	public static class Model {
@@ -42,10 +39,8 @@ public class Skill {
 	public static class Logic {
 
 		public void act(Element.Model aMode, Skill.Model aSkillModel) {
-			for (String k : aSkillModel.iVar.get().order) {
-				TypeLogic tl = TypeLogic.sLogicMap.get(k);
-				tl.act(aMode, aSkillModel);
-			}
+			TypeLogic tl = TypeLogic.sLogicMap.get(aSkillModel.iVar.type.get());
+			tl.act(aMode, aSkillModel);
 		}
 
 	}

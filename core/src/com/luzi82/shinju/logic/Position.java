@@ -1,28 +1,20 @@
 package com.luzi82.shinju.logic;
 
-import com.luzi82.homuvalue.RemoteGroup;
-import com.luzi82.homuvalue.Variable;
+import com.luzi82.homuvalue.obj.ObjectVariable;
 
 public class Position {
 
-	public static class Data {
-		public Val.Data<Long> x = new Val.Data<Long>();
+	public static class Var extends ObjectVariable {
 
-		public Val.Data<Long> y = new Val.Data<Long>();
-	}
+		public final ObjectField<Long> x;
 
-	public static class Var extends RemoteGroup<Data> {
+		public final ObjectField<Long> y;
 
-		public final Variable<Long> iX;
-
-		public final Variable<Long> iY;
-
-		public Var(Data aData) {
-			super(aData);
-			iX = new Val.Var<Long>(iV.x);
-			addChild(iX);
-			iY = new Val.Var<Long>(iV.y);
-			addChild(iY);
+		public Var() {
+			x = new ObjectField<Long>("x");
+			addField(x);
+			y = new ObjectField<Long>("y");
+			addField(y);
 		}
 
 	}

@@ -42,7 +42,7 @@ public class PlayScreenWorldGroup extends Group {
 
 		for (Element.Model elementModel : common.mShinjuModel.mElementModelMap.values()) {
 			WorldElementManager mgr = new WorldElementManager(common, elementModel, this);
-			mPlayScreenWorldGroupHeroManagerMap.put(elementModel.iVar.id(), mgr);
+			mPlayScreenWorldGroupHeroManagerMap.put(elementModel.iVar.id.get(), mgr);
 		}
 
 	}

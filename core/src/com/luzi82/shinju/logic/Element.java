@@ -4,9 +4,11 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.badlogic.gdx.Gdx;
-import com.luzi82.homuvalue.RemoteGroup;
+import com.luzi82.common.Factory;
+import com.luzi82.homuvalue.AbstractValue;
 import com.luzi82.homuvalue.Value;
 import com.luzi82.homuvalue.Value.Listener;
+import com.luzi82.homuvalue.obj.ObjectVariable;
 
 public class Element {
 
@@ -19,7 +21,7 @@ public class Element {
 		}
 
 		public static TypeLogic getLogic(TypeModel aModel, long id) {
-			return Element.TypeLogic.sLogicMap.get(getModel(aModel, id).iVar.iType.get());
+			return Element.TypeLogic.sLogicMap.get(getModel(aModel, id).iVar.type.get());
 		}
 
 		public static Model getModel(TypeModel aModel, long id) {
@@ -37,46 +39,29 @@ public class Element {
 
 	}
 
-	public static class Data {
+	public static class Var extends ObjectVariable {
 
-		public long id;
+		public final ObjectField<Long> id;
 
-		public Val.Data<String> type = new Val.Data<String>();
+		public final ObjectField<String> type;
 
-		public Hero.Data hero;
+		public final VarField<Hero.Var, Map<String, Object>> hero;
 
-		public Witch.Data witch;
+		public final VarField<Witch.Var, Map<String, Object>> witch;
 
-		public BulletSimple.Eff.Data bullet_simple;
+		public final VarField<BulletSimple.Eff.Var, Map<String, Object>> bullet_simple;
 
-	}
-
-	public static class Var extends RemoteGroup<Data> {
-
-		public final Val.Var<String> iType;
-
-		public Hero.Var iHero;
-
-		public Witch.Var iWitch;
-
-		public BulletSimple.Eff.Var iBulletSimple;
-
-		public Var(Data aData) {
-			super(aData);
-			iType = new Val.Var<String>(iV.type);
-			addChild(iType);
-			if (iV.hero != null) {
-				iHero = new Hero.Var(iV.hero);
-				addChild(iHero);
-			}
-			if (iV.witch != null) {
-				iWitch = new Witch.Var(iV.witch);
-				addChild(iWitch);
-			}
-		}
-
-		public long id() {
-			return iV.id;
+		public Var() {
+			id = new ObjectField<Long>("id");
+			addField(id);
+			type = new ObjectField<String>("type");
+			addField(type);
+			hero = new VarField<Hero.Var, Map<String, Object>>("hero", Factory.C.create(Hero.Var.class));
+			addField(hero);
+			witch = new VarField<Witch.Var, Map<String, Object>>("witch", Factory.C.create(Witch.Var.class));
+			addField(witch);
+			bullet_simple = new VarField<BulletSimple.Eff.Var, Map<String, Object>>("bullet_simple", Factory.C.create(BulletSimple.Eff.Var.class));
+			addField(bullet_simple);
 		}
 
 	}
@@ -99,18 +84,18 @@ public class Element {
 		public Model(Var var, World.Model aWorldModel) {
 			iWorldModel = aWorldModel;
 			this.iVar = var;
-			iVar.iType.addListener(mTypeListener);
+			iVar.type.addListener(mTypeListener);
 			updateElementModel();
 		}
 
 		protected void updateElementModel() {
 			Gdx.app.debug(getClass().getSimpleName(), "6YZA16yq updateElementModel");
-			String type = iVar.iType.get();
+			String type = iVar.type.get();
 			mTypeModel = mElementModelFactoryMap.get(type).createElementModel(iVar, iWorldModel);
 		}
 
 		public String getType() {
-			return iVar.iType.get();
+			return iVar.type.get();
 		}
 
 	}
@@ -122,7 +107,7 @@ public class Element {
 			iWorldModel = aWorldModel;
 		}
 
-		public abstract Value getTypeData();
+		public abstract AbstractValue getTypeData();
 	}
 
 	// ElementModelFactory

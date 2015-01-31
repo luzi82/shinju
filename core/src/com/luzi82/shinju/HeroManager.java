@@ -1,5 +1,6 @@
 package com.luzi82.shinju;
 
+import java.util.Map;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -11,11 +12,9 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.utils.ActorGestureListener;
 import com.luzi82.common.ValueObservable;
-import com.luzi82.homuvalue.Value;
-import com.luzi82.homuvalue.Value.Listener;
+import com.luzi82.homuvalue.Slot;
 import com.luzi82.shinju.WorldElementManager.ElementManager;
 import com.luzi82.shinju.WorldElementManager.ElementManagerFactory;
-import com.luzi82.shinju.logic.Element;
 import com.luzi82.shinju.logic.Hero;
 import com.luzi82.shinju.logic.Hero.Model;
 
@@ -23,23 +22,16 @@ public class HeroManager extends ElementManager {
 
 	WorldElementManager iElementManager;
 
+	Slot<Map<String, Object>> mElementSlot;
+
 	Image mImage;
 	Image mToImage;
 
-	boolean mElementDirty;
+	// boolean mElementDirty;
 
 	Hero.Model iModel;
 
 	protected static final Hero.Logic sLogic = Hero.sLogic;
-
-	Listener<Element.Data> mElementDataListener = new Listener<Element.Data>() {
-		@Override
-		public void onValueDirty(Value<Element.Data> v) {
-			// Gdx.app.debug(getClass().getSimpleName(),
-			// "ByMryNyV onValueDirty");
-			mElementDirty = true;
-		}
-	};
 
 	public HeroManager(WorldElementManager aElementManager) {
 		this.iElementManager = aElementManager;
@@ -59,8 +51,8 @@ public class HeroManager extends ElementManager {
 		mToImage.setVisible(false);
 		iElementManager.iPlayScreenWorldGroup.mUiLayer.addActor(mToImage);
 
-		iElementManager.iElementModel.iVar.addListener(mElementDataListener);
-		mElementDirty = true;
+		mElementSlot = new Slot<Map<String, Object>>(null);
+		mElementSlot.set(iElementManager.iElementModel.iVar);
 
 		mMoveLockSession = new Lock.Session(iElementManager.iPlayScreenWorldGroup.iParentZoomMove.mStopLock);
 
@@ -69,11 +61,10 @@ public class HeroManager extends ElementManager {
 	}
 
 	public void act() {
-		if (mElementDirty) {
+		if (mElementSlot.dirty()) {
 			long[] xy = sLogic.getXY(iModel);
 			mImage.setPosition(xy[0], xy[1]);
-			iElementManager.iElementModel.iVar.get();
-			mElementDirty = false;
+			mElementSlot.get();
 		}
 	}
 

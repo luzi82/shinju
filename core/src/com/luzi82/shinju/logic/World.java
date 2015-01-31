@@ -1,53 +1,35 @@
 package com.luzi82.shinju.logic;
 
 import java.util.HashMap;
-import java.util.SortedMap;
-import java.util.TreeMap;
+import java.util.Map;
 
 import com.badlogic.gdx.Gdx;
-import com.luzi82.homuvalue.RemoteGroup;
-import com.luzi82.homuvalue.RemoteMap;
-import com.luzi82.homuvalue.RemoteMap.Constractor;
-import com.luzi82.homuvalue.RemoteMap.MapListener;
+import com.luzi82.common.Factory;
+import com.luzi82.homuvalue.obj.MapVariable;
+import com.luzi82.homuvalue.obj.ObjectVariable;
+import com.luzi82.homuvalue.obj.VariableMapVariable;
 
 public class World {
 
-	public static class Data {
+	public static class Var extends ObjectVariable {
 
-		public Val.Data<Long> turn = new Val.Data<Long>();
+		public final ObjectField<Long> turn;
 
-		public SortedMap<Long, Element.Data> element_map = new TreeMap<Long, Element.Data>();
+		public final VarField<VariableMapVariable<Long, Element.Var, Map<String, Object>>, Map<Long, Map<String, Object>>> element_map;
 
-		public Val.Data<Long> next_id = new Val.Data<Long>();
+		public final ObjectField<Long> next_id;
 
-		public Data() {
-			turn.value = 0L;
-			next_id.value = 0L;
-		}
+		public Var() {
+			turn = new ObjectField<Long>("turn");
+			addField(turn);
+			element_map = new VarField<VariableMapVariable<Long, Element.Var, Map<String, Object>>, Map<Long, Map<String, Object>>>("element_map", VariableMapVariable.createFactory(Long.class, Factory.C.create(Element.Var.class)));
+			addField(element_map);
+			next_id = new ObjectField<Long>("next_id");
+			addField(next_id);
 
-	}
-
-	public static class Var extends RemoteGroup<Data> {
-
-		public final Val.Var<Long> iTurn;
-
-		public final RemoteMap<Long, Element.Var, Element.Data> iElementMap;
-
-		public final Val.Var<Long> iNextId;
-
-		public Var(Data aV) {
-			super(aV);
-			iTurn = new Val.Var<Long>(iV.turn);
-			addChild(iTurn);
-			iElementMap = new RemoteMap<Long, Element.Var, Element.Data>(iV.element_map, new Constractor<Element.Var, Element.Data>() {
-				@Override
-				public Element.Var create(Element.Data u) {
-					return new Element.Var(u);
-				}
-			});
-			addChild(iElementMap);
-			iNextId = new Val.Var<Long>(iV.next_id);
-			addChild(iNextId);
+			turn.set(0L);
+			element_map.set(new VariableMapVariable<Long, Element.Var, Map<String, Object>>(Factory.C.create(Element.Var.class)));
+			next_id.set(0L);
 		}
 
 	}
@@ -62,29 +44,30 @@ public class World {
 			this.iVar = var;
 
 			mElementModelMap = new HashMap<Long, Element.Model>();
-			for (Element.Var elementVar : iVar.iElementMap.values()) {
-				mElementModelMap.put(elementVar.id(), new Element.Model(elementVar, this));
+			for (Element.Var elementVar : iVar.element_map.get().values()) {
+				mElementModelMap.put(elementVar.id.get(), new Element.Model(elementVar, this));
 			}
-			iVar.iElementMap.addMapListener(mMapListener);
+			iVar.element_map.get().addChangeListener(mMapListener);
 		}
 
-		public void addElement(Element.Data aElement) {
-			long id = iVar.iNextId.get();
-			iVar.iNextId.set(id + 1);
-			aElement.id = id;
-			iVar.iElementMap.remotePut(id, aElement);
+		public void addElement(Element.Var aElement) {
+			long id = iVar.next_id.get();
+			iVar.next_id.set(id + 1);
+			aElement.id.set(id);
+			iVar.element_map.get().put(id, aElement);
 		}
 
-		protected final MapListener<Long, Element.Var, Element.Data> mMapListener = new MapListener<Long, Element.Var, Element.Data>() {
+		protected final MapVariable.ChangeListener<Long, Element.Var> mMapListener = new MapVariable.ChangeListener<Long, Element.Var>() {
+
 			@Override
-			public void onMapAdd(RemoteMap<Long, Element.Var, Element.Data> map, Long key, Element.Var value, Element.Data e) {
+			public void onAdd(Long aK, Element.Var aI) {
 				Gdx.app.debug(getClass().getSimpleName(), "onMapAdd");
-				mElementModelMap.put(key, new Element.Model(value, Model.this));
+				mElementModelMap.put(aK, new Element.Model(aI, Model.this));
 			}
 
 			@Override
-			public void onMapRemove(RemoteMap<Long, Element.Var, Element.Data> map, Long key, Element.Var value, Element.Data e) {
-				mElementModelMap.remove(key);
+			public void onRemove(Long aK, Element.Var aI) {
+				mElementModelMap.remove(aK);
 			}
 		};
 

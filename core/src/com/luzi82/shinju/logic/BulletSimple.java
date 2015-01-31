@@ -1,11 +1,10 @@
 package com.luzi82.shinju.logic;
 
-import org.apache.commons.lang3.ArrayUtils;
+import java.util.List;
 
-import com.badlogic.gdx.math.MathUtils;
-import com.luzi82.homuvalue.RemoteGroup;
 import com.luzi82.homuvalue.Value;
-import com.luzi82.homuvalue.Variable;
+import com.luzi82.homuvalue.obj.ObjectListVariable;
+import com.luzi82.homuvalue.obj.ObjectVariable;
 import com.luzi82.shinju.logic.Element.TypeModel;
 import com.luzi82.shinju.logic.Element.TypeModelFactory;
 
@@ -20,25 +19,25 @@ public class BulletSimple {
 			}
 
 			public long[] getXY(Model aModel, long mTurn) {
-				Data var = aModel.iVar.iBulletSimple.get();
+				Var var = aModel.iVar.bullet_simple.get();
 
-				Unit.Model source_model = (Unit.Model) (getModel(aModel, var.source_id).mTypeModel);
-				Unit.Logic source_logic = (Unit.Logic) (getLogic(aModel, var.source_id));
-				Unit.Model dest_model = (Unit.Model) (getModel(aModel, var.dest_id).mTypeModel);
-				Unit.Logic dest_logic = (Unit.Logic) (getLogic(aModel, var.dest_id));
+				Unit.Model source_model = (Unit.Model) (getModel(aModel, var.source_id.get()).mTypeModel);
+				Unit.Logic source_logic = (Unit.Logic) (getLogic(aModel, var.source_id.get()));
+				Unit.Model dest_model = (Unit.Model) (getModel(aModel, var.dest_id.get()).mTypeModel);
+				Unit.Logic dest_logic = (Unit.Logic) (getLogic(aModel, var.dest_id.get()));
 
 				long[] xy0 = source_logic.getCenterXY(source_model);
 				long[] xy1 = dest_logic.getCenterXY(dest_model);
 
-				if (mTurn <= var.start_turn) {
+				if (mTurn <= var.start_turn.get()) {
 					return xy0;
-				} else if (mTurn >= var.end_turn) {
+				} else if (mTurn >= var.end_turn.get()) {
 					return xy1;
 				}
 
-				long t0 = mTurn - var.start_turn;
-				long t1 = var.end_turn - mTurn;
-				long t = var.end_turn - var.start_turn;
+				long t0 = mTurn - var.start_turn.get();
+				long t1 = var.end_turn.get() - mTurn;
+				long t = var.end_turn.get() - var.start_turn.get();
 
 				long x = (t0 * xy1[0] + t1 * xy0[0]) / t;
 				long y = (t0 * xy1[1] + t1 * xy0[1]) / t;
@@ -54,22 +53,25 @@ public class BulletSimple {
 
 		public static final String TYPE = "bullet_simple";
 
-		public static class Data {
+		public static class Var extends ObjectVariable {
 
-			public long source_id;
+			public final ObjectField<Long> source_id;
 
-			public long dest_id;
+			public final ObjectField<Long> dest_id;
 
-			public long start_turn;
+			public final ObjectField<Long> start_turn;
 
-			public long end_turn;
+			public final ObjectField<Long> end_turn;
 
-		}
-
-		public static class Var extends RemoteGroup<Data> {
-
-			public Var(Data aData) {
-				super(aData);
+			public Var() {
+				source_id = new ObjectField<Long>("source_id");
+				addField(source_id);
+				dest_id = new ObjectField<Long>("dest_id");
+				addField(dest_id);
+				start_turn = new ObjectField<Long>("start_turn");
+				addField(start_turn);
+				end_turn = new ObjectField<Long>("end_turn");
+				addField(end_turn);
 			}
 
 		}
@@ -84,7 +86,7 @@ public class BulletSimple {
 
 			@Override
 			public Var getTypeData() {
-				return iVar.iBulletSimple;
+				return iVar.bullet_simple.get();
 			}
 
 		}
@@ -119,11 +121,11 @@ public class BulletSimple {
 				String type = aModel.getType();
 				Unit.Model unitModel = (Unit.Model) aModel.mTypeModel;
 				Unit.Logic unitLogic = (Unit.Logic) Element.TypeLogic.sLogicMap.get(type);
-				BulletSimple.Ski.Data skillData = aSkillModel.iVar.get().bullet_simple;
+				BulletSimple.Ski.Var skillVar = aSkillModel.iVar.bullet_simple.get();
 
 				long[] center = unitLogic.getCenterXY(unitModel);
 
-				long range2 = skillData.range.value;
+				long range2 = skillVar.range.get();
 				range2 *= range2;
 				range2++;
 
@@ -131,7 +133,7 @@ public class BulletSimple {
 
 				for (Element.Model em : worldModel.mElementModelMap.values()) {
 					String t = em.getType();
-					if (!ArrayUtils.contains(skillData.target_unit_type_list, t)) {
+					if (!skillVar.target_unit_type_list.get().get().contains(t)) {
 						continue;
 					}
 					Element.TypeModel etm = em.mTypeModel;
@@ -156,26 +158,25 @@ public class BulletSimple {
 
 		public static final String TYPE = "bullet_simple";
 
-		public static class Data {
+		public static class Var extends ObjectVariable {
 
-			public long id;
+			public final ObjectField<Long> id;
 
-			public long cooldown;
+			public final ObjectField<Long> cooldown;
 
-			public Val.Data<Long> range = new Val.Data<Long>();
+			public final ObjectField<Long> range;
 
-			public String[] target_unit_type_list;
+			public final VarField<ObjectListVariable<String>, List<String>> target_unit_type_list;
 
-		}
-
-		public static class Var extends RemoteGroup<Data> {
-
-			public final Variable<Long> iRange;
-
-			public Var(Data aData) {
-				super(aData);
-				iRange = new Val.Var<Long>(iV.range);
-				addChild(iRange);
+			public Var() {
+				id = new ObjectField<Long>("id");
+				addField(id);
+				cooldown = new ObjectField<Long>("cooldown");
+				addField(cooldown);
+				range = new ObjectField<Long>("range");
+				addField(range);
+				target_unit_type_list = new VarField<ObjectListVariable<String>, List<String>>("target_unit_type_list", ObjectListVariable.createFactory(String.class));
+				addField(target_unit_type_list);
 			}
 
 		}
@@ -190,7 +191,7 @@ public class BulletSimple {
 
 			@Override
 			public Value getTypeData() {
-				return iVar.mBulletSimpleVar;
+				return iVar.bullet_simple.get();
 			}
 
 		}
