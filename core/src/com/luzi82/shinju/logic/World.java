@@ -61,7 +61,7 @@ public class World {
 
 			@Override
 			public void onAdd(Long aK, Element.Var aI) {
-				Gdx.app.debug(getClass().getSimpleName(), "onMapAdd");
+//				Gdx.app.debug(getClass().getSimpleName(), "onMapAdd");
 				mElementModelMap.put(aK, new Element.Model(aI, Model.this));
 			}
 

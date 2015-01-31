@@ -100,7 +100,7 @@ public class HeroManager extends ElementManager {
 
 		@Override
 		public boolean longPress(Actor actor, float x, float y) {
-			Gdx.app.debug(getClass().getSimpleName(), String.format("longPress x:%f,  y:%f", x, y));
+//			Gdx.app.debug(getClass().getSimpleName(), String.format("longPress x:%f,  y:%f", x, y));
 
 			mMoveActive.set(true);
 
@@ -109,10 +109,10 @@ public class HeroManager extends ElementManager {
 
 		@Override
 		public void pan(InputEvent event, float x, float y, float deltaX, float deltaY) {
-			Gdx.app.debug(getClass().getSimpleName(), String.format("pan x:%f,  y:%f", x, y));
+//			Gdx.app.debug(getClass().getSimpleName(), String.format("pan x:%f,  y:%f", x, y));
 
 			if (!mMoveActive.get()) {
-				Gdx.app.debug(getClass().getSimpleName(), "ignore (!active)");
+//				Gdx.app.debug(getClass().getSimpleName(), "ignore (!active)");
 				return;
 			}
 

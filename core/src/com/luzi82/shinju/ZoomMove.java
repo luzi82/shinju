@@ -93,13 +93,13 @@ public class ZoomMove extends Group {
 
 		@Override
 		public void onLock(Lock lock) {
-			Gdx.app.debug(getClass().getSimpleName(), "onLock");
+			// Gdx.app.debug(getClass().getSimpleName(), "onLock");
 			mCameraControl.mForceStop = true;
 		}
 
 		@Override
 		public void onUnlock(Lock lock) {
-			Gdx.app.debug(getClass().getSimpleName(), "onUnlock");
+			// Gdx.app.debug(getClass().getSimpleName(), "onUnlock");
 			mCameraControl.mForceStop = false;
 		}
 

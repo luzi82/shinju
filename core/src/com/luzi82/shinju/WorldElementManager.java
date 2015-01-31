@@ -40,7 +40,7 @@ public class WorldElementManager {
 
 	public void act() {
 		if (mElementTypeSlot.dirty()) {
-			Gdx.app.debug(getClass().getSimpleName(), "EuWORn4l mElementTypeDirty");
+//			Gdx.app.debug(getClass().getSimpleName(), "EuWORn4l mElementTypeDirty");
 			if (mElementManager != null) {
 				mElementManager.dispose();
 			}

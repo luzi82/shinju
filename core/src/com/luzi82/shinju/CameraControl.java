@@ -166,7 +166,7 @@ public class CameraControl {
 	}
 
 	public void touchDragged(int aSX, int aSY, int aPointer, long aTime) {
-		Gdx.app.debug(getClass().getSimpleName(), String.format("touchDragged: x:%d, y:%d, p:%d", aSX, aSY, aPointer));
+//		Gdx.app.debug(getClass().getSimpleName(), String.format("touchDragged: x:%d, y:%d, p:%d", aSX, aSY, aPointer));
 		mTouching[aPointer] = true;
 		mTouchChange = mTouchChange || (mTouchSX[aPointer] != aSX) || (mTouchSY[aPointer] != aSY);
 		mTouchSX[aPointer] = aSX;
