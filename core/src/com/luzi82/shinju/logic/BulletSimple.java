@@ -11,7 +11,7 @@ public class BulletSimple {
 
 	public static class Eff extends Effect {
 
-		public final VarField<Position.Var, Map<String, Object>> source_position;
+		public final VarField<Position, Map<String, Object>> source_position;
 
 		public final ObjectField<Long> dest_id;
 
@@ -22,7 +22,7 @@ public class BulletSimple {
 		public Eff(World aWorld) {
 			super(aWorld, TYPE);
 
-			source_position = new VarField<Position.Var, Map<String, Object>>("source_position", Position.Var.class);
+			source_position = new VarField<Position, Map<String, Object>>("source_position", Position.class);
 			addField(source_position);
 			dest_id = new ObjectField<Long>("dest_id");
 			addField(dest_id);

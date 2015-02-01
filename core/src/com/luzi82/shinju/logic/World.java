@@ -2,7 +2,6 @@ package com.luzi82.shinju.logic;
 
 import java.util.Map;
 
-import com.luzi82.common.Factory;
 import com.luzi82.homuvalue.obj.ObjectVariable;
 import com.luzi82.homuvalue.obj.VariableMapVariable;
 

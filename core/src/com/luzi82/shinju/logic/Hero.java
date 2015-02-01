@@ -6,20 +6,20 @@ import com.luzi82.shinju.ShinjuCommon;
 
 public class Hero extends Unit {
 
-	final public VarField<Position.Var, Map<String, Object>> position;
+	final public VarField<Position, Map<String, Object>> position;
 
-	final public VarField<Hp.Var, Map<String, Object>> hp;
+	final public VarField<Hp, Map<String, Object>> hp;
 
 	public Hero(World aWorld) {
 		super(aWorld, TYPE);
 
-		position = new VarField<Position.Var, Map<String, Object>>("position", Factory.C.create(Position.Var.class));
+		position = new VarField<Position, Map<String, Object>>("position", Factory.C.create(Position.class));
 		addField(position);
-		hp = new VarField<Hp.Var, Map<String, Object>>("hp", Factory.C.create(Hp.Var.class));
+		hp = new VarField<Hp, Map<String, Object>>("hp", Factory.C.create(Hp.class));
 		addField(hp);
 
-		position.set(new Position.Var());
-		hp.set(new Hp.Var());
+		position.set(new Position());
+		hp.set(new Hp());
 	}
 
 	@Override

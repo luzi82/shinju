@@ -85,7 +85,7 @@ public class HeroManager extends ElementManager {
 		@Override
 		public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
 			if (mMoveActive.get()) {
-				// Position.Var positionVar = iModel.position();
+				// Position positionVar = iModel.position();
 				Vector2 v = iElementManager.iPlayScreenWorldGroup.stageToLocalCoordinates(new Vector2(event.getStageX(), event.getStageY()));
 				long newX = (long) Math.floor(v.x / ShinjuCommon.HERO_SIZE) * ShinjuCommon.HERO_SIZE;
 				long newY = (long) Math.floor(v.y / ShinjuCommon.HERO_SIZE) * ShinjuCommon.HERO_SIZE;
