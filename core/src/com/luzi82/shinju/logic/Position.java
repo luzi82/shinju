@@ -17,6 +17,10 @@ public class Position {
 			addField(y);
 		}
 
+		public long[] getXY() {
+			return new long[] { x.get(), y.get() };
+		}
+
 	}
 
 }

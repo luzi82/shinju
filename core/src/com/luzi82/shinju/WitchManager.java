@@ -9,7 +9,6 @@ import com.luzi82.homuvalue.Slot;
 import com.luzi82.shinju.WorldElementManager.ElementManager;
 import com.luzi82.shinju.WorldElementManager.ElementManagerFactory;
 import com.luzi82.shinju.logic.Witch;
-import com.luzi82.shinju.logic.Witch.Model;
 
 public class WitchManager extends ElementManager {
 
@@ -19,39 +18,26 @@ public class WitchManager extends ElementManager {
 
 	Image mImage;
 
-	// boolean mElementDirty;
-
-	Witch.Model iModel;
-
-	protected static final Witch.Logic sLogic = Witch.sLogic;
-
-	// Listener<Element.Data> mElementDataListener = new
-	// Listener<Element.Data>() {
-	// @Override
-	// public void onValueDirty(AbstractValue<Element.Data> v) {
-	// mElementDirty = true;
-	// }
-	// };
+	Witch iModel;
 
 	public WitchManager(WorldElementManager aElementManager) {
 		this.iElementManager = aElementManager;
 
-		iModel = (Model) iElementManager.iElementModel.mTypeModel;
+		iModel = iElementManager.iElementModel.witch.get();
+
+		long size = iModel.getSize();
 
 		mImage = new Image(new Texture(Gdx.files.internal("img/icon_madoka_inv.png")));
-		mImage.setSize(sLogic.getSize(iModel), sLogic.getSize(iModel));
+		mImage.setSize(size, size);
 		iElementManager.iPlayScreenWorldGroup.mWitchLayer.addActor(mImage);
 
-		// iElementManager.iElementModel.iVar.addListener(mElementDataListener);
-		// mElementDirty = true;
-
 		mElementSlot = new Slot<Map<String, Object>>(null);
-		mElementSlot.set(iElementManager.iElementModel.iVar);
+		mElementSlot.set(iElementManager.iElementModel);
 	}
 
 	public void act() {
 		if (mElementSlot.dirty()) {
-			long[] xy = sLogic.getXY(iModel);
+			long[] xy = iModel.getXY();
 			mImage.setPosition(xy[0], xy[1]);
 			mElementSlot.get();
 		}

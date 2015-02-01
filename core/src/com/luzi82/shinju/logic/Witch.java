@@ -2,82 +2,51 @@ package com.luzi82.shinju.logic;
 
 import java.util.Map;
 
-import com.luzi82.common.Factory;
-import com.luzi82.homuvalue.obj.ObjectVariable;
 import com.luzi82.shinju.ShinjuCommon;
-import com.luzi82.shinju.logic.Element.TypeModel;
-import com.luzi82.shinju.logic.Element.TypeModelFactory;
 
-public class Witch {
+public class Witch extends Unit {
 
-	public static class Logic extends Unit.Logic<Model> {
+	final public VarField<Position.Var, Map<String, Object>> position;
 
-		protected Logic() {
-			super(TYPE);
-		}
+	final public VarField<Hp.Var, Map<String, Object>> hp;
 
-		@Override
-		public long[] getXY(Model aModel) {
-			Position.Var p = aModel.getTypeData().position.get();
-			return new long[] { p.x.get(), p.y.get() };
-		}
+	public Witch(World aWorld) {
+		super(aWorld, TYPE);
 
-		@Override
-		public long getSize(Model aModel) {
-			return ShinjuCommon.WITCH_SIZE;
-		}
+		position = new VarField<Position.Var, Map<String, Object>>("position", Factory.C.create(Position.Var.class));
+		addField(position);
+		hp = new VarField<Hp.Var, Map<String, Object>>("hp", Factory.C.create(Hp.Var.class));
+		addField(hp);
 
+		position.set(new Position.Var());
+		hp.set(new Hp.Var());
 	}
 
-	public static final Logic sLogic = new Logic();
+	@Override
+	public long[] getXY() {
+		return position.get().getXY();
+	}
 
-	//
+	@Override
+	public long getSize() {
+		return ShinjuCommon.WITCH_SIZE;
+	}
 
 	public static final String TYPE = "witch";
 
-	public static class Var extends ObjectVariable {
+	//
 
-		final public VarField<Position.Var, Map<String, Object>> position;
+	public static class Factory implements com.luzi82.common.Factory<Witch> {
 
-		final public VarField<Hp.Var, Map<String, Object>> hp;
+		private final World iWorld;
 
-		public Var() {
-			position = new VarField<Position.Var, Map<String, Object>>("position", Factory.C.create(Position.Var.class));
-			addField(position);
-			hp = new VarField<Hp.Var, Map<String, Object>>("hp", Factory.C.create(Hp.Var.class));
-			addField(hp);
-
-			position.set(new Position.Var());
-			hp.set(new Hp.Var());
-		}
-
-	}
-
-	public static class Model extends Unit.Model {
-		public Element.Var iVar;
-
-		public Model(Element.Var aVar, World.Model aWorldModel) {
-			super(aWorldModel);
-			this.iVar = aVar;
+		public Factory(World aWorld) {
+			iWorld = aWorld;
 		}
 
 		@Override
-		public Var getTypeData() {
-			return iVar.witch.get();
-		}
-
-	}
-
-	public static class ModelFactory implements TypeModelFactory {
-
-		@Override
-		public String type() {
-			return TYPE;
-		}
-
-		@Override
-		public TypeModel createElementModel(Element.Var aVar, World.Model aWorldModel) {
-			return new Model(aVar, aWorldModel);
+		public Witch create() {
+			return new Witch(iWorld);
 		}
 
 	}

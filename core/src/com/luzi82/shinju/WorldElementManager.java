@@ -9,7 +9,7 @@ import com.luzi82.shinju.logic.Element;
 public class WorldElementManager {
 
 	ShinjuCommon iCommon;
-	Element.Model iElementModel;
+	Element iElementModel;
 	PlayScreenWorldGroup iPlayScreenWorldGroup;
 
 	// boolean mElementTypeDirty;
@@ -25,13 +25,13 @@ public class WorldElementManager {
 
 	ElementManager mElementManager;
 
-	public WorldElementManager(ShinjuCommon aCommon, Element.Model aElement, PlayScreenWorldGroup aPlayScreenWorldGroup) {
+	public WorldElementManager(ShinjuCommon aCommon, Element aElement, PlayScreenWorldGroup aPlayScreenWorldGroup) {
 		iCommon = aCommon;
 		iElementModel = aElement;
 		iPlayScreenWorldGroup = aPlayScreenWorldGroup;
 
 		mElementTypeSlot = new Slot<String>(null);
-		mElementTypeSlot.set(iElementModel.iVar.type);
+		mElementTypeSlot.set(iElementModel.type);
 
 		// iElementModel.iVar.iType.addListener(mElementTypeListener);
 		//
@@ -40,7 +40,8 @@ public class WorldElementManager {
 
 	public void act() {
 		if (mElementTypeSlot.dirty()) {
-//			Gdx.app.debug(getClass().getSimpleName(), "EuWORn4l mElementTypeDirty");
+			// Gdx.app.debug(getClass().getSimpleName(),
+			// "EuWORn4l mElementTypeDirty");
 			if (mElementManager != null) {
 				mElementManager.dispose();
 			}

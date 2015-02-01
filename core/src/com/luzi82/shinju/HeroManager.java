@@ -16,7 +16,6 @@ import com.luzi82.homuvalue.Slot;
 import com.luzi82.shinju.WorldElementManager.ElementManager;
 import com.luzi82.shinju.WorldElementManager.ElementManagerFactory;
 import com.luzi82.shinju.logic.Hero;
-import com.luzi82.shinju.logic.Hero.Model;
 
 public class HeroManager extends ElementManager {
 
@@ -29,30 +28,30 @@ public class HeroManager extends ElementManager {
 
 	// boolean mElementDirty;
 
-	Hero.Model iModel;
-
-	protected static final Hero.Logic sLogic = Hero.sLogic;
+	Hero iModel;
 
 	public HeroManager(WorldElementManager aElementManager) {
 		this.iElementManager = aElementManager;
 
-		iModel = (Model) iElementManager.iElementModel.mTypeModel;
+		iModel = iElementManager.iElementModel.hero.get();
+
+		long size = iModel.getSize();
 
 		mImage = new Image(new Texture(Gdx.files.internal("img/icon_madoka.png")));
-		mImage.setSize(sLogic.getSize(iModel), sLogic.getSize(iModel));
+		mImage.setSize(size, size);
 		// mImage.setZIndex(ShinjuCommon.HERO_Z);
 		mImage.addListener(new AGL());
 		iElementManager.iPlayScreenWorldGroup.mHeroLayer.addActor(mImage);
 
 		mToImage = new Image(new Texture(Gdx.files.internal("img/icon_madoka.png")));
-		mToImage.setSize(sLogic.getSize(iModel), sLogic.getSize(iModel));
+		mToImage.setSize(size, size);
 		mToImage.setColor(1.0f, 1.0f, 1.0f, ShinjuCommon.PHI_1);
 		// mToImage.setZIndex(ShinjuCommon.HAND_Z);
 		mToImage.setVisible(false);
 		iElementManager.iPlayScreenWorldGroup.mUiLayer.addActor(mToImage);
 
 		mElementSlot = new Slot<Map<String, Object>>(null);
-		mElementSlot.set(iElementManager.iElementModel.iVar);
+		mElementSlot.set(iModel.position.get());
 
 		mMoveLockSession = new Lock.Session(iElementManager.iPlayScreenWorldGroup.iParentZoomMove.mStopLock);
 
@@ -62,7 +61,7 @@ public class HeroManager extends ElementManager {
 
 	public void act() {
 		if (mElementSlot.dirty()) {
-			long[] xy = sLogic.getXY(iModel);
+			long[] xy = iModel.getXY();
 			mImage.setPosition(xy[0], xy[1]);
 			mElementSlot.get();
 		}
@@ -90,7 +89,7 @@ public class HeroManager extends ElementManager {
 				Vector2 v = iElementManager.iPlayScreenWorldGroup.stageToLocalCoordinates(new Vector2(event.getStageX(), event.getStageY()));
 				long newX = (long) Math.floor(v.x / ShinjuCommon.HERO_SIZE) * ShinjuCommon.HERO_SIZE;
 				long newY = (long) Math.floor(v.y / ShinjuCommon.HERO_SIZE) * ShinjuCommon.HERO_SIZE;
-				sLogic.setXY(iModel, newX, newY);
+				iModel.setXY(newX, newY);
 				// positionVar.iX.set(newX);
 				// positionVar.iY.set(newY);
 			}
@@ -100,7 +99,8 @@ public class HeroManager extends ElementManager {
 
 		@Override
 		public boolean longPress(Actor actor, float x, float y) {
-//			Gdx.app.debug(getClass().getSimpleName(), String.format("longPress x:%f,  y:%f", x, y));
+			// Gdx.app.debug(getClass().getSimpleName(),
+			// String.format("longPress x:%f,  y:%f", x, y));
 
 			mMoveActive.set(true);
 
@@ -109,10 +109,12 @@ public class HeroManager extends ElementManager {
 
 		@Override
 		public void pan(InputEvent event, float x, float y, float deltaX, float deltaY) {
-//			Gdx.app.debug(getClass().getSimpleName(), String.format("pan x:%f,  y:%f", x, y));
+			// Gdx.app.debug(getClass().getSimpleName(),
+			// String.format("pan x:%f,  y:%f", x, y));
 
 			if (!mMoveActive.get()) {
-//				Gdx.app.debug(getClass().getSimpleName(), "ignore (!active)");
+				// Gdx.app.debug(getClass().getSimpleName(),
+				// "ignore (!active)");
 				return;
 			}
 

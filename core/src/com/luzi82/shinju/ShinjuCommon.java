@@ -17,8 +17,7 @@ public class ShinjuCommon {
 		fontGenerator.dispose();
 	}
 
-	public World.Var mShinjuData;
-	public World.Model mShinjuModel;
+	public World mShinjuData;
 
 	public static final long CELL_SIZE = 256;
 

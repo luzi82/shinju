@@ -5,51 +5,50 @@ import java.util.TreeSet;
 
 import org.apache.commons.lang3.tuple.Pair;
 
-import com.luzi82.shinju.logic.Element.TypeModel;
+public abstract class Unit extends Element.Type {
 
-public class Unit {
-
-	public static abstract class Logic<M extends Model> extends Element.TypeLogic<M> {
-
-		protected Logic(String aType) {
-			super(aType);
-		}
-
-		public abstract long[] getXY(M aModel);
-
-		public abstract long getSize(M aModel);
-
-		public long[] getCenterXY(M aModel) {
-			long halfsize = getSize(aModel)/2;
-			long[] xy = getXY(aModel);
-			return new long[] { xy[0] + halfsize, xy[1] + halfsize };
-		}
-
-		// block
-
-		public static final Set<Pair<String, String>> sBlockSet = new TreeSet<Pair<String, String>>();
-
-		protected static void addBlock(String aA, String aB) {
-			if (aA.equals(aB)) {
-				sBlockSet.add(Pair.of(aA, aB));
-			} else {
-				sBlockSet.add(Pair.of(aA, aB));
-				sBlockSet.add(Pair.of(aB, aA));
-			}
-		}
-
-		public static boolean isBlock(String aA, String aB) {
-			return sBlockSet.contains(Pair.of(aA, aB));
-		}
-
+	protected Unit(World aWorld, String aType) {
+		super(aWorld, aType);
 	}
 
-	public static abstract class Model extends TypeModel {
+	public abstract long[] getXY();
 
-		protected Model(World.Model aWorldModel) {
-			super(aWorldModel);
+	public abstract long getSize();
+
+	public long[] getCenterXY() {
+		long halfsize = getSize() / 2;
+		long[] xy = getXY();
+		return new long[] { xy[0] + halfsize, xy[1] + halfsize };
+	}
+
+	// block
+
+	public static Set<Pair<String, String>> sBlockSet;
+
+	protected static void addBlock(String aA, String aB) {
+		if (aA.equals(aB)) {
+			sBlockSet.add(Pair.of(aA, aB));
+		} else {
+			sBlockSet.add(Pair.of(aA, aB));
+			sBlockSet.add(Pair.of(aB, aA));
 		}
+	}
 
+	public static boolean isBlock(String aA, String aB) {
+		return sBlockSet.contains(Pair.of(aA, aB));
+	}
+
+	public static void initBlock() {
+		if (sBlockSet == null) {
+			sBlockSet = new TreeSet<Pair<String, String>>();
+			addBlock(Hero.TYPE, Hero.TYPE);
+			addBlock(Witch.TYPE, Witch.TYPE);
+			addBlock(Hero.TYPE, Witch.TYPE);
+		}
+	}
+
+	static {
+		initBlock();
 	}
 
 }

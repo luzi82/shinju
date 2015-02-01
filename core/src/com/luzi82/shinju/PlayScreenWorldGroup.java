@@ -40,9 +40,9 @@ public class PlayScreenWorldGroup extends Group {
 		mUiLayer = new Group();
 		addActor(mUiLayer);
 
-		for (Element.Model elementModel : common.mShinjuModel.mElementModelMap.values()) {
+		for (Element elementModel : common.mShinjuData.element_map.get().values()) {
 			WorldElementManager mgr = new WorldElementManager(common, elementModel, this);
-			mPlayScreenWorldGroupHeroManagerMap.put(elementModel.iVar.id.get(), mgr);
+			mPlayScreenWorldGroupHeroManagerMap.put(elementModel.id.get(), mgr);
 		}
 
 	}
