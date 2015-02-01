@@ -1,6 +1,5 @@
 package com.luzi82.shinju;
 
-import com.badlogic.gdx.Gdx;
 
 //import com.luzi82.chitanda.client.Const;
 
@@ -114,7 +113,8 @@ public class CameraControl {
 				mCameraCalc.smoothZoom(aDelta, reduce, intReduce);
 				float newCameraBX = mCameraCalc.screenBoardToCameraX(touchSXAvg, mTouchStartBXAvg);
 				float newCameraBY = mCameraCalc.screenBoardToCameraY(touchSYAvg, mTouchStartBYAvg);
-				mCameraCalc.xySet(newCameraBX, newCameraBY);
+//				mCameraCalc.xySet(newCameraBX, newCameraBY);
+				mCameraCalc.xyMove(newCameraBX, newCameraBY, aDelta);
 			}
 		} else if (mMouseScrolled != 0) {
 			float mouseBX = mCameraCalc.screenToBoardX(mMouseOverSX);
@@ -130,6 +130,7 @@ public class CameraControl {
 		} else {
 			mCameraCalc.smoothZoom(aDelta, reduce, intReduce);
 			mCameraCalc.smoothXY(aDelta, reduce, intReduce);
+			mCameraCalc.clearMoveHistory();
 			// mMoving = false;
 		}
 		mTouchChange = false;

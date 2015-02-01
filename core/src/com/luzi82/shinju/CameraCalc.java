@@ -1,5 +1,8 @@
 package com.luzi82.shinju;
 
+import java.util.LinkedList;
+import java.util.ListIterator;
+
 import com.luzi82.shinju.CameraControl.Const;
 
 public class CameraCalc {
@@ -37,6 +40,10 @@ public class CameraCalc {
 	public float mCameraBXD;
 	public float mCameraBYD;
 
+	// move history
+	public float mDynamicDelta;
+	LinkedList<float[]> mMoveHistoryList;
+
 	public CameraCalc() {
 		// mLockTime = -1;
 		// mLockBXDiff = 0;
@@ -49,6 +56,9 @@ public class CameraCalc {
 		mCameraZoomD = 0;
 		mCameraBXD = 0;
 		mCameraBYD = 0;
+
+		mDynamicDelta = 0.1f;
+		mMoveHistoryList = new LinkedList<float[]>();
 	}
 
 	// public void updateLock(float aReduce) {
@@ -85,10 +95,41 @@ public class CameraCalc {
 	}
 
 	public void xyMove(float aNewX, float aNewY, float aDelta) {
-		mCameraBXD = (aNewX - iCameraBX) / aDelta;
-		mCameraBYD = (aNewY - iCameraBY) / aDelta;
+		// mCameraBXD = (aNewX - iCameraBX) / aDelta;
+		// mCameraBYD = (aNewY - iCameraBY) / aDelta;
+
+		mMoveHistoryList.addFirst(new float[] { aNewX, aNewY, aDelta });
+		float dt = 0f;
+		float ox = aNewX;
+		float oy = aNewY;
+		ListIterator<float[]> itr = mMoveHistoryList.listIterator();
+		while (itr.hasNext()) {
+			float[] f = itr.next();
+			ox = f[0];
+			oy = f[1];
+			if (dt + f[2] > mDynamicDelta)
+				break;
+			dt += f[2];
+		}
+		while (itr.hasNext()) {
+			itr.next();
+			itr.remove();
+		}
+
+		if (dt == 0f) {
+			mCameraBXD = 0;
+			mCameraBYD = 0;
+		} else {
+			mCameraBXD = (aNewX - ox) / dt;
+			mCameraBYD = (aNewY - oy) / dt;
+		}
+
 		iCameraBX = aNewX;
 		iCameraBY = aNewY;
+	}
+
+	public void clearMoveHistory() {
+		mMoveHistoryList.clear();
 	}
 
 	public void xySet(float aNewX, float aNewY) {
