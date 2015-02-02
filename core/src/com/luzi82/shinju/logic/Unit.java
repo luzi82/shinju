@@ -7,18 +7,25 @@ import org.apache.commons.lang3.tuple.Pair;
 
 public abstract class Unit extends Element.Type {
 
-	protected Unit(World aWorld, String aType) {
-		super(aWorld, aType);
+	protected Unit(String aType, World aWorld, Element aElement) {
+		super(aType, aWorld, aElement);
 	}
 
 	public abstract long[] getXY();
 
 	public abstract long getSize();
 
+	public abstract ObjectField<Long> cooldownField();
+
 	public long[] getCenterXY() {
 		long halfsize = getSize() / 2;
 		long[] xy = getXY();
 		return new long[] { xy[0] + halfsize, xy[1] + halfsize };
+	}
+
+	@Override
+	public void act_1_effect() {
+		// do nothing
 	}
 
 	// block

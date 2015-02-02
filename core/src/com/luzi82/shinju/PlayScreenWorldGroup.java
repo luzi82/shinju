@@ -1,11 +1,15 @@
 package com.luzi82.shinju;
 
 import java.util.HashMap;
+import java.util.LinkedList;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.utils.TimeUtils;
+import com.luzi82.homuvalue.obj.MapVariable;
+import com.luzi82.homuvalue.obj.VariableMapVariable;
 import com.luzi82.shinju.logic.Element;
 
 public class PlayScreenWorldGroup extends Group {
@@ -19,6 +23,8 @@ public class PlayScreenWorldGroup extends Group {
 	public Group mWitchLayer;
 
 	public Group mHeroLayer;
+
+	public Group mEffectLayer;
 
 	public Group mUiLayer;
 
@@ -37,6 +43,9 @@ public class PlayScreenWorldGroup extends Group {
 		mHeroLayer = new Group();
 		addActor(mHeroLayer);
 
+		mEffectLayer = new Group();
+		addActor(mEffectLayer);
+
 		mUiLayer = new Group();
 		addActor(mUiLayer);
 
@@ -45,13 +54,53 @@ public class PlayScreenWorldGroup extends Group {
 			mPlayScreenWorldGroupHeroManagerMap.put(elementModel.id.get(), mgr);
 		}
 
+		common.mShinjuData.element_map.get().addChangeListener(mElementMapListener);
+
 	}
+
+	public MapVariable.ChangeListener<Long, Element> mElementMapListener = new MapVariable.ChangeListener<Long, Element>() {
+
+		@Override
+		public void onRemove(Long aK, Element aI) {
+			Gdx.app.debug(getClass().getName(), "c4pyBad0 onRemove");
+			mElementRemove.add(aK);
+		}
+
+		@Override
+		public void onAdd(Long aK, Element aI) {
+			Gdx.app.debug(getClass().getName(), "yK9FF6e5 onAdd");
+			mElementAdd.add(aK);
+		}
+
+	};
+
+	LinkedList<Long> mElementAdd = new LinkedList<Long>();
+	LinkedList<Long> mElementRemove = new LinkedList<Long>();
 
 	@Override
 	public void act(float delta) {
 		super.act(delta);
+		float turn = iCommon.getTargetTurnF();
+
+		mElementAdd.removeAll(mElementRemove);
+
+		for (Long i : mElementAdd) {
+			Element e = iCommon.mShinjuData.element_map.get().get(i);
+			WorldElementManager mgr = new WorldElementManager(iCommon, e, this);
+			mPlayScreenWorldGroupHeroManagerMap.put(e.id.get(), mgr);
+		}
+		mElementAdd.clear();
+
+		for (Long i : mElementRemove) {
+			WorldElementManager mgr = mPlayScreenWorldGroupHeroManagerMap.remove(i);
+			if (mgr != null) {
+				mgr.dispose();
+			}
+		}
+		mElementRemove.clear();
+
 		for (WorldElementManager mgr : mPlayScreenWorldGroupHeroManagerMap.values()) {
-			mgr.act();
+			mgr.act(turn);
 		}
 	}
 

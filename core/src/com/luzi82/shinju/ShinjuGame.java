@@ -4,8 +4,11 @@ import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.utils.TimeUtils;
+import com.luzi82.shinju.logic.BulletSimple;
 import com.luzi82.shinju.logic.Element;
 import com.luzi82.shinju.logic.Hero;
+import com.luzi82.shinju.logic.Skill;
 import com.luzi82.shinju.logic.Unit;
 import com.luzi82.shinju.logic.Witch;
 import com.luzi82.shinju.logic.World;
@@ -22,26 +25,48 @@ public class ShinjuGame extends Game {
 		common = new ShinjuCommon();
 
 		common.mShinjuData = new World();
+		common.mShinjuActTurn = 0;
+		common.mShinjuActTime = TimeUtils.millis();
 
 		Element element;
+		Skill skill;
+		BulletSimple.Ski bulletSimple;
 
 		element = new Element(common.mShinjuData);
 		element.type.set(Hero.TYPE);
-		element.hero.set(new Hero(common.mShinjuData));
+		element.hero.set(new Hero(common.mShinjuData, element));
 		element.hero.get().position.get().x.set(4L * ShinjuCommon.CELL_SIZE);
 		element.hero.get().position.get().y.set(4L * ShinjuCommon.CELL_SIZE);
 		common.mShinjuData.addElement(element);
 
+		skill = new Skill(common.mShinjuData, element.hero.get());
+		skill.type.set(BulletSimple.TYPE);
+		bulletSimple = new BulletSimple.Ski(common.mShinjuData, skill);
+		bulletSimple.cooldown.set(10L);
+		bulletSimple.range.set(5L * ShinjuCommon.CELL_SIZE);
+		bulletSimple.target_unit_type_list.get().add(Witch.TYPE);
+		skill.bullet_simple.set(bulletSimple);
+		element.hero.get().addSkill(skill);
+
 		element = new Element(common.mShinjuData);
 		element.type.set(Hero.TYPE);
-		element.hero.set(new Hero(common.mShinjuData));
+		element.hero.set(new Hero(common.mShinjuData, element));
 		element.hero.get().position.get().x.set(10L * ShinjuCommon.CELL_SIZE);
 		element.hero.get().position.get().y.set(10L * ShinjuCommon.CELL_SIZE);
 		common.mShinjuData.addElement(element);
 
+		skill = new Skill(common.mShinjuData, element.hero.get());
+		skill.type.set(BulletSimple.TYPE);
+		bulletSimple = new BulletSimple.Ski(common.mShinjuData, skill);
+		bulletSimple.cooldown.set(10L);
+		bulletSimple.range.set(5L * ShinjuCommon.CELL_SIZE);
+		bulletSimple.target_unit_type_list.get().add(Witch.TYPE);
+		skill.bullet_simple.set(bulletSimple);
+		element.hero.get().addSkill(skill);
+
 		element = new Element(common.mShinjuData);
 		element.type.set(Witch.TYPE);
-		element.witch.set(new Witch(common.mShinjuData));
+		element.witch.set(new Witch(common.mShinjuData, element));
 		element.witch.get().position.get().x.set(6L * ShinjuCommon.CELL_SIZE);
 		element.witch.get().position.get().y.set(6L * ShinjuCommon.CELL_SIZE);
 		common.mShinjuData.addElement(element);

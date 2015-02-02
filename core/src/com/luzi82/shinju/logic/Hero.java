@@ -2,6 +2,7 @@ package com.luzi82.shinju.logic;
 
 import java.util.Map;
 
+import com.luzi82.homuvalue.obj.VariableMapVariable;
 import com.luzi82.shinju.ShinjuCommon;
 
 public class Hero extends Unit {
@@ -10,16 +11,28 @@ public class Hero extends Unit {
 
 	final public VarField<Hp, Map<String, Object>> hp;
 
-	public Hero(World aWorld) {
-		super(aWorld, TYPE);
+	final public ObjectField<Long> cooldown;
+
+	final public VarField<VariableMapVariable<Long, Skill, Map<String, Object>>, Map<Long, Map<String, Object>>> skill_map;
+
+	public Hero(World aWorld, Element aElement) {
+		super(TYPE, aWorld, aElement);
 
 		position = new VarField<Position, Map<String, Object>>("position", Factory.C.create(Position.class));
 		addField(position);
 		hp = new VarField<Hp, Map<String, Object>>("hp", Factory.C.create(Hp.class));
 		addField(hp);
+		cooldown = new ObjectField<Long>("cooldown");
+		addField(cooldown);
+		Skill.Factory skill_factory = new Skill.Factory(iWorld, this);
+		VariableMapVariable.F<Long, Skill, Map<String, Object>> skill_map_factory = new VariableMapVariable.F(skill_factory);
+		skill_map = new VarField<VariableMapVariable<Long, Skill, Map<String, Object>>, Map<Long, Map<String, Object>>>("skill_list", skill_map_factory);
+		addField(skill_map);
 
 		position.set(new Position());
 		hp.set(new Hp());
+		cooldown.set(0L);
+		skill_map.set(new VariableMapVariable<Long, Skill, Map<String, Object>>(skill_factory));
 	}
 
 	@Override
@@ -63,6 +76,20 @@ public class Hero extends Unit {
 		return true;
 	}
 
+	@Override
+	public ObjectField<Long> cooldownField() {
+		return cooldown;
+	}
+
+	@Override
+	public void act_0_unit() {
+		if (cooldown.get() > iWorld.turn.get())
+			return;
+		for (Skill skill : skill_map.get().values()) {
+			skill.act();
+		}
+	}
+
 	public static final String TYPE = "hero";
 
 	//
@@ -71,15 +98,23 @@ public class Hero extends Unit {
 
 		private final World iWorld;
 
-		public Factory(World aWorld) {
+		private final Element iElement;
+
+		public Factory(World aWorld, Element aElement) {
 			iWorld = aWorld;
+			iElement = aElement;
 		}
 
 		@Override
 		public Hero create() {
-			return new Hero(iWorld);
+			return new Hero(iWorld, iElement);
 		}
 
+	}
+
+	public void addSkill(Skill skill) {
+		skill.id.set(iWorld.nextId());
+		skill_map.get().put(skill.id.get(), skill);
 	}
 
 }

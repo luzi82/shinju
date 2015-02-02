@@ -10,16 +10,21 @@ public class Witch extends Unit {
 
 	final public VarField<Hp, Map<String, Object>> hp;
 
-	public Witch(World aWorld) {
-		super(aWorld, TYPE);
+	final public ObjectField<Long> cooldown;
+
+	public Witch(World aWorld, Element aElement) {
+		super(TYPE, aWorld, aElement);
 
 		position = new VarField<Position, Map<String, Object>>("position", Factory.C.create(Position.class));
 		addField(position);
 		hp = new VarField<Hp, Map<String, Object>>("hp", Factory.C.create(Hp.class));
 		addField(hp);
+		cooldown = new ObjectField<Long>("cooldown");
+		addField(cooldown);
 
 		position.set(new Position());
 		hp.set(new Hp());
+		cooldown.set(0L);
 	}
 
 	@Override
@@ -32,6 +37,16 @@ public class Witch extends Unit {
 		return ShinjuCommon.WITCH_SIZE;
 	}
 
+	@Override
+	public ObjectField<Long> cooldownField() {
+		return cooldown;
+	}
+	
+	@Override
+	public void act_0_unit() {
+		
+	}
+
 	public static final String TYPE = "witch";
 
 	//
@@ -40,13 +55,16 @@ public class Witch extends Unit {
 
 		private final World iWorld;
 
-		public Factory(World aWorld) {
+		private final Element iElement;
+
+		public Factory(World aWorld, Element aElement) {
 			iWorld = aWorld;
+			iElement = aElement;
 		}
 
 		@Override
 		public Witch create() {
-			return new Witch(iWorld);
+			return new Witch(iWorld, iElement);
 		}
 
 	}

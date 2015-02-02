@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator.FreeTypeFontParameter;
+import com.badlogic.gdx.utils.TimeUtils;
 import com.luzi82.shinju.logic.World;
 
 public class ShinjuCommon {
@@ -17,7 +18,22 @@ public class ShinjuCommon {
 		fontGenerator.dispose();
 	}
 
+	public long getTargetTurn() {
+		return (TimeUtils.millis() - mShinjuActTime) * DAY_TURN / DAY_TIME + mShinjuActTurn;
+	}
+
+	public float getTargetTurnF() {
+		return (TimeUtils.millis() - mShinjuActTime) * DAY_TURN / (float) DAY_TIME + mShinjuActTurn;
+	}
+
 	public World mShinjuData;
+	public long mShinjuActTurn;
+	public long mShinjuActTime;
+
+	// number of milli sec in a day
+	public static final long DAY_TIME = 24 * 60 * 60 * 1000L;
+	// number of turn in a day
+	public static final long DAY_TURN = 7 * 7 * 7 * 7 * 7 * 7 * 7;
 
 	public static final long CELL_SIZE = 256;
 

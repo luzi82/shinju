@@ -35,7 +35,7 @@ public class WitchManager extends ElementManager {
 		mElementSlot.set(iElementManager.iElementModel);
 	}
 
-	public void act() {
+	public void act(float turn) {
 		if (mElementSlot.dirty()) {
 			long[] xy = iModel.getXY();
 			mImage.setPosition(xy[0], xy[1]);

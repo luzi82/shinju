@@ -59,7 +59,7 @@ public class HeroManager extends ElementManager {
 		mMoveActive.addObserver(new MoveObserver());
 	}
 
-	public void act() {
+	public void act(float turn) {
 		if (mElementSlot.dirty()) {
 			long[] xy = iModel.getXY();
 			mImage.setPosition(xy[0], xy[1]);

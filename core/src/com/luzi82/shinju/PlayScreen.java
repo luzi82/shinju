@@ -20,6 +20,8 @@ public class PlayScreen extends ScreenAdapter {
 	public PlayScreen(ShinjuCommon common) {
 		Gdx.app.debug("PlayScreen", "init");
 
+		this.common = common;
+
 		// InputMultiplexer inputMultiplexer = new InputMultiplexer();
 		// Gdx.input.setInputProcessor(inputMultiplexer);
 
@@ -49,24 +51,67 @@ public class PlayScreen extends ScreenAdapter {
 
 		// worldStage = new PlayScreenWorldStage(common);
 		// inputMultiplexer.addProcessor(worldStage);
+
+		synchronized (this) {
+			active = true;
+		}
 	}
 
 	@Override
 	public void render(float delta) {
-		super.render(delta);
+		synchronized (this) {
+			super.render(delta);
 
-		Gdx.graphics.getGL20().glClearColor(0.5f, 0.5f, 0.5f, 1);
-		Gdx.graphics.getGL20().glClear(GL20.GL_COLOR_BUFFER_BIT);
+			long targetTurn = common.getTargetTurn();
+			if (common.mShinjuData.turn.get() < targetTurn) {
+				common.mShinjuData.act();
+			}
 
-		stage.act(delta);
-		stage.draw();
+			Gdx.graphics.getGL20().glClearColor(0.5f, 0.5f, 0.5f, 1);
+			Gdx.graphics.getGL20().glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-		// uiStage.act(delta);
-		// uiStage.draw();
-
-		// worldStage.act(delta);
-		// worldStage.draw();
+			stage.act(delta);
+			stage.draw();
+		}
 	}
+
+	@Override
+	public void resume() {
+		super.resume();
+		synchronized (this) {
+			active = true;
+			if (fastForwardThread == null) {
+				fastForwardThread = new Thread(fastForwardRunnable);
+				fastForwardThread.start();
+			}
+		}
+	}
+
+	@Override
+	public void pause() {
+		super.pause();
+		synchronized (this) {
+			active = false;
+		}
+	}
+
+	boolean active;
+	Thread fastForwardThread;
+	Runnable fastForwardRunnable = new Runnable() {
+		@Override
+		public void run() {
+			while (true) {
+				synchronized (PlayScreen.this) {
+					if (active && (common.mShinjuData.turn.get() < common.getTargetTurn())) {
+						common.mShinjuData.act();
+					} else {
+						fastForwardThread = null;
+						break;
+					}
+				}
+			}
+		}
+	};
 
 	@Override
 	public void resize(int width, int height) {
@@ -74,21 +119,14 @@ public class PlayScreen extends ScreenAdapter {
 		stage.getViewport().update(width, height, true);
 		uiGroup.setSize(width, height);
 		screenZoomGroup.setSize(width, height);
-		// worldZoomGroup.setPosition(0, 0);
-		// worldZoomGroup.setSize(width, height);
-		// worldZoomGroup.setBounds(0, 0, width, height);
-		// screenZoomGroup.setPosition(((float) width) / 2, ((float) height) /
-		// 2);
-		// screenZoomGroup.setScale(Math.min(width, height));
-		// uiStage.resize(width, height);
-		// worldStage.resize(width, height);
 	}
 
 	@Override
 	public void dispose() {
+		synchronized (this) {
+			active = false;
+		}
 		stage.dispose();
-		// uiStage.dispose();
-		// worldStage.dispose();
 		super.dispose();
 	}
 

@@ -38,10 +38,9 @@ public class WorldElementManager {
 		// mElementTypeDirty = true;
 	}
 
-	public void act() {
+	public void act(float turn) {
 		if (mElementTypeSlot.dirty()) {
-			// Gdx.app.debug(getClass().getSimpleName(),
-			// "EuWORn4l mElementTypeDirty");
+			Gdx.app.debug(getClass().getSimpleName(), "EuWORn4l mElementTypeDirty");
 			if (mElementManager != null) {
 				mElementManager.dispose();
 			}
@@ -53,12 +52,18 @@ public class WorldElementManager {
 			}
 		}
 		if (mElementManager != null) {
-			mElementManager.act();
+			mElementManager.act(turn);
+		}
+	}
+
+	public void dispose() {
+		if (mElementManager != null) {
+			mElementManager.dispose();
 		}
 	}
 
 	public abstract static class ElementManager {
-		public abstract void act();
+		public abstract void act(float turn);
 
 		public abstract void dispose();
 	}
@@ -85,6 +90,7 @@ public class WorldElementManager {
 		mElementManagerFactoryMap = new HashMap<String, ElementManagerFactory>();
 		addElementManagerFactory(new HeroManager.Factory());
 		addElementManagerFactory(new WitchManager.Factory());
+		addElementManagerFactory(new BulletSimpleManager.Factory());
 	}
 
 }
