@@ -7,8 +7,6 @@ import com.luzi82.homuvalue.obj.ObjectVariable;
 
 public class Skill extends ObjectVariable {
 
-	public final World iWorld;
-
 	public final Unit iUnit;
 
 	public final HashMap<String, VarField<? extends Type, Map<String, Object>>> mTypeField;
@@ -21,8 +19,7 @@ public class Skill extends ObjectVariable {
 
 	public final VarField<BulletSimple.Ski, Map<String, Object>> bullet_simple;
 
-	public Skill(World aWorld, Unit aUnit) {
-		iWorld = aWorld;
+	public Skill(Unit aUnit) {
 		iUnit = aUnit;
 		mTypeField = new HashMap<String, ObjectVariable.VarField<? extends Type, Map<String, Object>>>();
 
@@ -32,7 +29,7 @@ public class Skill extends ObjectVariable {
 		addField(element_id);
 		type = new ObjectField<String>("type");
 		addField(type);
-		bullet_simple = new VarField<BulletSimple.Ski, Map<String, Object>>("bullet_simple", new BulletSimple.Ski.Factory(iWorld, this));
+		bullet_simple = new VarField<BulletSimple.Ski, Map<String, Object>>("bullet_simple", new BulletSimple.Ski.Factory(this));
 		addField(bullet_simple);
 
 		mTypeField.put(BulletSimple.TYPE, bullet_simple);
@@ -51,15 +48,12 @@ public class Skill extends ObjectVariable {
 	public static abstract class Type extends ObjectVariable {
 		public final String mType;
 
-		public final World iWorld;
-
 		public final Skill iSkill;
 
 		final ObjectField<Long> skill_id;
 
-		protected Type(String aType, World aWorld, Skill aSkill) {
+		protected Type(String aType, Skill aSkill) {
 			mType = aType;
-			iWorld = aWorld;
 			iSkill = aSkill;
 
 			skill_id = new ObjectField<Long>("skill_id");
@@ -73,17 +67,15 @@ public class Skill extends ObjectVariable {
 
 	public static class Factory implements com.luzi82.common.Factory<Skill> {
 
-		private final World iWorld;
 		private final Unit iUnit;
 
-		public Factory(World aWorld, Unit aUnit) {
-			iWorld = aWorld;
+		public Factory(Unit aUnit) {
 			iUnit = aUnit;
 		}
 
 		@Override
 		public Skill create() {
-			return new Skill(iWorld, iUnit);
+			return new Skill(iUnit);
 		}
 
 	}

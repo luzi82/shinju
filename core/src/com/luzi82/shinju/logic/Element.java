@@ -33,11 +33,11 @@ public class Element extends ObjectVariable {
 		addField(delete);
 		type = new ObjectField<String>("type");
 		addField(type);
-		hero = new VarField<Hero, Map<String, Object>>("hero", new Hero.Factory(iWorld, this));
+		hero = new VarField<Hero, Map<String, Object>>("hero", new Hero.Factory(this));
 		addField(hero);
-		witch = new VarField<Witch, Map<String, Object>>("witch", new Witch.Factory(iWorld, this));
+		witch = new VarField<Witch, Map<String, Object>>("witch", new Witch.Factory(this));
 		addField(witch);
-		bullet_simple = new VarField<BulletSimple.Eff, Map<String, Object>>("bullet_simple", new BulletSimple.Eff.Factory(iWorld, this));
+		bullet_simple = new VarField<BulletSimple.Eff, Map<String, Object>>("bullet_simple", new BulletSimple.Eff.Factory(this));
 		addField(bullet_simple);
 
 		mTypeField.put(Hero.TYPE, hero);
@@ -54,15 +54,12 @@ public class Element extends ObjectVariable {
 	public static abstract class Type extends ObjectVariable {
 		public final String mType;
 
-		public final World iWorld;
-
 		public final Element iElement;
 
 		final public ObjectField<Long> element_id;
 
-		protected Type(String aType, World aWorld, Element aElement) {
+		protected Type(String aType, Element aElement) {
 			mType = aType;
-			iWorld = aWorld;
 			iElement = aElement;
 
 			element_id = new ObjectField<Long>("element_id");

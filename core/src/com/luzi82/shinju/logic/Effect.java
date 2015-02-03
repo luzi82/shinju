@@ -2,8 +2,8 @@ package com.luzi82.shinju.logic;
 
 public abstract class Effect extends Element.Type {
 
-	protected Effect(String aType, World aWorld, Element aElement) {
-		super(aType, aWorld, aElement);
+	protected Effect(String aType, Element aElement) {
+		super(aType, aElement);
 	}
 
 	@Override

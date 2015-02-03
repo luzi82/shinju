@@ -34,14 +34,14 @@ public class ShinjuGame extends Game {
 
 		element = new Element(common.mShinjuData);
 		element.type.set(Hero.TYPE);
-		element.hero.set(new Hero(common.mShinjuData, element));
+		element.hero.set(new Hero(element));
 		element.hero.get().position.get().x.set(4L * ShinjuCommon.CELL_SIZE);
 		element.hero.get().position.get().y.set(4L * ShinjuCommon.CELL_SIZE);
 		common.mShinjuData.addElement(element);
 
-		skill = new Skill(common.mShinjuData, element.hero.get());
+		skill = new Skill(element.hero.get());
 		skill.type.set(BulletSimple.TYPE);
-		bulletSimple = new BulletSimple.Ski(common.mShinjuData, skill);
+		bulletSimple = new BulletSimple.Ski(skill);
 		bulletSimple.cooldown.set(10L);
 		bulletSimple.range.set(5L * ShinjuCommon.CELL_SIZE);
 		bulletSimple.speed.set(ShinjuCommon.CELL_SIZE);
@@ -51,14 +51,14 @@ public class ShinjuGame extends Game {
 
 		element = new Element(common.mShinjuData);
 		element.type.set(Hero.TYPE);
-		element.hero.set(new Hero(common.mShinjuData, element));
+		element.hero.set(new Hero(element));
 		element.hero.get().position.get().x.set(10L * ShinjuCommon.CELL_SIZE);
 		element.hero.get().position.get().y.set(10L * ShinjuCommon.CELL_SIZE);
 		common.mShinjuData.addElement(element);
 
-		skill = new Skill(common.mShinjuData, element.hero.get());
+		skill = new Skill(element.hero.get());
 		skill.type.set(BulletSimple.TYPE);
-		bulletSimple = new BulletSimple.Ski(common.mShinjuData, skill);
+		bulletSimple = new BulletSimple.Ski(skill);
 		bulletSimple.cooldown.set(10L);
 		bulletSimple.range.set(5L * ShinjuCommon.CELL_SIZE);
 		bulletSimple.speed.set(ShinjuCommon.CELL_SIZE);
@@ -68,7 +68,7 @@ public class ShinjuGame extends Game {
 
 		element = new Element(common.mShinjuData);
 		element.type.set(Witch.TYPE);
-		element.witch.set(new Witch(common.mShinjuData, element));
+		element.witch.set(new Witch(element));
 		element.witch.get().position.get().x.set(6L * ShinjuCommon.CELL_SIZE);
 		element.witch.get().position.get().y.set(6L * ShinjuCommon.CELL_SIZE);
 		common.mShinjuData.addElement(element);

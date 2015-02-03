@@ -15,8 +15,8 @@ public class Hero extends Unit {
 
 	final public VarField<VariableMapVariable<Long, Skill, Map<String, Object>>, Map<Long, Map<String, Object>>> skill_map;
 
-	public Hero(World aWorld, Element aElement) {
-		super(TYPE, aWorld, aElement);
+	public Hero(Element aElement) {
+		super(TYPE, aElement);
 
 		position = new VarField<Position, Map<String, Object>>("position", Factory.C.create(Position.class));
 		addField(position);
@@ -24,7 +24,7 @@ public class Hero extends Unit {
 		addField(hp);
 		cooldown = new ObjectField<Long>("cooldown");
 		addField(cooldown);
-		Skill.Factory skill_factory = new Skill.Factory(iWorld, this);
+		Skill.Factory skill_factory = new Skill.Factory(this);
 		VariableMapVariable.F<Long, Skill, Map<String, Object>> skill_map_factory = new VariableMapVariable.F(skill_factory);
 		skill_map = new VarField<VariableMapVariable<Long, Skill, Map<String, Object>>, Map<Long, Map<String, Object>>>("skill_list", skill_map_factory);
 		addField(skill_map);
@@ -51,9 +51,10 @@ public class Hero extends Unit {
 		if (aY % ShinjuCommon.HERO_SIZE != 0)
 			return false;
 
+		World world = iElement.iWorld;
 		long mySize = getSize();
 
-		for (Element m : iWorld.element_map.get().values()) {
+		for (Element m : world.element_map.get().values()) {
 			String type = m.type.get();
 			if (!isBlock(TYPE, type))
 				continue;
@@ -83,7 +84,7 @@ public class Hero extends Unit {
 
 	@Override
 	public void act_0_unit() {
-		if (cooldown.get() > iWorld.turn.get())
+		if (cooldown.get() > iElement.iWorld.turn.get())
 			return;
 		for (Skill skill : skill_map.get().values()) {
 			skill.act();
@@ -96,24 +97,21 @@ public class Hero extends Unit {
 
 	public static class Factory implements com.luzi82.common.Factory<Hero> {
 
-		private final World iWorld;
-
 		private final Element iElement;
 
-		public Factory(World aWorld, Element aElement) {
-			iWorld = aWorld;
+		public Factory(Element aElement) {
 			iElement = aElement;
 		}
 
 		@Override
 		public Hero create() {
-			return new Hero(iWorld, iElement);
+			return new Hero(iElement);
 		}
 
 	}
 
 	public void addSkill(Skill skill) {
-		skill.id.set(iWorld.nextId());
+		skill.id.set(iElement.iWorld.nextId());
 		skill_map.get().put(skill.id.get(), skill);
 	}
 

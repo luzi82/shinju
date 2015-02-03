@@ -5,7 +5,6 @@ import java.util.Map;
 
 import com.badlogic.gdx.Gdx;
 import com.luzi82.homuvalue.obj.ObjectListVariable;
-import com.luzi82.shinju.ShinjuCommon;
 
 public class BulletSimple {
 
@@ -21,8 +20,8 @@ public class BulletSimple {
 
 		public final ObjectField<Long> end_turn;
 
-		public Eff(World aWorld, Element aElement) {
-			super(TYPE, aWorld, aElement);
+		public Eff(Element aElement) {
+			super(TYPE, aElement);
 
 			Gdx.app.debug(getClass().getName(), "DXMt63xc construct");
 
@@ -39,7 +38,7 @@ public class BulletSimple {
 		}
 
 		public float[] getXY(float mTurn) {
-			Unit dest_unit = (Unit) iWorld.element_map.get().get(dest_id.get()).getTypeVar();
+			Unit dest_unit = (Unit) iElement.iWorld.element_map.get().get(dest_id.get()).getTypeVar();
 
 			long[] xy0 = source_position.get().getXY();
 			long[] xy1 = dest_unit.getCenterXY();
@@ -62,25 +61,22 @@ public class BulletSimple {
 
 		public static class Factory implements com.luzi82.common.Factory<Eff> {
 
-			private final World iWorld;
-
 			private final Element iElement;
 
-			public Factory(World aWorld, Element aElement) {
-				iWorld = aWorld;
+			public Factory(Element aElement) {
 				iElement = aElement;
 			}
 
 			@Override
 			public Eff create() {
-				return new Eff(iWorld, iElement);
+				return new Eff(iElement);
 			}
 
 		}
 
 		@Override
 		public void act_1_effect() {
-			if (iWorld.turn.get() > end_turn.get()) {
+			if (iElement.iWorld.turn.get() > end_turn.get()) {
 				iElement.delete.set(true);
 			}
 		}
@@ -97,8 +93,8 @@ public class BulletSimple {
 
 		public final VarField<ObjectListVariable<String>, List<String>> target_unit_type_list;
 
-		public Ski(World aWorld, Skill aSkill) {
-			super(TYPE, aWorld, aSkill);
+		public Ski(Skill aSkill) {
+			super(TYPE, aSkill);
 
 			cooldown = new ObjectField<Long>("cooldown");
 			addField(cooldown);
@@ -113,6 +109,7 @@ public class BulletSimple {
 		}
 
 		public void act() {
+			World world = iSkill.iUnit.iElement.iWorld;
 			long[] center = iSkill.iUnit.getCenterXY();
 
 			long range2 = range.get();
@@ -121,7 +118,7 @@ public class BulletSimple {
 
 			Element target = null;
 
-			for (Element em : iWorld.element_map.get().values()) {
+			for (Element em : world.element_map.get().values()) {
 				String t = em.type.get();
 				if (!target_unit_type_list.get().get().contains(t)) {
 					continue;
@@ -140,33 +137,31 @@ public class BulletSimple {
 
 			long travelTime = Util.sqrt(range2)[1] / speed.get();
 
-			Element effElement = new Element(iWorld);
+			Element effElement = new Element(world);
 			effElement.type.set(TYPE);
-			Eff eff = new Eff(iWorld, effElement);
+			Eff eff = new Eff(effElement);
 			eff.source_position.get().x.set(center[0]);
 			eff.source_position.get().y.set(center[1]);
 			eff.dest_id.set(target.id.get());
-			eff.start_turn.set(iWorld.turn.get());
-			eff.end_turn.set(iWorld.turn.get() + travelTime); // TODO
+			eff.start_turn.set(world.turn.get());
+			eff.end_turn.set(world.turn.get() + travelTime); // TODO
 			effElement.bullet_simple.set(eff);
-			iWorld.addElement(effElement);
+			world.addElement(effElement);
 
-			iSkill.iUnit.cooldownField().set(iWorld.turn.get() + cooldown.get());
+			iSkill.iUnit.cooldownField().set(world.turn.get() + cooldown.get());
 		}
 
 		public static class Factory implements com.luzi82.common.Factory<Ski> {
 
-			private final World iWorld;
 			private final Skill iSkill;
 
-			public Factory(World aWorld, Skill aSkill) {
-				iWorld = aWorld;
+			public Factory(Skill aSkill) {
 				iSkill = aSkill;
 			}
 
 			@Override
 			public Ski create() {
-				return new Ski(iWorld, iSkill);
+				return new Ski(iSkill);
 			}
 
 		}

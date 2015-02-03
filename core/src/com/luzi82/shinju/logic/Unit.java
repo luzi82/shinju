@@ -7,8 +7,8 @@ import org.apache.commons.lang3.tuple.Pair;
 
 public abstract class Unit extends Element.Type {
 
-	protected Unit(String aType, World aWorld, Element aElement) {
-		super(aType, aWorld, aElement);
+	protected Unit(String aType, Element aElement) {
+		super(aType, aElement);
 	}
 
 	public abstract long[] getXY();

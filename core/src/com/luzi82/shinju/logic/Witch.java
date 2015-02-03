@@ -12,8 +12,8 @@ public class Witch extends Unit {
 
 	final public ObjectField<Long> cooldown;
 
-	public Witch(World aWorld, Element aElement) {
-		super(TYPE, aWorld, aElement);
+	public Witch(Element aElement) {
+		super(TYPE, aElement);
 
 		position = new VarField<Position, Map<String, Object>>("position", Factory.C.create(Position.class));
 		addField(position);
@@ -53,18 +53,15 @@ public class Witch extends Unit {
 
 	public static class Factory implements com.luzi82.common.Factory<Witch> {
 
-		private final World iWorld;
-
 		private final Element iElement;
 
-		public Factory(World aWorld, Element aElement) {
-			iWorld = aWorld;
+		public Factory(Element aElement) {
 			iElement = aElement;
 		}
 
 		@Override
 		public Witch create() {
-			return new Witch(iWorld, iElement);
+			return new Witch(iElement);
 		}
 
 	}
