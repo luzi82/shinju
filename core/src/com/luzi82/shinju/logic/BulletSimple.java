@@ -81,6 +81,14 @@ public class BulletSimple {
 			}
 		}
 
+		public static Eff create(World aWorld) {
+			Element element = Element.create(aWorld);
+			Eff ret = new Eff(element);
+			element.type.set(TYPE);
+			element.bullet_simple.set(ret);
+			return ret;
+		}
+
 	}
 
 	public static class Ski extends Skill.Type {
@@ -137,16 +145,17 @@ public class BulletSimple {
 
 			long travelTime = Util.sqrt(range2)[1] / speed.get();
 
-			Element effElement = new Element(world);
-			effElement.type.set(TYPE);
-			Eff eff = new Eff(effElement);
+			// Element effElement = new Element(world);
+			// effElement.type.set(TYPE);
+			// Eff eff = new Eff(effElement);
+			Eff eff = Eff.create(world);
 			eff.source_position.get().x.set(center[0]);
 			eff.source_position.get().y.set(center[1]);
 			eff.dest_id.set(target.id.get());
 			eff.start_turn.set(world.turn.get());
 			eff.end_turn.set(world.turn.get() + travelTime); // TODO
-			effElement.bullet_simple.set(eff);
-			world.addElement(effElement);
+			// effElement.bullet_simple.set(eff);
+			// world.addElement(effElement);
 
 			iSkill.iUnit.cooldownField().set(world.turn.get() + cooldown.get());
 		}
@@ -164,6 +173,14 @@ public class BulletSimple {
 				return new Ski(iSkill);
 			}
 
+		}
+
+		public static Ski create(Unit aUnit) {
+			Skill skill = Skill.create(aUnit);
+			Ski ret = new Ski(skill);
+			skill.type.set(TYPE);
+			skill.bullet_simple.set(ret);
+			return ret;
 		}
 
 	}

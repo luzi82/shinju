@@ -23,7 +23,7 @@ public class Element extends ObjectVariable {
 
 	public final VarField<BulletSimple.Eff, Map<String, Object>> bullet_simple;
 
-	public Element(World aWorld) {
+	protected Element(World aWorld) {
 		iWorld = aWorld;
 		mTypeField = new HashMap<String, VarField<? extends Type, Map<String, Object>>>();
 
@@ -71,6 +71,7 @@ public class Element extends ObjectVariable {
 		public abstract void act_0_unit();
 
 		public abstract void act_1_effect();
+
 	}
 
 	public static class Factory implements com.luzi82.common.Factory<Element> {
@@ -94,6 +95,14 @@ public class Element extends ObjectVariable {
 
 	public void act_1_effect() {
 		getTypeVar().act_1_effect();
+	}
+
+	public static Element create(World aWorld) {
+		long id = aWorld.nextId();
+		Element ret = new Element(aWorld);
+		ret.id.set(id);
+		aWorld.element_map.get().put(id, ret);
+		return ret;
 	}
 
 }

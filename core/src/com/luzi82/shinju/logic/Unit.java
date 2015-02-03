@@ -1,9 +1,12 @@
 package com.luzi82.shinju.logic;
 
+import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 
 import org.apache.commons.lang3.tuple.Pair;
+
+import com.luzi82.homuvalue.obj.VariableMapVariable;
 
 public abstract class Unit extends Element.Type {
 
@@ -16,6 +19,8 @@ public abstract class Unit extends Element.Type {
 	public abstract long getSize();
 
 	public abstract ObjectField<Long> cooldownField();
+	
+	public abstract VariableMapVariable<Long, Skill, Map<String, Object>> skillMap();
 
 	public long[] getCenterXY() {
 		long halfsize = getSize() / 2;

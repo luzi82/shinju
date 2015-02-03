@@ -2,6 +2,7 @@ package com.luzi82.shinju.logic;
 
 import java.util.Map;
 
+import com.luzi82.homuvalue.obj.VariableMapVariable;
 import com.luzi82.shinju.ShinjuCommon;
 
 public class Witch extends Unit {
@@ -12,7 +13,7 @@ public class Witch extends Unit {
 
 	final public ObjectField<Long> cooldown;
 
-	public Witch(Element aElement) {
+	protected Witch(Element aElement) {
 		super(TYPE, aElement);
 
 		position = new VarField<Position, Map<String, Object>>("position", Factory.C.create(Position.class));
@@ -41,10 +42,15 @@ public class Witch extends Unit {
 	public ObjectField<Long> cooldownField() {
 		return cooldown;
 	}
-	
+
+	@Override
+	public VariableMapVariable<Long, Skill, Map<String, Object>> skillMap() {
+		return null;
+	}
+
 	@Override
 	public void act_0_unit() {
-		
+
 	}
 
 	public static final String TYPE = "witch";
@@ -64,6 +70,14 @@ public class Witch extends Unit {
 			return new Witch(iElement);
 		}
 
+	}
+
+	public static Witch create(World aWorld) {
+		Element element = Element.create(aWorld);
+		Witch ret = new Witch(element);
+		element.type.set(TYPE);
+		element.witch.set(ret);
+		return ret;
 	}
 
 }

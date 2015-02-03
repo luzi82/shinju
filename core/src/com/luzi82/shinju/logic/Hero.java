@@ -15,7 +15,7 @@ public class Hero extends Unit {
 
 	final public VarField<VariableMapVariable<Long, Skill, Map<String, Object>>, Map<Long, Map<String, Object>>> skill_map;
 
-	public Hero(Element aElement) {
+	protected Hero(Element aElement) {
 		super(TYPE, aElement);
 
 		position = new VarField<Position, Map<String, Object>>("position", Factory.C.create(Position.class));
@@ -83,6 +83,11 @@ public class Hero extends Unit {
 	}
 
 	@Override
+	public VariableMapVariable<Long, Skill, Map<String, Object>> skillMap() {
+		return skill_map.get();
+	}
+
+	@Override
 	public void act_0_unit() {
 		if (cooldown.get() > iElement.iWorld.turn.get())
 			return;
@@ -110,9 +115,17 @@ public class Hero extends Unit {
 
 	}
 
-	public void addSkill(Skill skill) {
-		skill.id.set(iElement.iWorld.nextId());
-		skill_map.get().put(skill.id.get(), skill);
+//	public void addSkill(Skill skill) {
+//		skill.id.set(iElement.iWorld.nextId());
+//		skill_map.get().put(skill.id.get(), skill);
+//	}
+
+	public static Hero create(World aWorld) {
+		Element element = Element.create(aWorld);
+		Hero ret = new Hero(element);
+		element.type.set(TYPE);
+		element.hero.set(ret);
+		return ret;
 	}
 
 }

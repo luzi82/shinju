@@ -19,7 +19,7 @@ public class Skill extends ObjectVariable {
 
 	public final VarField<BulletSimple.Ski, Map<String, Object>> bullet_simple;
 
-	public Skill(Unit aUnit) {
+	protected Skill(Unit aUnit) {
 		iUnit = aUnit;
 		mTypeField = new HashMap<String, ObjectVariable.VarField<? extends Type, Map<String, Object>>>();
 
@@ -78,6 +78,14 @@ public class Skill extends ObjectVariable {
 			return new Skill(iUnit);
 		}
 
+	}
+
+	public static Skill create(Unit aUnit) {
+		long id = aUnit.iElement.iWorld.nextId();
+		Skill ret = new Skill(aUnit);
+		ret.id.set(id);
+		aUnit.skillMap().put(id, ret);
+		return ret;
 	}
 
 }
