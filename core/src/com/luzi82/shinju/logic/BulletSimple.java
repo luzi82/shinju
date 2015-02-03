@@ -93,6 +93,8 @@ public class BulletSimple {
 
 		public final ObjectField<Long> range;
 
+		public final ObjectField<Long> speed;
+
 		public final VarField<ObjectListVariable<String>, List<String>> target_unit_type_list;
 
 		public Ski(World aWorld, Skill aSkill) {
@@ -102,6 +104,8 @@ public class BulletSimple {
 			addField(cooldown);
 			range = new ObjectField<Long>("range");
 			addField(range);
+			speed = new ObjectField<Long>("speed");
+			addField(speed);
 			target_unit_type_list = new VarField<ObjectListVariable<String>, List<String>>("target_unit_type_list", ObjectListVariable.createFactory(String.class));
 			addField(target_unit_type_list);
 
@@ -134,6 +138,8 @@ public class BulletSimple {
 			if (target == null)
 				return;
 
+			long travelTime = Util.sqrt(range2)[1] / speed.get();
+
 			Element effElement = new Element(iWorld);
 			effElement.type.set(TYPE);
 			Eff eff = new Eff(iWorld, effElement);
@@ -141,7 +147,7 @@ public class BulletSimple {
 			eff.source_position.get().y.set(center[1]);
 			eff.dest_id.set(target.id.get());
 			eff.start_turn.set(iWorld.turn.get());
-			eff.end_turn.set(iWorld.turn.get() + Util.sqrt(range2)[1] / ShinjuCommon.CELL_SIZE); // TODO
+			eff.end_turn.set(iWorld.turn.get() + travelTime); // TODO
 			effElement.bullet_simple.set(eff);
 			iWorld.addElement(effElement);
 

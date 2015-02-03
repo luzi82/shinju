@@ -44,6 +44,7 @@ public class ShinjuGame extends Game {
 		bulletSimple = new BulletSimple.Ski(common.mShinjuData, skill);
 		bulletSimple.cooldown.set(10L);
 		bulletSimple.range.set(5L * ShinjuCommon.CELL_SIZE);
+		bulletSimple.speed.set(ShinjuCommon.CELL_SIZE);
 		bulletSimple.target_unit_type_list.get().add(Witch.TYPE);
 		skill.bullet_simple.set(bulletSimple);
 		element.hero.get().addSkill(skill);
@@ -60,6 +61,7 @@ public class ShinjuGame extends Game {
 		bulletSimple = new BulletSimple.Ski(common.mShinjuData, skill);
 		bulletSimple.cooldown.set(10L);
 		bulletSimple.range.set(5L * ShinjuCommon.CELL_SIZE);
+		bulletSimple.speed.set(ShinjuCommon.CELL_SIZE);
 		bulletSimple.target_unit_type_list.get().add(Witch.TYPE);
 		skill.bullet_simple.set(bulletSimple);
 		element.hero.get().addSkill(skill);
