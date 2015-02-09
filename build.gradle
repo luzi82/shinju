@@ -88,8 +88,8 @@ project(":ios") {
     }
 
     robovm {
-        iosSignIdentity = "9CD1F442E7A63B29ECC12DF49D3D37D74E761917"
-        iosProvisioningProfile = "e51d075e-1144-4a12-a91a-10b31360f6bb"
+        iosSignIdentity = "${System.env.IOS_DEVELOPMENT_CERT}"
+        iosProvisioningProfile = "${System.env.SHINJU_IOS_PROVISIONINGPROFILE_DEV}"
         iosSkipSigning = false
         stdoutFifo = ""
         stderrFifo = ""
