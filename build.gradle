@@ -88,11 +88,7 @@ project(":ios") {
     }
 
     robovm {
-        iosSignIdentity = "${System.env.IOS_DEVELOPMENT_CERT}"
-        iosProvisioningProfile = "${System.env.SHINJU_IOS_PROVISIONINGPROFILE_DEV}"
-        iosSkipSigning = false
-        stdoutFifo = ""
-        stderrFifo = ""
+        iosProvisioningProfile = "${System.env.PROVISIONING_PROFILE}"
     }
 }
 
