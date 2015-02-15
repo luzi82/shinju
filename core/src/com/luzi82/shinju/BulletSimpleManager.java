@@ -23,7 +23,7 @@ public class BulletSimpleManager extends ElementManager {
 	long SIZE = ShinjuCommon.CELL_SIZE / 2;
 
 	public BulletSimpleManager(WorldElementManager aElementManager) {
-		Gdx.app.debug(getClass().getName(), "lRnTH9hK construct");
+//		Gdx.app.debug(getClass().getName(), "lRnTH9hK construct");
 
 		this.iElementManager = aElementManager;
 

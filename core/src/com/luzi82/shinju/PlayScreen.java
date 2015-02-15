@@ -52,15 +52,15 @@ public class PlayScreen extends ScreenAdapter {
 		// worldStage = new PlayScreenWorldStage(common);
 		// inputMultiplexer.addProcessor(worldStage);
 
-		synchronized (this) {
-			active = true;
-		}
 	}
 
 	@Override
 	public void render(float delta) {
 		synchronized (this) {
 			super.render(delta);
+
+			if (common.mLifecycleVar.get() != ShinjuCommon.GdxLifecycle.RESUME)
+				return;
 
 			long targetTurn = common.getTargetTurn();
 			if (common.mShinjuData.turn.get() < targetTurn) {
@@ -76,45 +76,6 @@ public class PlayScreen extends ScreenAdapter {
 	}
 
 	@Override
-	public void resume() {
-		super.resume();
-		synchronized (this) {
-			active = true;
-			if (fastForwardThread == null) {
-				fastForwardThread = new Thread(fastForwardRunnable);
-				fastForwardThread.setPriority(Thread.MIN_PRIORITY);
-				fastForwardThread.start();
-			}
-		}
-	}
-
-	@Override
-	public void pause() {
-		super.pause();
-		synchronized (this) {
-			active = false;
-		}
-	}
-
-	boolean active;
-	Thread fastForwardThread;
-	Runnable fastForwardRunnable = new Runnable() {
-		@Override
-		public void run() {
-			while (true) {
-				synchronized (PlayScreen.this) {
-					if (active && (common.mShinjuData.turn.get() < common.getTargetTurn())) {
-						common.mShinjuData.act();
-					} else {
-						fastForwardThread = null;
-						break;
-					}
-				}
-			}
-		}
-	};
-
-	@Override
 	public void resize(int width, int height) {
 		super.resize(width, height);
 		stage.getViewport().update(width, height, true);
@@ -124,9 +85,6 @@ public class PlayScreen extends ScreenAdapter {
 
 	@Override
 	public void dispose() {
-		synchronized (this) {
-			active = false;
-		}
 		stage.dispose();
 		super.dispose();
 	}

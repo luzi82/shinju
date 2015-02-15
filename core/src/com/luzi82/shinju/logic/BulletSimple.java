@@ -23,7 +23,7 @@ public class BulletSimple {
 		public Eff(Element aElement) {
 			super(TYPE, aElement);
 
-			Gdx.app.debug(getClass().getName(), "DXMt63xc construct");
+//			Gdx.app.debug(getClass().getName(), "DXMt63xc construct");
 
 			source_position = new VarField<Position, Map<String, Object>>("source_position", Position.class);
 			addField(source_position);

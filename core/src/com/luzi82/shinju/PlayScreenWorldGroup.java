@@ -62,13 +62,13 @@ public class PlayScreenWorldGroup extends Group {
 
 		@Override
 		public void onRemove(Long aK, Element aI) {
-			Gdx.app.debug(getClass().getName(), "c4pyBad0 onRemove");
+//			Gdx.app.debug(getClass().getName(), "c4pyBad0 onRemove");
 			mElementRemove.add(aK);
 		}
 
 		@Override
 		public void onAdd(Long aK, Element aI) {
-			Gdx.app.debug(getClass().getName(), "yK9FF6e5 onAdd");
+//			Gdx.app.debug(getClass().getName(), "yK9FF6e5 onAdd");
 			mElementAdd.add(aK);
 		}
 

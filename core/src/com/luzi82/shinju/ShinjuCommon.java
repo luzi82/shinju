@@ -1,10 +1,12 @@
 package com.luzi82.shinju;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.LifecycleListener;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator.FreeTypeFontParameter;
 import com.badlogic.gdx.utils.TimeUtils;
+import com.luzi82.homuvalue.LocalVariable;
 import com.luzi82.shinju.logic.World;
 
 public class ShinjuCommon {
@@ -12,10 +14,15 @@ public class ShinjuCommon {
 	public BitmapFont font;
 
 	public ShinjuCommon() {
+		mLifecycleVar.set(GdxLifecycle.RESUME);
+		Gdx.app.addLifecycleListener(new LL());
+
 		FreeTypeFontGenerator fontGenerator = new FreeTypeFontGenerator(Gdx.files.internal("font/Roboto-Regular.ttf"));
 		FreeTypeFontParameter fontParameter = new FreeTypeFontParameter();
 		font = fontGenerator.generateFont(fontParameter);
 		fontGenerator.dispose();
+
+		mFastForwardManager = new FastForwardManager(this);
 	}
 
 	public long getTargetTurn() {
@@ -29,6 +36,42 @@ public class ShinjuCommon {
 	public World mShinjuData;
 	public long mShinjuActTurn;
 	public long mShinjuActTime;
+	public FastForwardManager mFastForwardManager;
+
+	// life cycle
+
+	enum GdxLifecycle {
+		PAUSE, RESUME, DISPOSE
+	}
+
+	public LocalVariable<GdxLifecycle> mLifecycleVar = new LocalVariable<ShinjuCommon.GdxLifecycle>();
+
+	class LL implements LifecycleListener {
+
+		@Override
+		public void pause() {
+			Gdx.app.debug("IdMONqZG", "pause");
+			mLifecycleVar.set(GdxLifecycle.PAUSE);
+			mLifecycleVar.get();
+		}
+
+		@Override
+		public void resume() {
+			Gdx.app.debug("ZttTOOOI", "resume");
+			mLifecycleVar.set(GdxLifecycle.RESUME);
+			mLifecycleVar.get();
+		}
+
+		@Override
+		public void dispose() {
+			Gdx.app.debug("EzSmgdhr", "dispose");
+			mLifecycleVar.set(GdxLifecycle.DISPOSE);
+			mLifecycleVar.get();
+		}
+
+	}
+
+	// ////////////////////////////////
 
 	// number of milli sec in a day
 	public static final long DAY_TIME = 24 * 60 * 60 * 1000L;
