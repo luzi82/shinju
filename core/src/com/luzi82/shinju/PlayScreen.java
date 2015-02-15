@@ -82,6 +82,7 @@ public class PlayScreen extends ScreenAdapter {
 			active = true;
 			if (fastForwardThread == null) {
 				fastForwardThread = new Thread(fastForwardRunnable);
+				fastForwardThread.setPriority(Thread.MIN_PRIORITY);
 				fastForwardThread.start();
 			}
 		}
