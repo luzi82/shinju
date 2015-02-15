@@ -35,6 +35,8 @@ public class ShinjuGame extends Game {
 		hero = Hero.create(common.mShinjuData);
 		hero.position.get().x.set(4L * ShinjuCommon.CELL_SIZE);
 		hero.position.get().y.set(4L * ShinjuCommon.CELL_SIZE);
+		hero.hp.get().value.set(100L);
+		hero.hp.get().max.set(100L);
 
 		bulletSimple = BulletSimple.Ski.create(hero);
 		bulletSimple.cooldown.set(10L);
@@ -45,6 +47,8 @@ public class ShinjuGame extends Game {
 		hero = Hero.create(common.mShinjuData);
 		hero.position.get().x.set(10L * ShinjuCommon.CELL_SIZE);
 		hero.position.get().y.set(10L * ShinjuCommon.CELL_SIZE);
+		hero.hp.get().value.set(100L);
+		hero.hp.get().max.set(100L);
 
 		bulletSimple = BulletSimple.Ski.create(hero);
 		bulletSimple.cooldown.set(10L);

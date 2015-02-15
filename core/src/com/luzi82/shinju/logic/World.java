@@ -3,6 +3,7 @@ package com.luzi82.shinju.logic;
 import java.util.LinkedList;
 import java.util.Map;
 
+import com.badlogic.gdx.Gdx;
 import com.luzi82.homuvalue.obj.ObjectVariable;
 import com.luzi82.homuvalue.obj.VariableMapVariable;
 
@@ -27,14 +28,15 @@ public class World extends ObjectVariable {
 		next_id.set(0L);
 	}
 
-//	public void addElement(Element aElement) {
-//		long id = nextId();
-//		aElement.id.set(id);
-//		element_map.get().put(id, aElement);
-//	}
+	// public void addElement(Element aElement) {
+	// long id = nextId();
+	// aElement.id.set(id);
+	// element_map.get().put(id, aElement);
+	// }
 
 	public void act() {
-		// Gdx.app.debug(getClass().getName(), "oTWmEPSX act");
+		Gdx.app.debug("oTWmEPSX", "World.act");
+
 		long t = turn.get();
 		turn.set(t + 1);
 

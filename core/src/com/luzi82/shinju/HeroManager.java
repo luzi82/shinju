@@ -26,6 +26,8 @@ public class HeroManager extends ElementManager {
 	Image mImage;
 	Image mToImage;
 
+	ResourceBar mHpBar;
+
 	// boolean mElementDirty;
 
 	Hero iModel;
@@ -50,6 +52,10 @@ public class HeroManager extends ElementManager {
 		mToImage.setVisible(false);
 		iElementManager.iPlayScreenWorldGroup.mUiLayer.addActor(mToImage);
 
+		mHpBar = new ResourceBar(iModel.hp.get().value, iModel.hp.get().value, new Texture(Gdx.files.internal("img/hp.png")));
+		mHpBar.setScale(size, size * 0.05f);
+		iElementManager.iPlayScreenWorldGroup.mUiLayer.addActor(mHpBar);
+
 		mElementSlot = new Slot<Map<String, Object>>(null);
 		mElementSlot.set(iModel.position.get());
 
@@ -63,6 +69,7 @@ public class HeroManager extends ElementManager {
 		if (mElementSlot.dirty()) {
 			long[] xy = iModel.getXY();
 			mImage.setPosition(xy[0], xy[1]);
+			mHpBar.setPosition(xy[0], xy[1]);
 			mElementSlot.get();
 		}
 	}
@@ -71,6 +78,7 @@ public class HeroManager extends ElementManager {
 	public void dispose() {
 		mImage.remove();
 		mToImage.remove();
+		mHpBar.remove();
 	}
 
 	ValueObservable<Boolean> mMoveActive;
