@@ -27,6 +27,7 @@ public class HeroManager extends ElementManager {
 	Image mToImage;
 
 	ResourceBar mHpBar;
+	ResourceBar mMpBar;
 
 	// boolean mElementDirty;
 
@@ -53,8 +54,12 @@ public class HeroManager extends ElementManager {
 		iElementManager.iPlayScreenWorldGroup.mUiLayer.addActor(mToImage);
 
 		mHpBar = new ResourceBar(iModel.hp.get().value, iModel.hp.get().value, new Texture(Gdx.files.internal("img/hp.png")));
-		mHpBar.setScale(size, size * 0.05f);
+		mHpBar.setScale(size, size * ShinjuCommon.BAR_SIZE);
 		iElementManager.iPlayScreenWorldGroup.mUiLayer.addActor(mHpBar);
+
+		mMpBar = new ResourceBar(iModel.mp.get().value, iModel.mp.get().value, new Texture(Gdx.files.internal("img/mp.png")));
+		mMpBar.setScale(size, size * ShinjuCommon.BAR_SIZE);
+		iElementManager.iPlayScreenWorldGroup.mUiLayer.addActor(mMpBar);
 
 		mElementSlot = new Slot<Map<String, Object>>(null);
 		mElementSlot.set(iModel.position.get());
@@ -67,9 +72,12 @@ public class HeroManager extends ElementManager {
 
 	public void act(float turn) {
 		if (mElementSlot.dirty()) {
+			long size = iModel.getSize();
+			float barSize = size * ShinjuCommon.BAR_SIZE;
 			long[] xy = iModel.getXY();
 			mImage.setPosition(xy[0], xy[1]);
 			mHpBar.setPosition(xy[0], xy[1]);
+			mMpBar.setPosition(xy[0], xy[1] + barSize);
 			mElementSlot.get();
 		}
 	}
@@ -79,6 +87,7 @@ public class HeroManager extends ElementManager {
 		mImage.remove();
 		mToImage.remove();
 		mHpBar.remove();
+		mMpBar.remove();
 	}
 
 	ValueObservable<Boolean> mMoveActive;

@@ -11,6 +11,8 @@ public class Hero extends Unit {
 
 	final public VarField<Hp, Map<String, Object>> hp;
 
+	final public VarField<Mp, Map<String, Object>> mp;
+
 	final public ObjectField<Long> cooldown;
 
 	final public VarField<VariableMapVariable<Long, Skill, Map<String, Object>>, Map<Long, Map<String, Object>>> skill_map;
@@ -22,6 +24,8 @@ public class Hero extends Unit {
 		addField(position);
 		hp = new VarField<Hp, Map<String, Object>>("hp", Factory.C.create(Hp.class));
 		addField(hp);
+		mp = new VarField<Mp, Map<String, Object>>("mp", Factory.C.create(Mp.class));
+		addField(mp);
 		cooldown = new ObjectField<Long>("cooldown");
 		addField(cooldown);
 		Skill.Factory skill_factory = new Skill.Factory(this);
@@ -31,6 +35,7 @@ public class Hero extends Unit {
 
 		position.set(new Position());
 		hp.set(new Hp());
+		mp.set(new Mp());
 		cooldown.set(0L);
 		skill_map.set(new VariableMapVariable<Long, Skill, Map<String, Object>>(skill_factory));
 	}
@@ -115,10 +120,10 @@ public class Hero extends Unit {
 
 	}
 
-//	public void addSkill(Skill skill) {
-//		skill.id.set(iElement.iWorld.nextId());
-//		skill_map.get().put(skill.id.get(), skill);
-//	}
+	// public void addSkill(Skill skill) {
+	// skill.id.set(iElement.iWorld.nextId());
+	// skill_map.get().put(skill.id.get(), skill);
+	// }
 
 	public static Hero create(World aWorld) {
 		Element element = Element.create(aWorld);
