@@ -56,7 +56,7 @@ public class PlayScreen extends ScreenAdapter {
 
 	@Override
 	public void render(float delta) {
-		synchronized (this) {
+		synchronized (common) {
 			super.render(delta);
 
 			if (common.mLifecycleVar.get() != ShinjuCommon.GdxLifecycle.RESUME)
