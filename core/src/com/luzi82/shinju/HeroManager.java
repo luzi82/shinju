@@ -53,11 +53,11 @@ public class HeroManager extends ElementManager {
 		mToImage.setVisible(false);
 		iElementManager.iPlayScreenWorldGroup.mUiLayer.addActor(mToImage);
 
-		mHpBar = new ResourceBar(iModel.hp.get().value, iModel.hp.get().value, new Texture(Gdx.files.internal("img/hp.png")));
+		mHpBar = new ResourceBar(iModel.hp.get().value, iModel.hp.get().max, new Texture(Gdx.files.internal("img/hp.png")));
 		mHpBar.setScale(size, size * ShinjuCommon.BAR_SIZE);
 		iElementManager.iPlayScreenWorldGroup.mUiLayer.addActor(mHpBar);
 
-		mMpBar = new ResourceBar(iModel.mp.get().value, iModel.mp.get().value, new Texture(Gdx.files.internal("img/mp.png")));
+		mMpBar = new ResourceBar(iModel.mp.get().value, iModel.mp.get().max, new Texture(Gdx.files.internal("img/mp.png")));
 		mMpBar.setScale(size, size * ShinjuCommon.BAR_SIZE);
 		iElementManager.iPlayScreenWorldGroup.mUiLayer.addActor(mMpBar);
 

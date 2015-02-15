@@ -33,7 +33,7 @@ public class WitchManager extends ElementManager {
 		mImage.setSize(size, size);
 		iElementManager.iPlayScreenWorldGroup.mWitchLayer.addActor(mImage);
 
-		mHpBar = new ResourceBar(iModel.hp.get().value, iModel.hp.get().value, new Texture(Gdx.files.internal("img/hp1.png")));
+		mHpBar = new ResourceBar(iModel.hp.get().value, iModel.hp.get().max, new Texture(Gdx.files.internal("img/hp1.png")));
 		mHpBar.setScale(size, size * ShinjuCommon.BAR_SIZE);
 		iElementManager.iPlayScreenWorldGroup.mUiLayer.addActor(mHpBar);
 		

@@ -39,9 +39,12 @@ public class ShinjuGame extends Game {
 		hero.hp.get().max.set(100L);
 		hero.mp.get().value.set(100L);
 		hero.mp.get().max.set(100L);
+		hero.mp.get().min.set(Long.MIN_VALUE);
 
 		bulletSimple = BulletSimple.Ski.create(hero);
 		bulletSimple.cooldown.set(10L);
+		bulletSimple.mp_cost.set(10L);
+		bulletSimple.damage.set(10L);
 		bulletSimple.range.set(5L * ShinjuCommon.CELL_SIZE);
 		bulletSimple.speed.set(ShinjuCommon.CELL_SIZE);
 		bulletSimple.target_unit_type_list.get().add(Witch.TYPE);
@@ -53,9 +56,12 @@ public class ShinjuGame extends Game {
 		hero.hp.get().max.set(100L);
 		hero.mp.get().value.set(100L);
 		hero.mp.get().max.set(100L);
+		hero.mp.get().min.set(Long.MIN_VALUE);
 
 		bulletSimple = BulletSimple.Ski.create(hero);
 		bulletSimple.cooldown.set(10L);
+		bulletSimple.mp_cost.set(10L);
+		bulletSimple.damage.set(10L);
 		bulletSimple.range.set(5L * ShinjuCommon.CELL_SIZE);
 		bulletSimple.speed.set(ShinjuCommon.CELL_SIZE);
 		bulletSimple.target_unit_type_list.get().add(Witch.TYPE);

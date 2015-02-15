@@ -19,7 +19,11 @@ public abstract class Unit extends Element.Type {
 	public abstract long getSize();
 
 	public abstract ObjectField<Long> cooldownField();
-	
+
+	public abstract Hp hp();
+
+	public abstract Mp mp();
+
 	public abstract VariableMapVariable<Long, Skill, Map<String, Object>> skillMap();
 
 	public long[] getCenterXY() {

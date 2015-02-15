@@ -133,4 +133,14 @@ public class Hero extends Unit {
 		return ret;
 	}
 
+	@Override
+	public Hp hp() {
+		return hp.get();
+	}
+
+	@Override
+	public Mp mp() {
+		return mp.get();
+	}
+
 }

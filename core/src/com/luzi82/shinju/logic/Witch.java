@@ -80,4 +80,14 @@ public class Witch extends Unit {
 		return ret;
 	}
 
+	@Override
+	public Hp hp() {
+		return hp.get();
+	}
+
+	@Override
+	public Mp mp() {
+		return null;
+	}
+
 }

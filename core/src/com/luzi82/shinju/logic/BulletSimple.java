@@ -3,7 +3,6 @@ package com.luzi82.shinju.logic;
 import java.util.List;
 import java.util.Map;
 
-import com.badlogic.gdx.Gdx;
 import com.luzi82.homuvalue.obj.ObjectListVariable;
 
 public class BulletSimple {
@@ -16,6 +15,8 @@ public class BulletSimple {
 
 		public final ObjectField<Long> dest_id;
 
+		public final ObjectField<Long> damage;
+
 		public final ObjectField<Long> start_turn;
 
 		public final ObjectField<Long> end_turn;
@@ -23,12 +24,14 @@ public class BulletSimple {
 		public Eff(Element aElement) {
 			super(TYPE, aElement);
 
-//			Gdx.app.debug(getClass().getName(), "DXMt63xc construct");
+			// Gdx.app.debug(getClass().getName(), "DXMt63xc construct");
 
 			source_position = new VarField<Position, Map<String, Object>>("source_position", Position.class);
 			addField(source_position);
 			dest_id = new ObjectField<Long>("dest_id");
 			addField(dest_id);
+			damage = new ObjectField<Long>("damage");
+			addField(damage);
 			start_turn = new ObjectField<Long>("start_turn");
 			addField(start_turn);
 			end_turn = new ObjectField<Long>("end_turn");
@@ -77,6 +80,10 @@ public class BulletSimple {
 		@Override
 		public void act_1_effect() {
 			if (iElement.iWorld.turn.get() > end_turn.get()) {
+				Element destElement = iElement.iWorld.element_map.get().get(dest_id.get());
+				Unit destUnit = (Unit) destElement.getTypeVar();
+				Hp hp = destUnit.hp();
+				hp.value.set(hp.value.get() - damage.get());
 				iElement.delete.set(true);
 			}
 		}
@@ -95,6 +102,10 @@ public class BulletSimple {
 
 		public final ObjectField<Long> cooldown;
 
+		public final ObjectField<Long> mp_cost;
+
+		public final ObjectField<Long> damage;
+
 		public final ObjectField<Long> range;
 
 		public final ObjectField<Long> speed;
@@ -106,6 +117,10 @@ public class BulletSimple {
 
 			cooldown = new ObjectField<Long>("cooldown");
 			addField(cooldown);
+			mp_cost = new ObjectField<Long>("mp_cost");
+			addField(mp_cost);
+			damage = new ObjectField<Long>("damage");
+			addField(damage);
 			range = new ObjectField<Long>("range");
 			addField(range);
 			speed = new ObjectField<Long>("speed");
@@ -119,6 +134,15 @@ public class BulletSimple {
 		public void act() {
 			World world = iSkill.iUnit.iElement.iWorld;
 			long[] center = iSkill.iUnit.getCenterXY();
+
+			if (mp_cost.get() > 0) {
+				Mp mp = iSkill.iUnit.mp();
+				long v = mp.value.get();
+				v -= mp_cost.get();
+				if (v < mp.min.get()) {
+					return;
+				}
+			}
 
 			long range2 = range.get();
 			range2 *= range2;
@@ -152,12 +176,21 @@ public class BulletSimple {
 			eff.source_position.get().x.set(center[0]);
 			eff.source_position.get().y.set(center[1]);
 			eff.dest_id.set(target.id.get());
+			eff.damage.set(damage.get());
 			eff.start_turn.set(world.turn.get());
-			eff.end_turn.set(world.turn.get() + travelTime); // TODO
+			eff.end_turn.set(world.turn.get() + travelTime);
 			// effElement.bullet_simple.set(eff);
 			// world.addElement(effElement);
 
-			iSkill.iUnit.cooldownField().set(world.turn.get() + cooldown.get());
+			if (mp_cost.get() > 0) {
+				Mp mp = iSkill.iUnit.mp();
+				long v = mp.value.get();
+				v -= mp_cost.get();
+				mp.value.set(v);
+			}
+			if (cooldown.get() > 0) {
+				iSkill.iUnit.cooldownField().set(world.turn.get() + cooldown.get());
+			}
 		}
 
 		public static class Factory implements com.luzi82.common.Factory<Ski> {

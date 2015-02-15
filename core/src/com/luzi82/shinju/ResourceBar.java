@@ -28,6 +28,8 @@ public class ResourceBar extends Group {
 		if (mValueSlot.dirty() || mMaxSlot.dirty()) {
 			long value = mValueSlot.get();
 			long max = mMaxSlot.get();
+			if (value < 0)
+				value = 0;
 			float ratio = ((float) value) / max;
 			mImage.setSize(ratio, 1f);
 		}
