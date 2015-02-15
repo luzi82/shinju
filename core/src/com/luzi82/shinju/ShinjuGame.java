@@ -63,6 +63,8 @@ public class ShinjuGame extends Game {
 		witch = Witch.create(common.mShinjuData);
 		witch.position.get().x.set(6L * ShinjuCommon.CELL_SIZE);
 		witch.position.get().y.set(6L * ShinjuCommon.CELL_SIZE);
+		witch.hp.get().value.set(100L);
+		witch.hp.get().max.set(100L);
 
 		setScreen(new PlayScreen(common));
 	}

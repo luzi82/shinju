@@ -18,6 +18,8 @@ public class WitchManager extends ElementManager {
 
 	Image mImage;
 
+	ResourceBar mHpBar;
+	
 	Witch iModel;
 
 	public WitchManager(WorldElementManager aElementManager) {
@@ -31,6 +33,10 @@ public class WitchManager extends ElementManager {
 		mImage.setSize(size, size);
 		iElementManager.iPlayScreenWorldGroup.mWitchLayer.addActor(mImage);
 
+		mHpBar = new ResourceBar(iModel.hp.get().value, iModel.hp.get().value, new Texture(Gdx.files.internal("img/hp1.png")));
+		mHpBar.setScale(size, size * ShinjuCommon.BAR_SIZE);
+		iElementManager.iPlayScreenWorldGroup.mUiLayer.addActor(mHpBar);
+		
 		mElementSlot = new Slot<Map<String, Object>>(null);
 		mElementSlot.set(iElementManager.iElementModel);
 	}
@@ -39,6 +45,7 @@ public class WitchManager extends ElementManager {
 		if (mElementSlot.dirty()) {
 			long[] xy = iModel.getXY();
 			mImage.setPosition(xy[0], xy[1]);
+			mHpBar.setPosition(xy[0], xy[1]);
 			mElementSlot.get();
 		}
 	}
@@ -46,6 +53,7 @@ public class WitchManager extends ElementManager {
 	@Override
 	public void dispose() {
 		mImage.remove();
+		mHpBar.remove();
 	}
 
 	public static class Factory extends ElementManagerFactory {
