@@ -7,31 +7,22 @@ import com.luzi82.shinju.ShinjuCommon;
 
 public class Hero extends Unit {
 
-	final public VarField<Position, Map<String, Object>> position;
+	final public VarField<Position, Map<String, Object>> position = new VarField<Position, Map<String, Object>>("position", Factory.C.create(Position.class),this);
 
-	final public VarField<Hp, Map<String, Object>> hp;
+	final public VarField<Hp, Map<String, Object>> hp = new VarField<Hp, Map<String, Object>>("hp", Factory.C.create(Hp.class),this);
 
-	final public VarField<Mp, Map<String, Object>> mp;
+	final public VarField<Mp, Map<String, Object>> mp = new VarField<Mp, Map<String, Object>>("mp", Factory.C.create(Mp.class),this);
 
-	final public ObjectField<Long> cooldown;
+	final public ObjectField<Long> cooldown = new ObjectField<Long>("cooldown",this);
 
 	final public VarField<VariableMapVariable<Long, Skill, Map<String, Object>>, Map<Long, Map<String, Object>>> skill_map;
 
 	protected Hero(Element aElement) {
 		super(TYPE, aElement);
 
-		position = new VarField<Position, Map<String, Object>>("position", Factory.C.create(Position.class));
-		addField(position);
-		hp = new VarField<Hp, Map<String, Object>>("hp", Factory.C.create(Hp.class));
-		addField(hp);
-		mp = new VarField<Mp, Map<String, Object>>("mp", Factory.C.create(Mp.class));
-		addField(mp);
-		cooldown = new ObjectField<Long>("cooldown");
-		addField(cooldown);
 		Skill.Factory skill_factory = new Skill.Factory(this);
 		VariableMapVariable.F<Long, Skill, Map<String, Object>> skill_map_factory = new VariableMapVariable.F(skill_factory);
-		skill_map = new VarField<VariableMapVariable<Long, Skill, Map<String, Object>>, Map<Long, Map<String, Object>>>("skill_list", skill_map_factory);
-		addField(skill_map);
+		skill_map = new VarField<VariableMapVariable<Long, Skill, Map<String, Object>>, Map<Long, Map<String, Object>>>("skill_list", skill_map_factory,this);
 
 		position.set(new Position());
 		hp.set(new Hp());

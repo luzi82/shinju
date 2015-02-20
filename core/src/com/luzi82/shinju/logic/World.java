@@ -9,19 +9,14 @@ import com.luzi82.homuvalue.obj.VariableMapVariable;
 
 public class World extends ObjectVariable {
 
-	public final ObjectField<Long> turn;
+	public final ObjectField<Long> turn = new ObjectField<Long>("turn", this);
 
 	public final VarField<VariableMapVariable<Long, Element, Map<String, Object>>, Map<Long, Map<String, Object>>> element_map;
 
-	public final ObjectField<Long> next_id;
+	public final ObjectField<Long> next_id = new ObjectField<Long>("next_id", this);
 
 	public World() {
-		turn = new ObjectField<Long>("turn");
-		addField(turn);
-		element_map = new VarField<VariableMapVariable<Long, Element, Map<String, Object>>, Map<Long, Map<String, Object>>>("element_map", VariableMapVariable.createFactory(Long.class, new Element.Factory(this)));
-		addField(element_map);
-		next_id = new ObjectField<Long>("next_id");
-		addField(next_id);
+		element_map = new VarField<VariableMapVariable<Long, Element, Map<String, Object>>, Map<Long, Map<String, Object>>>("element_map", VariableMapVariable.createFactory(Long.class, new Element.Factory(this)), this);
 
 		turn.set(0L);
 		element_map.set(new VariableMapVariable<Long, Element, Map<String, Object>>(new Element.Factory(this)));

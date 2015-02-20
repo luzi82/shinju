@@ -11,34 +11,21 @@ public class Element extends ObjectVariable {
 
 	public final HashMap<String, VarField<? extends Type, Map<String, Object>>> mTypeField;
 
-	public final ObjectField<Long> id;
+	public final ObjectField<Long> id = new ObjectField<Long>("id", this);
 
-	public final ObjectField<Boolean> delete;
+	public final ObjectField<Boolean> delete = new ObjectField<Boolean>("delete", this);
 
-	public final ObjectField<String> type;
+	public final ObjectField<String> type = new ObjectField<String>("type", this);
 
-	public final VarField<Hero, Map<String, Object>> hero;
+	public final VarField<Hero, Map<String, Object>> hero = new VarField<Hero, Map<String, Object>>("hero", new Hero.Factory(this), this);
 
-	public final VarField<Witch, Map<String, Object>> witch;
+	public final VarField<Witch, Map<String, Object>> witch = new VarField<Witch, Map<String, Object>>("witch", new Witch.Factory(this), this);
 
-	public final VarField<BulletSimple.Eff, Map<String, Object>> bullet_simple;
+	public final VarField<BulletSimple.Eff, Map<String, Object>> bullet_simple = new VarField<BulletSimple.Eff, Map<String, Object>>("bullet_simple", new BulletSimple.Eff.Factory(this), this);
 
 	protected Element(World aWorld) {
 		iWorld = aWorld;
 		mTypeField = new HashMap<String, VarField<? extends Type, Map<String, Object>>>();
-
-		id = new ObjectField<Long>("id");
-		addField(id);
-		delete = new ObjectField<Boolean>("delete");
-		addField(delete);
-		type = new ObjectField<String>("type");
-		addField(type);
-		hero = new VarField<Hero, Map<String, Object>>("hero", new Hero.Factory(this));
-		addField(hero);
-		witch = new VarField<Witch, Map<String, Object>>("witch", new Witch.Factory(this));
-		addField(witch);
-		bullet_simple = new VarField<BulletSimple.Eff, Map<String, Object>>("bullet_simple", new BulletSimple.Eff.Factory(this));
-		addField(bullet_simple);
 
 		mTypeField.put(Hero.TYPE, hero);
 		mTypeField.put(Witch.TYPE, witch);
@@ -56,14 +43,11 @@ public class Element extends ObjectVariable {
 
 		public final Element iElement;
 
-		final public ObjectField<Long> element_id;
+		final public ObjectField<Long> element_id = new ObjectField<Long>("element_id",this);
 
 		protected Type(String aType, Element aElement) {
 			mType = aType;
 			iElement = aElement;
-
-			element_id = new ObjectField<Long>("element_id");
-			addField(element_id);
 
 			element_id.set(iElement.id.get());
 		}

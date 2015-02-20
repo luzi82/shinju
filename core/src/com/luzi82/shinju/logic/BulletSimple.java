@@ -11,31 +11,18 @@ public class BulletSimple {
 
 	public static class Eff extends Effect {
 
-		public final VarField<Position, Map<String, Object>> source_position;
+		public final VarField<Position, Map<String, Object>> source_position = new VarField<Position, Map<String, Object>>("source_position", Position.class, this);
 
-		public final ObjectField<Long> dest_id;
+		public final ObjectField<Long> dest_id = new ObjectField<Long>("dest_id", this);
 
-		public final ObjectField<Long> damage;
+		public final ObjectField<Long> damage = new ObjectField<Long>("damage", this);
 
-		public final ObjectField<Long> start_turn;
+		public final ObjectField<Long> start_turn = new ObjectField<Long>("start_turn", this);
 
-		public final ObjectField<Long> end_turn;
+		public final ObjectField<Long> end_turn = new ObjectField<Long>("end_turn", this);
 
 		public Eff(Element aElement) {
 			super(TYPE, aElement);
-
-			// Gdx.app.debug(getClass().getName(), "DXMt63xc construct");
-
-			source_position = new VarField<Position, Map<String, Object>>("source_position", Position.class);
-			addField(source_position);
-			dest_id = new ObjectField<Long>("dest_id");
-			addField(dest_id);
-			damage = new ObjectField<Long>("damage");
-			addField(damage);
-			start_turn = new ObjectField<Long>("start_turn");
-			addField(start_turn);
-			end_turn = new ObjectField<Long>("end_turn");
-			addField(end_turn);
 
 			source_position.set(new Position());
 		}
@@ -100,33 +87,20 @@ public class BulletSimple {
 
 	public static class Ski extends Skill.Type {
 
-		public final ObjectField<Long> cooldown;
+		public final ObjectField<Long> cooldown = new ObjectField<Long>("cooldown", this);
 
-		public final ObjectField<Long> mp_cost;
+		public final ObjectField<Long> mp_cost = new ObjectField<Long>("mp_cost", this);
 
-		public final ObjectField<Long> damage;
+		public final ObjectField<Long> damage = new ObjectField<Long>("damage", this);
 
-		public final ObjectField<Long> range;
+		public final ObjectField<Long> range = new ObjectField<Long>("range", this);
 
-		public final ObjectField<Long> speed;
+		public final ObjectField<Long> speed = new ObjectField<Long>("speed", this);
 
-		public final VarField<ObjectListVariable<String>, List<String>> target_unit_type_list;
+		public final VarField<ObjectListVariable<String>, List<String>> target_unit_type_list = new VarField<ObjectListVariable<String>, List<String>>("target_unit_type_list", ObjectListVariable.createFactory(String.class), this);
 
 		public Ski(Skill aSkill) {
 			super(TYPE, aSkill);
-
-			cooldown = new ObjectField<Long>("cooldown");
-			addField(cooldown);
-			mp_cost = new ObjectField<Long>("mp_cost");
-			addField(mp_cost);
-			damage = new ObjectField<Long>("damage");
-			addField(damage);
-			range = new ObjectField<Long>("range");
-			addField(range);
-			speed = new ObjectField<Long>("speed");
-			addField(speed);
-			target_unit_type_list = new VarField<ObjectListVariable<String>, List<String>>("target_unit_type_list", ObjectListVariable.createFactory(String.class));
-			addField(target_unit_type_list);
 
 			target_unit_type_list.set(new ObjectListVariable<String>());
 		}

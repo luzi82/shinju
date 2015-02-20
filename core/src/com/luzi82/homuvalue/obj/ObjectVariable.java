@@ -12,14 +12,14 @@ public class ObjectVariable extends AbstractVariable<Map<String, Object>> {
 
 	protected HashMap<String, Field> mFieldMap = new HashMap<String, Field>();
 
-	@SuppressWarnings("unchecked")
-	protected void addField(Field aField) {
-		if (mFieldMap.containsKey(aField.getName())) {
-			throw new IllegalArgumentException();
-		}
-		mFieldMap.put(aField.getName(), aField);
-		aField.addListener(mListener);
-	}
+	// @SuppressWarnings("unchecked")
+	// protected void addField(Field aField) {
+	// if (mFieldMap.containsKey(aField.getName())) {
+	// throw new IllegalArgumentException();
+	// }
+	// mFieldMap.put(aField.getName(), aField);
+	// aField.addListener(mListener);
+	// }
 
 	@SuppressWarnings("rawtypes")
 	private Listener mListener = new Listener() {
@@ -55,12 +55,21 @@ public class ObjectVariable extends AbstractVariable<Map<String, Object>> {
 
 	public abstract static class Field<I, O> extends AbstractVariable<I> {
 
+		protected final ObjectVariable mParentObjectVariable;
+
 		protected final String mName;
 
 		protected I mObj;
 
-		public Field(String aName) {
+		public Field(String aName, ObjectVariable aParent) {
+			mParentObjectVariable = aParent;
 			mName = aName;
+
+			if (aParent.mFieldMap.containsKey(getName())) {
+				throw new IllegalArgumentException();
+			}
+			aParent.mFieldMap.put(getName(), this);
+			addListener(aParent.mListener);
 		}
 
 		public String getName() {
@@ -85,8 +94,8 @@ public class ObjectVariable extends AbstractVariable<Map<String, Object>> {
 
 	public static class ObjectField<O> extends Field<O, O> {
 
-		public ObjectField(String aName) {
-			super(aName);
+		public ObjectField(String aName, ObjectVariable aParent) {
+			super(aName, aParent);
 		}
 
 		@Override
@@ -105,13 +114,13 @@ public class ObjectVariable extends AbstractVariable<Map<String, Object>> {
 
 		private final Factory<I> mConstructor;
 
-		public VarField(String aName, Factory<I> aFactory) {
-			super(aName);
+		public VarField(String aName, Factory<I> aFactory, ObjectVariable aParent) {
+			super(aName, aParent);
 			mConstructor = aFactory;
 		}
 
-		public VarField(String aName, Class<I> aClass) {
-			this(aName, new Factory.C<I>(aClass));
+		public VarField(String aName, Class<I> aClass, ObjectVariable aParent) {
+			this(aName, new Factory.C<I>(aClass), aParent);
 		}
 
 		@Override

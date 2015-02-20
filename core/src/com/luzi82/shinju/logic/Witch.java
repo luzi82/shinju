@@ -7,21 +7,14 @@ import com.luzi82.shinju.ShinjuCommon;
 
 public class Witch extends Unit {
 
-	final public VarField<Position, Map<String, Object>> position;
+	final public VarField<Position, Map<String, Object>> position = new VarField<Position, Map<String, Object>>("position", Factory.C.create(Position.class), this);
 
-	final public VarField<Hp, Map<String, Object>> hp;
+	final public VarField<Hp, Map<String, Object>> hp = new VarField<Hp, Map<String, Object>>("hp", Factory.C.create(Hp.class), this);
 
-	final public ObjectField<Long> cooldown;
+	final public ObjectField<Long> cooldown = new ObjectField<Long>("cooldown", this);
 
 	protected Witch(Element aElement) {
 		super(TYPE, aElement);
-
-		position = new VarField<Position, Map<String, Object>>("position", Factory.C.create(Position.class));
-		addField(position);
-		hp = new VarField<Hp, Map<String, Object>>("hp", Factory.C.create(Hp.class));
-		addField(hp);
-		cooldown = new ObjectField<Long>("cooldown");
-		addField(cooldown);
 
 		position.set(new Position());
 		hp.set(new Hp());
