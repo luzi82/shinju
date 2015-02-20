@@ -4,8 +4,10 @@ import java.util.LinkedList;
 import java.util.Map;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.utils.TimeUtils;
 import com.luzi82.homuvalue.obj.ObjectVariable;
 import com.luzi82.homuvalue.obj.VariableMapVariable;
+import com.luzi82.shinju.logic.Hero.Factory;
 
 public class World extends ObjectVariable {
 
@@ -15,12 +17,16 @@ public class World extends ObjectVariable {
 
 	public final ObjectField<Long> next_id = new ObjectField<Long>("next_id", this);
 
+	public final VarField<Rand, Map<String, Object>> rand = new VarField<Rand, Map<String, Object>>("rand", Factory.C.create(Rand.class), this);
+
 	public World() {
 		element_map = new VarField<VariableMapVariable<Long, Element, Map<String, Object>>, Map<Long, Map<String, Object>>>("element_map", VariableMapVariable.createFactory(Long.class, new Element.Factory(this)), this);
 
 		turn.set(0L);
 		element_map.set(new VariableMapVariable<Long, Element, Map<String, Object>>(new Element.Factory(this)));
 		next_id.set(0L);
+		rand.set(new Rand());
+		rand.get().seed.set(TimeUtils.nanoTime());
 	}
 
 	// public void addElement(Element aElement) {
