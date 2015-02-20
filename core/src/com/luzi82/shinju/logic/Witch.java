@@ -43,7 +43,20 @@ public class Witch extends Unit {
 
 	@Override
 	public void act_0_unit() {
+		// TODO
+	}
 
+	@Override
+	public void act_2_afterEffect() {
+		if (hp.get().value.get() <= 0) {
+			Seed seed = new Seed(iElement);
+			seed.position.get().x.set(position.get().x.get());
+			seed.position.get().y.set(position.get().y.get());
+
+			iElement.type.set(Seed.TYPE);
+			iElement.witch.set(null);
+			iElement.seed.set(seed);
+		}
 	}
 
 	public static final String TYPE = "witch";

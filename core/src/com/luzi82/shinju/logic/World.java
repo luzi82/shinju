@@ -45,6 +45,10 @@ public class World extends ObjectVariable {
 			e.act_1_effect();
 		}
 
+		for (Element e : element_list) {
+			e.act_2_afterEffect();
+		}
+
 		LinkedList<Long> deleteIdList = new LinkedList<Long>();
 		for (Element e : element_map.get().values()) {
 			if (e.delete.get())

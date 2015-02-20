@@ -21,6 +21,8 @@ public class Element extends ObjectVariable {
 
 	public final VarField<Witch, Map<String, Object>> witch = new VarField<Witch, Map<String, Object>>("witch", new Witch.Factory(this), this);
 
+	public final VarField<Seed, Map<String, Object>> seed = new VarField<Seed, Map<String, Object>>("seed", new Seed.Factory(this), this);
+
 	public final VarField<BulletSimple.Eff, Map<String, Object>> bullet_simple = new VarField<BulletSimple.Eff, Map<String, Object>>("bullet_simple", new BulletSimple.Eff.Factory(this), this);
 
 	protected Element(World aWorld) {
@@ -29,6 +31,7 @@ public class Element extends ObjectVariable {
 
 		mTypeField.put(Hero.TYPE, hero);
 		mTypeField.put(Witch.TYPE, witch);
+		mTypeField.put(Seed.TYPE, seed);
 		mTypeField.put(BulletSimple.TYPE, bullet_simple);
 
 		delete.set(false);
@@ -43,7 +46,7 @@ public class Element extends ObjectVariable {
 
 		public final Element iElement;
 
-		final public ObjectField<Long> element_id = new ObjectField<Long>("element_id",this);
+		final public ObjectField<Long> element_id = new ObjectField<Long>("element_id", this);
 
 		protected Type(String aType, Element aElement) {
 			mType = aType;
@@ -52,9 +55,14 @@ public class Element extends ObjectVariable {
 			element_id.set(iElement.id.get());
 		}
 
-		public abstract void act_0_unit();
+		public void act_0_unit() {
+		}
 
-		public abstract void act_1_effect();
+		public void act_1_effect() {
+		}
+
+		public void act_2_afterEffect() {
+		}
 
 	}
 
@@ -79,6 +87,10 @@ public class Element extends ObjectVariable {
 
 	public void act_1_effect() {
 		getTypeVar().act_1_effect();
+	}
+
+	public void act_2_afterEffect() {
+		getTypeVar().act_2_afterEffect();
 	}
 
 	public static Element create(World aWorld) {
