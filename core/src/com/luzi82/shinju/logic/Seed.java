@@ -10,7 +10,7 @@ public class Seed extends Unit {
 	final public VarField<Position, Map<String, Object>> position = new VarField<Position, Map<String, Object>>("position", Factory.C.create(Position.class), this);
 
 	final public ObjectField<Long> mp = new ObjectField<Long>("mp", this);
-	
+
 	final public ObjectField<Long> mp_reduce = new ObjectField<Long>("mp_reduce", this);
 
 	protected Seed(Element aElement) {
@@ -41,7 +41,29 @@ public class Seed extends Unit {
 
 	@Override
 	public void act_0_unit() {
+		mp.set(mp.get() - mp_reduce.get());
+	}
 
+	@Override
+	public void act_2_transform() {
+		if (mp.get() < 0) {
+			long x = position.get().x.get();
+			long y = position.get().y.get();
+			x -= ShinjuCommon.CELL_SIZE;
+			x -= x % (ShinjuCommon.CELL_SIZE * 2);
+			y -= ShinjuCommon.CELL_SIZE;
+			y -= y % (ShinjuCommon.CELL_SIZE * 2);
+
+			Witch witch = new Witch(iElement);
+			witch.position.get().x.set(x);
+			witch.position.get().y.set(y);
+			witch.hp.get().value.set(100L);
+			witch.hp.get().max.set(100L);
+
+			iElement.type.set(Witch.TYPE);
+			iElement.witch.set(witch);
+			iElement.seed.set(null);
+		}
 	}
 
 	public static final String TYPE = "seed";
