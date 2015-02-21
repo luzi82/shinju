@@ -47,11 +47,16 @@ public class Witch extends Unit {
 	}
 
 	@Override
-	public void act_2_afterEffect() {
+	public void act_2_transform() {
 		if (hp.get().value.get() <= 0) {
+			long xOffset = ((iElement.iWorld.rand.get().nextInt() & 1) + 1) * ShinjuCommon.CELL_SIZE;
+			long yOffset = ((iElement.iWorld.rand.get().nextInt() & 1) + 1) * ShinjuCommon.CELL_SIZE;
+
 			Seed seed = new Seed(iElement);
-			seed.position.get().x.set(position.get().x.get());
-			seed.position.get().y.set(position.get().y.get());
+			seed.position.get().x.set(position.get().x.get() + xOffset);
+			seed.position.get().y.set(position.get().y.get() + yOffset);
+			seed.mp.set(100L);
+			seed.mp_reduce.set(10L);
 
 			iElement.type.set(Seed.TYPE);
 			iElement.witch.set(null);

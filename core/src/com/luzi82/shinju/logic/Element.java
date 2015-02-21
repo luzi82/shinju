@@ -61,7 +61,7 @@ public class Element extends ObjectVariable {
 		public void act_1_effect() {
 		}
 
-		public void act_2_afterEffect() {
+		public void act_2_transform() {
 		}
 
 	}
@@ -89,8 +89,8 @@ public class Element extends ObjectVariable {
 		getTypeVar().act_1_effect();
 	}
 
-	public void act_2_afterEffect() {
-		getTypeVar().act_2_afterEffect();
+	public void act_2_transform() {
+		getTypeVar().act_2_transform();
 	}
 
 	public static Element create(World aWorld) {

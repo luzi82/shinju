@@ -52,7 +52,7 @@ public class World extends ObjectVariable {
 		}
 
 		for (Element e : element_list) {
-			e.act_2_afterEffect();
+			e.act_2_transform();
 		}
 
 		LinkedList<Long> deleteIdList = new LinkedList<Long>();
