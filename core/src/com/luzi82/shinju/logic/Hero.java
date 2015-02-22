@@ -7,13 +7,13 @@ import com.luzi82.shinju.ShinjuCommon;
 
 public class Hero extends Unit {
 
-	final public VarField<Position, Map<String, Object>> position = new VarField<Position, Map<String, Object>>("position", Factory.C.create(Position.class),this);
+	final public VarField<Position, Map<String, Object>> position = new VarField<Position, Map<String, Object>>("position", Factory.C.create(Position.class), this);
 
-	final public VarField<Hp, Map<String, Object>> hp = new VarField<Hp, Map<String, Object>>("hp", Factory.C.create(Hp.class),this);
+	final public VarField<Hp, Map<String, Object>> hp = new VarField<Hp, Map<String, Object>>("hp", Factory.C.create(Hp.class), this);
 
-	final public VarField<Mp, Map<String, Object>> mp = new VarField<Mp, Map<String, Object>>("mp", Factory.C.create(Mp.class),this);
+	final public VarField<Mp, Map<String, Object>> mp = new VarField<Mp, Map<String, Object>>("mp", Factory.C.create(Mp.class), this);
 
-	final public ObjectField<Long> cooldown = new ObjectField<Long>("cooldown",this);
+	final public ObjectField<Long> cooldown = new ObjectField<Long>("cooldown", this);
 
 	final public VarField<VariableMapVariable<Long, Skill, Map<String, Object>>, Map<Long, Map<String, Object>>> skill_map;
 
@@ -22,7 +22,7 @@ public class Hero extends Unit {
 
 		Skill.Factory skill_factory = new Skill.Factory(this);
 		VariableMapVariable.F<Long, Skill, Map<String, Object>> skill_map_factory = new VariableMapVariable.F(skill_factory);
-		skill_map = new VarField<VariableMapVariable<Long, Skill, Map<String, Object>>, Map<Long, Map<String, Object>>>("skill_list", skill_map_factory,this);
+		skill_map = new VarField<VariableMapVariable<Long, Skill, Map<String, Object>>, Map<Long, Map<String, Object>>>("skill_list", skill_map_factory, this);
 
 		position.set(new Position());
 		hp.set(new Hp());
@@ -71,6 +71,24 @@ public class Hero extends Unit {
 			return;
 		for (Skill skill : skill_map.get().values()) {
 			skill.act();
+		}
+	}
+
+	@Override
+	public void act_2_transform() {
+		if (mp.get().value.get() <= 0) {
+			long xOffset = (iElement.iWorld.rand.get().nextInt() & 1) * ShinjuCommon.CELL_SIZE;
+			long yOffset = (iElement.iWorld.rand.get().nextInt() & 1) * ShinjuCommon.CELL_SIZE;
+
+			Seed seed = new Seed(iElement);
+			seed.position.get().x.set(position.get().x.get() + xOffset);
+			seed.position.get().y.set(position.get().y.get() + yOffset);
+			seed.mp.set(100L);
+			seed.mp_reduce.set(1L);
+
+			iElement.type.set(Seed.TYPE);
+			iElement.hero.set(null);
+			iElement.seed.set(seed);
 		}
 	}
 
