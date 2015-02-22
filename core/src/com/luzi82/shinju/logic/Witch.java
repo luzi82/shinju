@@ -56,7 +56,7 @@ public class Witch extends Unit {
 			seed.position.get().x.set(position.get().x.get() + xOffset);
 			seed.position.get().y.set(position.get().y.get() + yOffset);
 			seed.mp.set(100L);
-			seed.mp_reduce.set(10L);
+			seed.mp_reduce.set(1L);
 
 			iElement.type.set(Seed.TYPE);
 			iElement.witch.set(null);

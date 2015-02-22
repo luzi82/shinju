@@ -58,8 +58,11 @@ public abstract class Unit extends Element.Type {
 		if (sBlockSet == null) {
 			sBlockSet = new TreeSet<Pair<String, String>>();
 			addBlock(Hero.TYPE, Hero.TYPE);
-			addBlock(Witch.TYPE, Witch.TYPE);
 			addBlock(Hero.TYPE, Witch.TYPE);
+			addBlock(Hero.TYPE, Seed.TYPE);
+			addBlock(Witch.TYPE, Witch.TYPE);
+			addBlock(Witch.TYPE, Seed.TYPE);
+			addBlock(Seed.TYPE, Seed.TYPE);
 		}
 	}
 

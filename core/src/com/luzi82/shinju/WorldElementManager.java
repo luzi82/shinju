@@ -89,9 +89,10 @@ public class WorldElementManager {
 
 	static {
 		mElementManagerFactoryMap = new HashMap<String, ElementManagerFactory>();
-		addElementManagerFactory(new HeroManager.Factory());
-		addElementManagerFactory(new WitchManager.Factory());
 		addElementManagerFactory(new BulletSimpleManager.Factory());
+		addElementManagerFactory(new HeroManager.Factory());
+		addElementManagerFactory(new SeedManager.Factory());
+		addElementManagerFactory(new WitchManager.Factory());
 	}
 
 }

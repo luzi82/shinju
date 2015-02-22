@@ -7,9 +7,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import com.badlogic.gdx.utils.TimeUtils;
 import com.luzi82.homuvalue.obj.MapVariable;
-import com.luzi82.homuvalue.obj.VariableMapVariable;
 import com.luzi82.shinju.logic.Element;
 
 public class PlayScreenWorldGroup extends Group {
@@ -21,6 +19,8 @@ public class PlayScreenWorldGroup extends Group {
 	ShinjuCommon iCommon;
 
 	public Group mWitchLayer;
+
+	public Group mSeedLayer;
 
 	public Group mHeroLayer;
 
@@ -39,6 +39,9 @@ public class PlayScreenWorldGroup extends Group {
 
 		mWitchLayer = new Group();
 		addActor(mWitchLayer);
+
+		mSeedLayer = new Group();
+		addActor(mSeedLayer);
 
 		mHeroLayer = new Group();
 		addActor(mHeroLayer);
