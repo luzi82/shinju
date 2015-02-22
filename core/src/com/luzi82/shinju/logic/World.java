@@ -71,4 +71,27 @@ public class World extends ObjectVariable {
 		return ret;
 	}
 
+	public boolean isPositionOk(long aElementId, String aType, long[] aXy, long aSize) {
+		for (Element m : element_map.get().values()) {
+			String type = m.type.get();
+			if (m.id.get().equals(aElementId))
+				continue;
+			if (!Unit.isBlock(aType, type))
+				continue;
+			Unit u = (Unit) m.getTypeVar();
+			long[] xy = u.getXY();
+			long size = u.getSize();
+			if (aXy[0] + aSize <= xy[0])
+				continue;
+			if (aXy[1] + aSize <= xy[1])
+				continue;
+			if (aXy[0] >= xy[0] + size)
+				continue;
+			if (aXy[1] >= xy[1] + size)
+				continue;
+			return false;
+		}
+		return true;
+	}
+
 }

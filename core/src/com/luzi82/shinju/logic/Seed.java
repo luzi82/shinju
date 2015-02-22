@@ -85,16 +85,18 @@ public class Seed extends Unit {
 			x -= x % (ShinjuCommon.CELL_SIZE * 2);
 			y -= ShinjuCommon.CELL_SIZE;
 			y -= y % (ShinjuCommon.CELL_SIZE * 2);
+			
+			if(iElement.iWorld.isPositionOk(iElement.id.get(), Witch.TYPE, new long[]{x,y}, ShinjuCommon.WITCH_SIZE)){
+				Witch witch = new Witch(iElement);
+				witch.position.get().x.set(x);
+				witch.position.get().y.set(y);
+				witch.hp.get().value.set(100L);
+				witch.hp.get().max.set(100L);
 
-			Witch witch = new Witch(iElement);
-			witch.position.get().x.set(x);
-			witch.position.get().y.set(y);
-			witch.hp.get().value.set(100L);
-			witch.hp.get().max.set(100L);
-
-			iElement.type.set(Witch.TYPE);
-			iElement.witch.set(witch);
-			iElement.seed.set(null);
+				iElement.type.set(Witch.TYPE);
+				iElement.witch.set(witch);
+				iElement.seed.set(null);
+			}
 		}
 	}
 
