@@ -47,26 +47,8 @@ public class Hero extends Unit {
 		if (aY % ShinjuCommon.HERO_SIZE != 0)
 			return false;
 
-		World world = iElement.iWorld;
-		long mySize = getSize();
-
-		for (Element m : world.element_map.get().values()) {
-			String type = m.type.get();
-			if (!isBlock(TYPE, type))
-				continue;
-			Unit u = (Unit) m.getTypeVar();
-			long[] xy = u.getXY();
-			long size = u.getSize();
-			if (aX + mySize <= xy[0])
-				continue;
-			if (aY + mySize <= xy[1])
-				continue;
-			if (aX >= xy[0] + size)
-				continue;
-			if (aY >= xy[1] + size)
-				continue;
+		if (!iElement.iWorld.isPositionOk(iElement.id.get(), TYPE, new long[] { aX, aY }, getSize()))
 			return false;
-		}
 
 		position.get().x.set(aX);
 		position.get().y.set(aY);

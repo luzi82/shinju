@@ -35,26 +35,8 @@ public class Seed extends Unit {
 		if (aY % ShinjuCommon.CELL_SIZE != 0)
 			return false;
 
-		World world = iElement.iWorld;
-		long mySize = getSize();
-
-		for (Element m : world.element_map.get().values()) {
-			String type = m.type.get();
-			if (!isBlock(TYPE, type))
-				continue;
-			Unit u = (Unit) m.getTypeVar();
-			long[] xy = u.getXY();
-			long size = u.getSize();
-			if (aX + mySize <= xy[0])
-				continue;
-			if (aY + mySize <= xy[1])
-				continue;
-			if (aX >= xy[0] + size)
-				continue;
-			if (aY >= xy[1] + size)
-				continue;
+		if (!iElement.iWorld.isPositionOk(iElement.id.get(), TYPE, new long[] { aX, aY }, getSize()))
 			return false;
-		}
 
 		position.get().x.set(aX);
 		position.get().y.set(aY);
@@ -85,8 +67,8 @@ public class Seed extends Unit {
 			x -= x % (ShinjuCommon.CELL_SIZE * 2);
 			y -= ShinjuCommon.CELL_SIZE;
 			y -= y % (ShinjuCommon.CELL_SIZE * 2);
-			
-			if(iElement.iWorld.isPositionOk(iElement.id.get(), Witch.TYPE, new long[]{x,y}, ShinjuCommon.WITCH_SIZE)){
+
+			if (iElement.iWorld.isPositionOk(iElement.id.get(), Witch.TYPE, new long[] { x, y }, ShinjuCommon.WITCH_SIZE)) {
 				Witch witch = new Witch(iElement);
 				witch.position.get().x.set(x);
 				witch.position.get().y.set(y);
