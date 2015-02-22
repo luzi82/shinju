@@ -46,7 +46,7 @@ public class Seed extends Unit {
 
 	@Override
 	public void act_2_transform() {
-		if (mp.get() < 0) {
+		if (mp.get() <= 0) {
 			long x = position.get().x.get();
 			long y = position.get().y.get();
 			x -= ShinjuCommon.CELL_SIZE;
