@@ -11,6 +11,9 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import com.badlogic.gdx.scenes.scene2d.utils.Align;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.luzi82.shinju.logic.BulletSimple;
+import com.luzi82.shinju.logic.Hero;
+import com.luzi82.shinju.logic.Witch;
 
 public class PlayScreenUiGroup extends Group {
 
@@ -61,6 +64,33 @@ public class PlayScreenUiGroup extends Group {
 		@Override
 		public void clicked(InputEvent event, float x, float y) {
 			Gdx.app.debug("AalGBxGj", "hero clicked");
+			new Thread(mHeroButtonClickListenerRunnable).start();
+		}
+	};
+
+	public Runnable mHeroButtonClickListenerRunnable = new Runnable() {
+		@Override
+		public void run() {
+			synchronized (iCommon) {
+				if (iCommon.mShinjuData.isPositionOk(-1, Hero.TYPE, new long[] { 0, 0 }, ShinjuCommon.HERO_SIZE)) {
+					Hero hero = Hero.create(iCommon.mShinjuData);
+					hero.position.get().x.set(0L);
+					hero.position.get().y.set(0L);
+					hero.hp.get().value.set(100L);
+					hero.hp.get().max.set(100L);
+					hero.mp.get().value.set(100L);
+					hero.mp.get().max.set(100L);
+					hero.mp.get().min.set(Long.MIN_VALUE);
+
+					BulletSimple.Ski bulletSimple = BulletSimple.Ski.create(hero);
+					bulletSimple.cooldown.set(10L);
+					bulletSimple.mp_cost.set(10L);
+					bulletSimple.damage.set(10L);
+					bulletSimple.range.set(5L * ShinjuCommon.CELL_SIZE);
+					bulletSimple.speed.set(ShinjuCommon.CELL_SIZE);
+					bulletSimple.target_unit_type_list.get().add(Witch.TYPE);
+				}
+			}
 		}
 	};
 

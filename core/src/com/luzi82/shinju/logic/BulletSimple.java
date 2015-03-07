@@ -70,10 +70,12 @@ public class BulletSimple {
 				Element destElement = iElement.iWorld.element_map.get().get(dest_id.get());
 				Unit destUnit = (Unit) destElement.getTypeVar();
 				Hp hp = destUnit.hp();
-				hp.value.set(hp.value.get() - damage.get());
+				if (hp != null) {
+					hp.value.set(hp.value.get() - damage.get());
+				}
 			}
 		}
-		
+
 		@Override
 		public void act_2_transform() {
 			if (iElement.iWorld.turn.get() >= end_turn.get()) {
